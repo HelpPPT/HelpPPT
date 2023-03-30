@@ -3,6 +3,7 @@ import { DefaultButton } from "@fluentui/react";
 import Header from "./Header";
 import HeroList, { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
+import { Recommand } from "./Recommand";
 
 /* global console, Office, require */
 
@@ -79,6 +80,7 @@ export default class App extends React.Component<AppProps, AppState> {
           <p className="ms-font-l">
             Modify the source files, then click <b>Run</b>.
           </p>
+          <Recommand />
           <DefaultButton className="ms-welcome__action" iconProps={{ iconName: "ChevronRight" }} onClick={this.click}>
             Run
           </DefaultButton>
