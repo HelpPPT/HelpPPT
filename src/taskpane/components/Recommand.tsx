@@ -43,8 +43,16 @@ export const Recommand: React.FunctionComponent = () => {
     }
 
     const translatedOriginalSelectedWord: string = await translateToEng(originalSelectedWord);
+    const processedWord: string = translatedOriginalSelectedWord
+      .replace(/[.]*$/, "")
+      .toLowerCase()
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
 
-    await setSelectedText(`${originalSelectedWord}(${translatedOriginalSelectedWord})`);
+    await setSelectedText(`${originalSelectedWord}(${processedWord})`);
   };
 
   const getSelectedText = async (): Promise<string> =>
