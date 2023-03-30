@@ -59,6 +59,10 @@ export const Recommand: React.FunctionComponent = () => {
       }
 
       const selectedText: string = result.value.trim();
+      if (!(selectedText && selectedText.endsWith("[]"))) {
+        return;
+      }
+
       _recommandWord(selectedText);
     });
   };
