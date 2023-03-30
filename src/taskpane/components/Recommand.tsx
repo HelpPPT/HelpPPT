@@ -31,7 +31,10 @@ export const Recommand: React.FunctionComponent = () => {
 
   const recommandWord = async () => {
     const currentSelectedWord: string = await getSelectedText();
-    if (!(currentSelectedWord && currentSelectedWord.endsWith("()"))) {
+    if (
+      !(currentSelectedWord && currentSelectedWord.endsWith("()")) &&
+      !(currentSelectedWord && currentSelectedWord.endsWith("[]"))
+    ) {
       return;
     }
 
@@ -42,16 +45,9 @@ export const Recommand: React.FunctionComponent = () => {
       return;
     }
 
-    const translatedOriginalSelectedWord: string = await translateToEng(originalSelectedWord);
-    const processedWord: string = translatedOriginalSelectedWord
-      .replace(/[.]*$/, "")
-      .split(" ")
-      .map(function (word) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join(" ");
+    const recommandWord: string = await getRecommandWord(originalSelectedWord);
 
-    await setSelectedText(`${originalSelectedWord}(${processedWord})`);
+    await setSelectedText(`${originalSelectedWord}(${recommandWord})`);
   };
 
   const getSelectedText = async (): Promise<string> =>
@@ -81,6 +77,18 @@ export const Recommand: React.FunctionComponent = () => {
       await context.sync();
       textRange.text = value;
     });
+
+  const getRecommandWord = async (originalSelectedWord: string): Promise<string> => {
+    const translatedOriginalSelectedWord: string = await translateToEng(originalSelectedWord);
+    const recommandWord: string = translatedOriginalSelectedWord
+      .replace(/[.]*$/, "")
+      .split(" ")
+      .map(function (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
+    return recommandWord;
+  };
 
   const translateToEng = async (text: string): Promise<string> => {
     const { data } = await axios({
