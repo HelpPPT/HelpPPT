@@ -31,13 +31,15 @@ export const Recommand: React.FunctionComponent = () => {
 
   const recommandWord = async () => {
     const currentSelectedWord: string = await getSelectedText();
-    if (
-      !(currentSelectedWord && currentSelectedWord.endsWith("()")) &&
-      !(currentSelectedWord && currentSelectedWord.endsWith("[]"))
-    ) {
-      return;
-    }
 
+    if (currentSelectedWord && currentSelectedWord.endsWith("()")) {
+      _recommandWord(currentSelectedWord);
+    } else if (currentSelectedWord && currentSelectedWord.endsWith("[]")) {
+      recommandByDragSelection();
+    }
+  };
+
+  const _recommandWord = async (currentSelectedWord: string) => {
     await setSelectedText(currentSelectedWord.replace(/.{0,2}$/, ""));
 
     const originalSelectedWord: string = await getSelectedText();
@@ -48,6 +50,17 @@ export const Recommand: React.FunctionComponent = () => {
     const recommandWord: string = await getRecommandWord(originalSelectedWord);
 
     await setSelectedText(`${originalSelectedWord}(${recommandWord})`);
+  };
+
+  const recommandByDragSelection = async () => {
+    Office.context.document.getSelectedDataAsync<string>(Office.CoercionType.Text, (result) => {
+      if (result.status !== Office.AsyncResultStatus.Succeeded) {
+        return;
+      }
+
+      const selectedText: string = result.value.trim();
+      _recommandWord(selectedText);
+    });
   };
 
   const getSelectedText = async (): Promise<string> =>
@@ -91,11 +104,12 @@ export const Recommand: React.FunctionComponent = () => {
   };
 
   const translateToEng = async (text: string): Promise<string> => {
-    const { data } = await axios({
-      method: "get",
-      url: `http://localhost:5000/?text=${text}`,
-    });
-    return data;
+    // const { data } = await axios({
+    //   method: "get",
+    //   url: `http://localhost:5000/?text=${text}`,
+    // });
+    // return data;
+    return `${text} 번역 목업`;
   };
 
   return (
