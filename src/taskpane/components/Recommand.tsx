@@ -108,12 +108,11 @@ export const Recommand: React.FunctionComponent = () => {
   };
 
   const translateToEng = async (text: string): Promise<string> => {
-    // const { data } = await axios({
-    //   method: "get",
-    //   url: `http://localhost:5000/?text=${text}`,
-    // });
-    // return data;
-    return `${text} 번역 목업`;
+    const { data } = await axios({
+      method: "get",
+      url: `https://p1faduw6hl.execute-api.ap-northeast-2.amazonaws.com/default/papagoTranslate?text=${text}`,
+    });
+    return data;
   };
 
   return (
