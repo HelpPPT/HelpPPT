@@ -1,8 +1,15 @@
 import * as React from "react";
 import { PrimaryButton } from "@fluentui/react";
 import GejosikDTO from "../../dto/GejosikDTO";
+import axios from "axios";
 
 export const Gejosik: React.FunctionComponent = () => {
+  const turnIntoGejosik = async () => {
+    const lines: Array<string> = await getLinesFromSlides();
+    const gejosikLines: GejosikDTO = await getGejosikLines(lines);
+    await setLinesGejosik(gejosikLines);
+  };
+
   const getLinesFromSlides = async (): Promise<Array<string>> =>
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
       let lineBuffer: Array<string> = [];
@@ -45,6 +52,19 @@ export const Gejosik: React.FunctionComponent = () => {
       const validLines: Array<string> = lineBuffer.map((line) => line.trim()).filter((line) => line.length > 0);
       return validLines;
     });
+
+  const getGejosikLines = async (sentences: Array<string>): Promise<GejosikDTO> => {
+    const { data } = await axios({
+      method: "POST",
+      url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik",
+      data: { sentences },
+    });
+
+    const gejosikSentences: GejosikDTO = {};
+    Object.keys(data).forEach((key) => (gejosikSentences[key] = data[key]["gejosik_sentence"]));
+
+    return gejosikSentences;
+  };
 
   const setLinesGejosik = async (gejosikLines: GejosikDTO) =>
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
@@ -96,18 +116,7 @@ export const Gejosik: React.FunctionComponent = () => {
       style={{
         borderRadius: 6,
       }}
-      onClick={async () => {
-        setLinesGejosik({
-          "OS 스터디": "123OS 스터디",
-          "20194147 김동현": "12320194147 김동현",
-          "트리(Tree)": "123트리(Tree)",
-          "트리(Tree)의 개념 트리는 노드로 이루어진 자료구조": "123트리(Tree)의 개념 트리는 노드로 이루어진 자료구조",
-          "Hello World!": "Hello 123World!",
-          "스택이나 큐와 같은 선형 구조가 아닌 비선형 자료구조이다.":
-            "스택이나 큐와 같은 선형 구조가 아닌 비선형 자료구123조이다.",
-          "트리는 계층적 관계를 표현하는 자료구조이다.": "트리는 계층적 관계를 123표현하는 자료구조이다.",
-        });
-      }}
+      onClick={turnIntoGejosik}
     />
   );
 };
