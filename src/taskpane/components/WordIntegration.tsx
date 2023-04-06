@@ -37,8 +37,8 @@ export const WordIntegration: React.FunctionComponent = () => {
       return textBuffer;
     });
 
-  // const clusterWords = async (text: string): Promise<Array<Array<string>>> => {
-  const clusterWords = async (__text: string) => {
+  const clusterWords = async (__text: string): Promise<Array<Array<string>>> => {
+    // const clusterWords = async (__text: string) => {
     // const { data } = await axios({
     //   method: "POST",
     //   url: "http://15.165.217.213:8000/grouping/",
@@ -64,7 +64,7 @@ export const WordIntegration: React.FunctionComponent = () => {
       ["관계", "스택"],
       ["표현", "노드", "구조"],
     ];
-    console.log(data);
+    return data;
   };
 
   return (
