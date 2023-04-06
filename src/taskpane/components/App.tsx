@@ -35,7 +35,7 @@ export default class App extends React.Component<AppProps, AppState> {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-around",
-            margin: 10,
+            margin: 20,
             height: 150,
           }}
         >
