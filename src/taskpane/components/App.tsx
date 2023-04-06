@@ -5,6 +5,7 @@ import HeroList, { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
 // import { Recommand } from "./Recommand";
 import { WordUnitier } from "./WordUnitier";
+import { Gejosik } from "./Gejosik";
 
 /* global console, Office, require */
 
@@ -82,7 +83,8 @@ export default class App extends React.Component<AppProps, AppState> {
             Modify the source files, then click <b>Run</b>.
           </p>
           {/* <Recommand /> */}
-          <WordUnitier />
+          {/* <WordUnitier /> */}
+          <Gejosik />
           <DefaultButton className="ms-welcome__action" iconProps={{ iconName: "ChevronRight" }} onClick={this.click}>
             Run
           </DefaultButton>
