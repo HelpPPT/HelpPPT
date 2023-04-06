@@ -66,6 +66,8 @@ export const WordUnitier: React.FunctionComponent = () => {
 
   const unitifyWord = async (from: Array<string>, to: string) =>
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+      console.log(`${from} -> ${to}`);
+
       const replaceRegex: RegExp = new RegExp(from.sort((a, b) => b.length - a.length).join("|"), "g");
 
       const slides = context.presentation.slides;
