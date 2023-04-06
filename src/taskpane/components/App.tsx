@@ -4,6 +4,8 @@ import { HeroListItem } from "./HeroList";
 // import { Recommand } from "./Recommand";
 // import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
+import { Recommand } from "./Recommand";
+import { WordUnitier } from "./WordUnitier";
 
 /* global console, Office, require */
 
@@ -26,11 +28,21 @@ export default class App extends React.Component<AppProps, AppState> {
 
   render() {
     return (
-      <div className="ms-welcome">
+      <div className="ms-welcome" style={{ height: "100%" }}>
         <Header logo={require("./../../../assets/logo-filled.png")} title={this.props.title} message="Welcome" />
-        {/* <Recommand /> */}
-        {/* <WordUnitier /> */}
-        <Gejosik />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            margin: 10,
+            height: 150,
+          }}
+        >
+          <Recommand />
+          <WordUnitier />
+          <Gejosik />
+        </div>
       </div>
     );
   }

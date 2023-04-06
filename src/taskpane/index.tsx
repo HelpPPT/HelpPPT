@@ -16,7 +16,7 @@ const title = "Contoso Task Pane Add-in";
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <ThemeProvider>
+      <ThemeProvider style={{ height: "100%" }}>
         <Component title={title} isOfficeInitialized={isOfficeInitialized} />
       </ThemeProvider>
     </AppContainer>,

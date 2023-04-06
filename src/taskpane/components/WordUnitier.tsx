@@ -101,6 +101,9 @@ export const WordUnitier: React.FunctionComponent = () => {
   return (
     <PrimaryButton
       text="단어 통일"
+      style={{
+        borderRadius: 6,
+      }}
       onClick={async () => {
         const testText = (await getTextsFromSlides()).join("\n");
         console.log(testText);

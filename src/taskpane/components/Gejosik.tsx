@@ -93,6 +93,9 @@ export const Gejosik: React.FunctionComponent = () => {
   return (
     <PrimaryButton
       text="개조식으로 변환"
+      style={{
+        borderRadius: 6,
+      }}
       onClick={async () => {
         setLinesGejosik({
           "OS 스터디": "123OS 스터디",
