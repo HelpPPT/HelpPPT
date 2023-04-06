@@ -4,7 +4,7 @@ import Header from "./Header";
 import HeroList, { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
 // import { Recommand } from "./Recommand";
-import { WordUnitier } from "./WordUnitier";
+// import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
 
 /* global console, Office, require */
