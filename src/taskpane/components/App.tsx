@@ -1,7 +1,6 @@
 import * as React from "react";
-import { DefaultButton } from "@fluentui/react";
 import Header from "./Header";
-import HeroList, { HeroListItem } from "./HeroList";
+import { HeroListItem } from "./HeroList";
 // import { Recommand } from "./Recommand";
 // import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
