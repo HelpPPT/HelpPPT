@@ -116,8 +116,13 @@ export const Recommand: React.FunctionComponent = () => {
   };
 
   return (
-    <div>
-      <Toggle label="자동완성" onText="On" offText="Off" checked={isChecked} onChange={changeToggle} />
-    </div>
+    <Toggle
+      label="영문 명사 자동 완성"
+      inlineLabel
+      onText="ON"
+      offText="OFF"
+      checked={isChecked}
+      onChange={changeToggle}
+    />
   );
 };
