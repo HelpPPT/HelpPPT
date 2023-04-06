@@ -1,5 +1,6 @@
 import * as React from "react";
 import { PrimaryButton } from "@fluentui/react";
+// import axios from "axios";
 
 export const WordUnitier: React.FunctionComponent = () => {
   const getTextsFromSlides = async (): Promise<Array<string>> =>
@@ -37,34 +38,30 @@ export const WordUnitier: React.FunctionComponent = () => {
       return textBuffer;
     });
 
-  const clusterWords = async (__text: string): Promise<Array<Array<string>>> => {
-    // const clusterWords = async (__text: string) => {
+  const getWordClusters = async (sentence: string): Promise<Array<Array<string>>> => {
     // const { data } = await axios({
     //   method: "POST",
-    //   url: "http://15.165.217.213:8000/grouping/",
-    //   data: {
-    //     sentence: text,
-    //   },
+    //   url: "https://8v8pkkotrh.execute-api.ap-northeast-2.amazonaws.com/grouping",
+    //   data: { sentence },
     // });
-    const data = [
+
+    // return data;
+
+    return [
       ["자료구조", "스택", "관계"],
       ["Tree", "표현", "노드", "구조"],
       ["트리(Tree)", "비선형"],
-      ["OS", "김동현", "계층적", "스터디"],
-      ["스터디", "계층적"],
-      ["20194147", "선형"],
-      ["김동현", "계층적", "스터디"],
       ["개념", "노드", "구조"],
       ["노드", "구조"],
       ["스택", "관계"],
-      ["선형", "20194147"],
+      ["선형", "자료구조", "스택", "관계"],
       ["구조", "노드"],
       ["비선형", "트리(Tree)"],
-      ["계층적", "스터디"],
+      ["계층적", "스택", "관계"],
       ["관계", "스택"],
       ["표현", "노드", "구조"],
+      [sentence],
     ];
-    return data;
   };
 
   const unitifyWord = async (from: Array<string>, to: string) =>
@@ -105,11 +102,9 @@ export const WordUnitier: React.FunctionComponent = () => {
         borderRadius: 6,
       }}
       onClick={async () => {
-        const testText = (await getTextsFromSlides()).join("\n");
-        console.log(testText);
-
-        await clusterWords(testText);
-        unitifyWord(["Tree", "스택", "관계"], "자료구조");
+        const fullSentence: string = (await getTextsFromSlides()).join("\n");
+        const wordClusters: Array<Array<string>> = await getWordClusters(fullSentence);
+        unitifyWord(wordClusters[0], wordClusters[0][0]);
       }}
     />
   );
