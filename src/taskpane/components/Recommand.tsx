@@ -22,7 +22,7 @@ export const Recommand: React.FunctionComponent = () => {
   };
 
   const setRecommandationON = () => {
-    setIntervalId(setInterval(recommandWord, 5000));
+    setIntervalId(setInterval(recommandWord, 1000));
   };
   const setRecommandationOFF = () => {
     clearInterval(intervalId);
