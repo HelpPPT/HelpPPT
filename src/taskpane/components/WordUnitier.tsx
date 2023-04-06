@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PrimaryButton } from "@fluentui/react";
 
-export const WordIntegration: React.FunctionComponent = () => {
+export const WordUnitier: React.FunctionComponent = () => {
   const getTextsFromSlides = async (): Promise<Array<string>> =>
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
       const textBuffer: Array<string> = [];
@@ -67,13 +67,47 @@ export const WordIntegration: React.FunctionComponent = () => {
     return data;
   };
 
+  const unitifyWord = async (from: Array<string>, to: string) =>
+    await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+      const replaceRegex: RegExp = new RegExp(from.join("|"), "g");
+
+      const slides = context.presentation.slides;
+
+      context.load(slides, "id,shapes/items/type");
+      await context.sync();
+
+      for (const slide of slides.items) {
+        for (const shape of slide.shapes.items) {
+          if (shape.type === "Unsupported") {
+            continue;
+          }
+
+          context.load(shape, "textFrame/hasText");
+          await context.sync();
+
+          if (!shape.textFrame.hasText) {
+            continue;
+          }
+
+          context.load(shape, "textFrame/textRange/text");
+          await context.sync();
+
+          shape.textFrame.textRange.text = shape.textFrame.textRange.text.replace(replaceRegex, to);
+        }
+      }
+      return await context.sync();
+    });
+
   return (
     <div>
       <PrimaryButton
         text="Get Texts From Slides"
         onClick={async () => {
           const testText = (await getTextsFromSlides()).join("\n");
+          console.log(testText);
+
           await clusterWords(testText);
+          unitifyWord(["Tree", "스택", "관계"], "자료구조");
         }}
       />
     </div>
