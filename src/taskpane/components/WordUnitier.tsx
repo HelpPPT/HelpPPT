@@ -99,17 +99,15 @@ export const WordUnitier: React.FunctionComponent = () => {
     });
 
   return (
-    <div>
-      <PrimaryButton
-        text="Get Texts From Slides"
-        onClick={async () => {
-          const testText = (await getTextsFromSlides()).join("\n");
-          console.log(testText);
+    <PrimaryButton
+      text="단어 통일"
+      onClick={async () => {
+        const testText = (await getTextsFromSlides()).join("\n");
+        console.log(testText);
 
-          await clusterWords(testText);
-          unitifyWord(["Tree", "스택", "관계"], "자료구조");
-        }}
-      />
-    </div>
+        await clusterWords(testText);
+        unitifyWord(["Tree", "스택", "관계"], "자료구조");
+      }}
+    />
   );
 };
