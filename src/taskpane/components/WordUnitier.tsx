@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PrimaryButton } from "@fluentui/react";
-// import axios from "axios";
+import axios from "axios";
 
 export const WordUnitier: React.FunctionComponent = () => {
   const getTextsFromSlides = async (): Promise<Array<string>> =>
@@ -39,29 +39,13 @@ export const WordUnitier: React.FunctionComponent = () => {
     });
 
   const getWordClusters = async (sentence: string): Promise<Array<Array<string>>> => {
-    // const { data } = await axios({
-    //   method: "POST",
-    //   url: "https://8v8pkkotrh.execute-api.ap-northeast-2.amazonaws.com/grouping",
-    //   data: { sentence },
-    // });
+    const { data } = await axios({
+      method: "POST",
+      url: "https://8v8pkkotrh.execute-api.ap-northeast-2.amazonaws.com/grouping/",
+      data: { sentence },
+    });
 
-    // return data;
-
-    return [
-      ["자료구조", "스택", "관계"],
-      ["Tree", "표현", "노드", "구조"],
-      ["트리(Tree)", "비선형"],
-      ["개념", "노드", "구조"],
-      ["노드", "구조"],
-      ["스택", "관계"],
-      ["선형", "자료구조", "스택", "관계"],
-      ["구조", "노드"],
-      ["비선형", "트리(Tree)"],
-      ["계층적", "스택", "관계"],
-      ["관계", "스택"],
-      ["표현", "노드", "구조"],
-      [sentence],
-    ];
+    return data;
   };
 
   const unitifyWord = async (from: Array<string>, to: string) =>
