@@ -1,11 +1,9 @@
 import * as React from "react";
 import Header from "./Header";
 import { HeroListItem } from "./HeroList";
-// import { Recommand } from "./Recommand";
-// import { WordUnitier } from "./WordUnitier";
-import { Gejosik } from "./Gejosik";
 import { Recommand } from "./Recommand";
 import { WordUnitier } from "./WordUnitier";
+import { Gejosik } from "./Gejosik";
 
 /* global console, Office, require */
 
