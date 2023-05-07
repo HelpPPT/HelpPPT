@@ -4,6 +4,7 @@ import { HeroListItem } from "./HeroList";
 import { Recommand } from "./Recommand";
 import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
+import { Pivot, PivotItem } from "@fluentui/react";
 
 /* global console, Office, require */
 
@@ -26,22 +27,23 @@ export default class App extends React.Component<AppProps, AppState> {
 
   render() {
     return (
-      <div className="ms-welcome" style={{ height: "100%" }}>
-        <Header logo={require("./../../../assets/logo-filled.png")} title={this.props.title} message="Welcome" />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-around",
-            margin: 20,
-            height: 150,
-          }}
-        >
-          <Recommand />
+      <Pivot
+        className="menus"
+        aria-label="기능 페이지"
+        overflowAriaLabel="기능 더보기"
+        overflowBehavior="menu"
+        style={{ height: "100%" }}
+      >
+        <PivotItem headerText="단어 통일">
           <WordUnitier />
+        </PivotItem>
+        <PivotItem headerText="개조식 전환">
           <Gejosik />
-        </div>
-      </div>
+        </PivotItem>
+        <PivotItem headerText="영문 자동 완성">
+          <Recommand />
+        </PivotItem>
+      </Pivot>
     );
   }
 }
