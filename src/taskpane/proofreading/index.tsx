@@ -1,3 +1,1 @@
-import Proofreading from "./Proofreading";
-
-export { Proofreading };
+export * from "./Proofreading";
