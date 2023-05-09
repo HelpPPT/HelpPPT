@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PrimaryButton } from "@fluentui/react";
-import GejosikDTO from "../../dto/GejosikDTO";
+import GejosikDTO from "../../dto/gejosikDTO";
 import axios from "axios";
 
 export const Gejosik: React.FunctionComponent = () => {
