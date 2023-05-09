@@ -1,49 +1,45 @@
 import * as React from "react";
-import Header from "./Header";
-import { HeroListItem } from "./HeroList";
 import { Recommand } from "./Recommand";
 import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
-import { Pivot, PivotItem } from "@fluentui/react";
+import { Tab, TabList, SelectTabData, SelectTabEvent, TabValue } from "@fluentui/react-components";
+import { Proofreading } from "../proofreading";
 
-/* global console, Office, require */
+enum Page {
+  WordUnitier,
+  Gejosik,
+  Recommand,
+  Proofreading,
+}
 
 export interface AppProps {
   title: string;
   isOfficeInitialized: boolean;
 }
 
-export interface AppState {
-  listItems: HeroListItem[];
-}
+const App: React.FC<AppProps> = () => {
+  const [selectedPage, setSelectedPage] = React.useState<TabValue>("conditions");
 
-export default class App extends React.Component<AppProps, AppState> {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      listItems: [],
-    };
-  }
+  const onTabSelect = (__event: SelectTabEvent, data: SelectTabData) => {
+    setSelectedPage(data.value);
+  };
 
-  render() {
-    return (
-      <Pivot
-        className="menus"
-        aria-label="기능 페이지"
-        overflowAriaLabel="기능 더보기"
-        overflowBehavior="menu"
-        style={{ height: "100%" }}
-      >
-        <PivotItem headerText="단어 통일">
-          <WordUnitier />
-        </PivotItem>
-        <PivotItem headerText="개조식 전환">
-          <Gejosik />
-        </PivotItem>
-        <PivotItem headerText="영문 자동 완성">
-          <Recommand />
-        </PivotItem>
-      </Pivot>
-    );
-  }
-}
+  return (
+    <div>
+      <TabList className="menus" selectedValue={selectedPage} onTabSelect={onTabSelect}>
+        <Tab value={Page.WordUnitier}>단어 통일</Tab>
+        <Tab value={Page.Gejosik}>개조식 전환</Tab>
+        <Tab value={Page.Recommand}>영단어 자동완성</Tab>
+        <Tab value={Page.Proofreading}>문장 교정</Tab>
+      </TabList>
+      <div className="panel">
+        {selectedPage === Page.WordUnitier && <WordUnitier />}
+        {selectedPage === Page.Gejosik && <Gejosik />}
+        {selectedPage === Page.Recommand && <Recommand />}
+        {selectedPage === Page.Proofreading && <Proofreading />}
+      </div>
+    </div>
+  );
+};
+
+export default App;
