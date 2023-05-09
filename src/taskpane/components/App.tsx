@@ -3,7 +3,7 @@ import { Recommand } from "./Recommand";
 import { WordUnitier } from "./WordUnitier";
 import { Gejosik } from "./Gejosik";
 import { Tab, TabList, SelectTabData, SelectTabEvent, TabValue } from "@fluentui/react-components";
-import { Proofreading } from "../proofreading";
+import Proofreading from "../proofreading/Proofreading";
 
 enum Page {
   WordUnitier,
@@ -18,7 +18,7 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = () => {
-  const [selectedPage, setSelectedPage] = React.useState<TabValue>("conditions");
+  const [selectedPage, setSelectedPage] = React.useState<TabValue>(Page.Proofreading);
 
   const onTabSelect = (__event: SelectTabEvent, data: SelectTabData) => {
     setSelectedPage(data.value);
