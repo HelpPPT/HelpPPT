@@ -1,11 +1,11 @@
-export interface Text {
+export interface SlideText {
   slideId: string;
   text: string;
 }
 
-export const getTextsFromSlides = async (): Promise<Array<Text>> =>
+export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
-    const textBuffer: Array<Text> = [];
+    const textBuffer: Array<SlideText> = [];
 
     const slides = context.presentation.slides;
 

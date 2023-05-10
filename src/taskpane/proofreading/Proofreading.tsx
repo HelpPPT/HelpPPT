@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, ButtonProps } from "@fluentui/react-components";
-import { getTextsFromSlides, Text } from "../common";
+import { getTextsFromSlides, SlideText } from "../common";
 import axios from "axios";
 
 const Proofreading: React.FC = (props: ButtonProps) => {
   const dododo = async () => {
-    const textDatas: Array<Text> = await getTextsFromSlides();
+    const textDatas: Array<SlideText> = await getTextsFromSlides();
     const texts: Array<string> = textDatas.map((textData) => textData.text);
 
     const sentences = await splitSentences(texts);
