@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, ButtonProps } from "@fluentui/react-components";
+import { Button } from "@fluentui/react-components";
 import { getTextsFromSlides, SlideText } from "../common";
 import axios from "axios";
 
-const Proofreading: React.FC = (props: ButtonProps) => {
+export default function Proofreading(): React.ReactElement {
   const dododo = async () => {
     const textDatas: Array<SlideText> = await getTextsFromSlides();
     const texts: Array<string> = textDatas.map((textData) => textData.text);
@@ -23,10 +23,8 @@ const Proofreading: React.FC = (props: ButtonProps) => {
   };
 
   return (
-    <Button {...props} appearance="primary" onClick={dododo}>
+    <Button appearance="primary" onClick={dododo}>
       Example
     </Button>
   );
-};
-
-export default Proofreading;
+}
