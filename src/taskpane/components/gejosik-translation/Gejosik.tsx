@@ -1,11 +1,59 @@
 import * as React from "react";
-import { PrimaryButton } from "@fluentui/react";
-import GejosikDTO from "../../dto/gejosikDTO";
+import { PrimaryButton, List } from "@fluentui/react";
+import { makeStyles, shorthands, Card, Text } from "@fluentui/react-components";
+import GejosikDTO from "../../../dto/gejosikDTO";
 import axios from "axios";
+// import CandidateList from "./CandidateList";
+
+const useStyles = makeStyles({
+  container: {
+    ...shorthands.gap("10px"),
+    ...shorthands.padding("10px"),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+
+  card: {
+    display: "flex",
+    flexGrow: "1",
+  },
+});
+
+const cardData = [
+  {
+    id: 1,
+    title: "Card 1",
+    description: "This is the descri",
+  },
+  {
+    id: 2,
+    title: "Card 2",
+    description: "This is the description for Card 2.",
+  },
+  {
+    id: 3,
+    title: "Card 3",
+    description: "This is the description for Card 3.",
+  },
+];
 
 export const Gejosik: React.FunctionComponent = () => {
+  const [lines, setLines] = React.useState([]);
+  const styles = useStyles();
+
+  const init = async () => {
+    console.log("Loaded!");
+
+    const fetchedLines = await getLinesFromSlides();
+    setLines(fetchedLines);
+  };
+
+  React.useEffect(() => {
+    init();
+  }, []);
+
   const turnIntoGejosik = async () => {
-    const lines: Array<string> = await getLinesFromSlides();
     const gejosikLines: GejosikDTO = await getGejosikLines(lines);
     await setLinesGejosik(gejosikLines);
   };
@@ -14,7 +62,7 @@ export const Gejosik: React.FunctionComponent = () => {
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
       let lineBuffer: Array<string> = [];
 
-      const slides = context.presentation.slides;
+      const slides: PowerPoint.SlideCollection = context.presentation.slides;
 
       context.load(slides, "id,shapes/items/type");
       await context.sync();
@@ -45,9 +93,11 @@ export const Gejosik: React.FunctionComponent = () => {
               .split("\n"),
           ];
 
-          // console.log("Text:", shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n"));
+          console.log("Text:", shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n"));
         }
       }
+
+      console.log(lineBuffer);
 
       const validLines: Array<string> = lineBuffer.map((line) => line.trim()).filter((line) => line.length > 0);
       return validLines;
@@ -110,13 +160,14 @@ export const Gejosik: React.FunctionComponent = () => {
       }
     });
 
-  return (
-    <PrimaryButton
-      text="개조식으로 변환"
-      style={{
-        borderRadius: 6,
-      }}
-      onClick={turnIntoGejosik}
-    />
-  );
+  const t = lines.map((line, index) => (
+    <Card className={styles.card} key={index}>
+      <Text weight="semibold">원문</Text>
+      <Text>{line}</Text>
+      <Text weight="semibold">개조식</Text>
+      <Text>{line}</Text>
+    </Card>
+  ));
+
+  return <div className={styles.container}>{t}</div>;
 };
