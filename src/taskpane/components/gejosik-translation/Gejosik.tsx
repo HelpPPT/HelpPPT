@@ -2,7 +2,10 @@ import * as React from "react";
 import { PrimaryButton, List } from "@fluentui/react";
 import { makeStyles, shorthands, Card, Text } from "@fluentui/react-components";
 import GejosikDTO from "../../../dto/gejosikDTO";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+import { Icon } from "@fluentui/react/lib/Icon";
 import axios from "axios";
+
 // import CandidateList from "./CandidateList";
 
 const useStyles = makeStyles({
@@ -19,6 +22,26 @@ const useStyles = makeStyles({
     flexGrow: "1",
   },
 });
+
+const nohovered = {
+  position: "fixed",
+  bottom: "30px",
+  right: "25px",
+  backgroundColor: "#f7f7f7",
+  borderRadius: "8px",
+  display: "flex",
+  width: "42px",
+  height: "42px",
+  justifyContent: "center",
+  alignItems: "center",
+  opacity: "0.6",
+  transition: "0.3s",
+} as React.CSSProperties;
+
+const hovered = {
+  ...nohovered,
+  opacity: "1",
+} as React.CSSProperties;
 
 const cardData = [
   {
@@ -39,7 +62,10 @@ const cardData = [
 ];
 
 export const Gejosik: React.FunctionComponent = () => {
+  initializeIcons();
+
   const [lines, setLines] = React.useState([]);
+  const [ishover, setIshover] = React.useState(false);
   const styles = useStyles();
 
   const init = async () => {
@@ -169,5 +195,16 @@ export const Gejosik: React.FunctionComponent = () => {
     </Card>
   ));
 
-  return <div className={styles.container}>{t}</div>;
+  return (
+    <div>
+      <div className={styles.container}>{t}</div>
+      <div
+        style={ishover ? hovered : nohovered}
+        onMouseEnter={() => setIshover(true)}
+        onMouseLeave={() => setIshover(false)}
+      >
+        <Icon iconName="Refresh" style={{ fontSize: "30px" }}></Icon>
+      </div>
+    </div>
+  );
 };
