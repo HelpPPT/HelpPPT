@@ -1,12 +1,24 @@
 import * as React from "react";
-import { PrimaryButton, List } from "@fluentui/react";
-import { makeStyles, shorthands, Card, Text } from "@fluentui/react-components";
+import { makeStyles, shorthands, Card, Text, GriffelStyle } from "@fluentui/react-components";
 import GejosikDTO from "../../../dto/gejosikDTO";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon } from "@fluentui/react/lib/Icon";
 import axios from "axios";
 
-// import CandidateList from "./CandidateList";
+const reloadStyles = {
+  position: "fixed",
+  bottom: "30px",
+  right: "25px",
+  backgroundColor: "#f7f7f7",
+  ...shorthands.borderRadius("8px"),
+  display: "flex",
+  width: "42px",
+  height: "42px",
+  justifyContent: "center",
+  alignItems: "center",
+  opacity: "0.6",
+  transitionDuration: "opcaity 0.5s",
+} as GriffelStyle;
 
 const useStyles = makeStyles({
   container: {
@@ -21,51 +33,28 @@ const useStyles = makeStyles({
     display: "flex",
     flexGrow: "1",
   },
+
+  reload: reloadStyles,
+
+  hoveredReload: {
+    ...reloadStyles,
+    opacity: "1",
+  },
+
+  clickedReload: {
+    ...reloadStyles,
+    backgroundColor: "blue",
+  },
 });
-
-const nohovered = {
-  position: "fixed",
-  bottom: "30px",
-  right: "25px",
-  backgroundColor: "#f7f7f7",
-  borderRadius: "8px",
-  display: "flex",
-  width: "42px",
-  height: "42px",
-  justifyContent: "center",
-  alignItems: "center",
-  opacity: "0.6",
-  transition: "0.3s",
-} as React.CSSProperties;
-
-const hovered = {
-  ...nohovered,
-  opacity: "1",
-} as React.CSSProperties;
-
-const cardData = [
-  {
-    id: 1,
-    title: "Card 1",
-    description: "This is the descri",
-  },
-  {
-    id: 2,
-    title: "Card 2",
-    description: "This is the description for Card 2.",
-  },
-  {
-    id: 3,
-    title: "Card 3",
-    description: "This is the description for Card 3.",
-  },
-];
 
 export const Gejosik: React.FunctionComponent = () => {
   initializeIcons();
 
   const [lines, setLines] = React.useState([]);
-  const [ishover, setIshover] = React.useState(false);
+  const [isHover, setIsHover] = React.useState(false);
+
+  const [isClicked, setIsClicked] = React.useState(false);
+
   const styles = useStyles();
 
   const init = async () => {
@@ -199,9 +188,23 @@ export const Gejosik: React.FunctionComponent = () => {
     <div>
       <div className={styles.container}>{t}</div>
       <div
-        style={ishover ? hovered : nohovered}
-        onMouseEnter={() => setIshover(true)}
-        onMouseLeave={() => setIshover(false)}
+        className={[
+          isHover ? styles.hoveredReload : styles.reload,
+          isClicked ? styles.clickedReload : styles.reload,
+        ].join(" ")}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => {
+          setIsHover(false);
+        }}
+        onClick={() => {
+          init();
+        }}
+        onMouseDown={() => {
+          setIsClicked(true);
+        }}
+        onMouseUp={() => {
+          setIsClicked(false);
+        }}
       >
         <Icon iconName="Refresh" style={{ fontSize: "30px" }}></Icon>
       </div>
