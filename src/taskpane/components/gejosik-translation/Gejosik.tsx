@@ -1,24 +1,9 @@
 import * as React from "react";
-import { makeStyles, shorthands, Card, Text, GriffelStyle } from "@fluentui/react-components";
+import { makeStyles, shorthands, Card, Text, Button } from "@fluentui/react-components";
 import GejosikDTO from "../../../dto/gejosikDTO";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon } from "@fluentui/react/lib/Icon";
 import axios from "axios";
-
-const reloadStyles = {
-  position: "fixed",
-  bottom: "30px",
-  right: "25px",
-  backgroundColor: "#f7f7f7",
-  ...shorthands.borderRadius("8px"),
-  display: "flex",
-  width: "42px",
-  height: "42px",
-  justifyContent: "center",
-  alignItems: "center",
-  opacity: "0.6",
-  transitionDuration: "opcaity 0.5s",
-} as GriffelStyle;
 
 const useStyles = makeStyles({
   container: {
@@ -34,16 +19,10 @@ const useStyles = makeStyles({
     flexGrow: "1",
   },
 
-  reload: reloadStyles,
-
-  hoveredReload: {
-    ...reloadStyles,
-    opacity: "1",
-  },
-
-  clickedReload: {
-    ...reloadStyles,
-    backgroundColor: "blue",
+  reload: {
+    position: "fixed",
+    bottom: "30px",
+    right: "25px",
   },
 });
 
@@ -51,9 +30,6 @@ export const Gejosik: React.FunctionComponent = () => {
   initializeIcons();
 
   const [lines, setLines] = React.useState([]);
-  const [isHover, setIsHover] = React.useState(false);
-
-  const [isClicked, setIsClicked] = React.useState(false);
 
   const styles = useStyles();
 
@@ -175,39 +151,26 @@ export const Gejosik: React.FunctionComponent = () => {
       }
     });
 
-  const t = lines.map((line, index) => (
-    <Card className={styles.card} key={index}>
-      <Text weight="semibold">원문</Text>
-      <Text>{line}</Text>
-      <Text weight="semibold">개조식</Text>
-      <Text>{line}</Text>
-    </Card>
-  ));
-
   return (
     <div>
-      <div className={styles.container}>{t}</div>
-      <div
-        className={[
-          isHover ? styles.hoveredReload : styles.reload,
-          isClicked ? styles.clickedReload : styles.reload,
-        ].join(" ")}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => {
-          setIsHover(false);
-        }}
-        onClick={() => {
-          init();
-        }}
-        onMouseDown={() => {
-          setIsClicked(true);
-        }}
-        onMouseUp={() => {
-          setIsClicked(false);
-        }}
-      >
-        <Icon iconName="Refresh" style={{ fontSize: "30px" }}></Icon>
+      <div className={styles.container}>
+        {lines.map((line, index) => (
+          <Card className={styles.card} key={index}>
+            <Text weight="semibold">원문</Text>
+            <Text>{line}</Text>
+            <Text weight="semibold">개조식</Text>
+            <Text>{line}</Text>
+          </Card>
+        ))}
       </div>
+      <Button
+        className={styles.reload}
+        appearance="subtle"
+        shape="circular"
+        size="large"
+        icon={<Icon iconName="Refresh"></Icon>}
+        onClick={() => init()}
+      ></Button>
     </div>
   );
 };
