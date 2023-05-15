@@ -3,7 +3,7 @@ import { Button } from "@fluentui/react-components";
 import { getTextsFromSlides, SlideText } from "../common";
 import axios from "axios";
 
-export default function Proofreading(): React.ReactElement {
+const Proofreading: React.FC = () => {
   const dododo = async () => {
     const textDatas: Array<SlideText> = await getTextsFromSlides();
     const texts: Array<string> = textDatas.map((textData) => textData.text);
@@ -27,4 +27,6 @@ export default function Proofreading(): React.ReactElement {
       Example
     </Button>
   );
-}
+};
+
+export default Proofreading;

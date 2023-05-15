@@ -2,9 +2,11 @@ import React from "react";
 import { SlideText } from "../common";
 
 interface SentenceProps {
-  slidesTexts: Array<SlideText>;
+  slideText: SlideText;
 }
 
-export default function Sentence({ slidesTexts }: SentenceProps): React.ReactElement<SentenceProps> {
-  return <div>Sentence {slidesTexts}</div>;
-}
+const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
+  return <div>Sentence {slideText}</div>;
+};
+
+export default Sentence;
