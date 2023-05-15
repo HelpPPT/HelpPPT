@@ -6,5 +6,5 @@ interface SentenceProps {
 }
 
 export default function Sentence({ slidesTexts }: SentenceProps): React.ReactElement<SentenceProps> {
-  return <div>Sentence</div>;
+  return <div>Sentence {slidesTexts}</div>;
 }

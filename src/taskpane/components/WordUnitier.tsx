@@ -1,6 +1,6 @@
 import * as React from "react";
-import { PrimaryButton } from "@fluentui/react";
 import axios from "axios";
+import { Button } from "@fluentui/react-components";
 
 export const WordUnitier: React.FunctionComponent = () => {
   const getTextsFromSlides = async (): Promise<Array<string>> =>
@@ -82,8 +82,8 @@ export const WordUnitier: React.FunctionComponent = () => {
     });
 
   return (
-    <PrimaryButton
-      text="단어 통일"
+    <Button
+      appearance="primary"
       style={{
         borderRadius: 6,
       }}
@@ -92,6 +92,8 @@ export const WordUnitier: React.FunctionComponent = () => {
         const wordClusters: Array<Array<string>> = await getWordClusters(fullSentence);
         unitifyWord(wordClusters[0], wordClusters[0][0]);
       }}
-    />
+    >
+      단어 통일
+    </Button>
   );
 };

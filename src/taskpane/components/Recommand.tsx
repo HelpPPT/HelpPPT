@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Toggle } from "@fluentui/react/lib/Toggle";
+import { Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import axios from "axios";
 
@@ -115,14 +115,5 @@ export const Recommand: React.FunctionComponent = () => {
     return data;
   };
 
-  return (
-    <Toggle
-      label="영문 명사 자동 완성"
-      inlineLabel
-      onText="ON"
-      offText="OFF"
-      checked={isChecked}
-      onChange={changeToggle}
-    />
-  );
+  return <Switch checked={isChecked} label={isChecked ? "ON" : "OFF"} onClick={changeToggle} />;
 };
