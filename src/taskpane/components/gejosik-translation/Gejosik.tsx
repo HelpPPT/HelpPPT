@@ -40,7 +40,7 @@ export const Gejosik: React.FunctionComponent = () => {
     init();
   }, []);
 
-  const setLinesGejosik = async (gejosikLines: { [originalLine: string]: string }) =>
+  const setLinesGejosik = async (original: string, gejosik: string) =>
     await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
       const slides = context.presentation.slides;
 
@@ -74,56 +74,65 @@ export const Gejosik: React.FunctionComponent = () => {
             if ("\r\v\n".includes(line)) {
               return line;
             }
+            if (line != original) return line;
 
-            return gejosikLines[line] ? gejosikLines[line] : line;
+            return gejosik;
           });
 
           // replace
           shape.textFrame.textRange.text = changedLinesWithSplitter.join("");
-          console.log(shape.textFrame.textRange.text);
         }
       }
     });
 
+  const t = Object.keys(lines).map((key) => {
+    const metadata = lines[key];
+    const sentence = metadata["original_sentence"];
+    const selected_vocab = metadata["selected_vocab"];
+    const before_selected_idx = sentence.lastIndexOf(
+      sentence.match(selected_vocab.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).pop()
+    );
+    const after_selected_idx = before_selected_idx + selected_vocab.length;
+
+    const g_sentence = metadata["gejosik_sentence"];
+    const gejosik_vocab = metadata["gejosik_vocab"];
+    const g_before_selected_idx = g_sentence.lastIndexOf(
+      g_sentence.match(gejosik_vocab.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    );
+    const g_after_selected_idx = g_before_selected_idx + gejosik_vocab.length;
+
+    if (sentence == g_sentence) return null;
+    if (g_sentence == "") return null;
+
+    return (
+      <Card
+        className={styles.card}
+        key={key}
+        onClick={async () => {
+          await setLinesGejosik(sentence, g_sentence);
+          init();
+        }}
+      >
+        <Text weight="semibold">원문</Text>
+        <div>
+          <Text>{sentence.substring(0, before_selected_idx)}</Text>
+          <Text style={{ color: "red" }}>{selected_vocab}</Text>
+          <Text>{sentence.substring(after_selected_idx, sentence.length)}</Text>
+        </div>
+        <Text weight="semibold">개조식</Text>
+        <div>
+          <Text>{g_sentence.substring(0, g_before_selected_idx)}</Text>
+          <Text style={{ color: "blue" }}>{gejosik_vocab}</Text>
+          <Text>{g_sentence.substring(g_after_selected_idx, g_sentence.length)}</Text>
+        </div>
+      </Card>
+    );
+  });
+
   return (
     <div>
       <div className={styles.container}>
-        {Object.keys(lines).map((key) => {
-          const metadata = lines[key];
-          const sentence = metadata["original_sentence"];
-          const selected_vocab = metadata["selected_vocab"];
-          const before_selected_idx = sentence.lastIndexOf(
-            sentence.match(selected_vocab.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).pop()
-          );
-          const after_selected_idx = before_selected_idx + selected_vocab.length;
-
-          const g_sentence = metadata["gejosik_sentence"];
-          const gejosik_vocab = metadata["gejosik_vocab"];
-          const g_before_selected_idx = g_sentence.lastIndexOf(
-            g_sentence.match(gejosik_vocab.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-          );
-          const g_after_selected_idx = g_before_selected_idx + gejosik_vocab.length;
-
-          if (sentence == g_sentence) return null;
-          if (g_sentence == "") return null;
-
-          return (
-            <Card className={styles.card} key={key}>
-              <Text weight="semibold">원문</Text>
-              <div>
-                <Text>{sentence.substring(0, before_selected_idx)}</Text>
-                <Text style={{ color: "red" }}>{selected_vocab}</Text>
-                <Text>{sentence.substring(after_selected_idx, sentence.length)}</Text>
-              </div>
-              <Text weight="semibold">개조식</Text>
-              <div>
-                <Text>{g_sentence.substring(0, g_before_selected_idx)}</Text>
-                <Text style={{ color: "blue" }}>{gejosik_vocab}</Text>
-                <Text>{g_sentence.substring(g_after_selected_idx, g_sentence.length)}</Text>
-              </div>
-            </Card>
-          );
-        })}
+        {Object.keys(t).every((key) => t[key] === null) ? <Text>Nothing To Show.</Text> : t}
       </div>
       <Button
         className={styles.reload}
