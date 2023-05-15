@@ -1,14 +1,14 @@
 import { SlideText } from "../common";
 
-export interface SentenceValidationResult {
+export type SentenceValidationResult = {
   isValid: boolean;
   messages: Array<string>;
-}
+};
 
-interface ValidatorData {
+type ValidatorData = {
   validatorFunc: Function;
   message: string;
-}
+};
 
 export const validateSentence = (slideText: SlideText): SentenceValidationResult => {
   const validatorsData: Array<ValidatorData> = [
