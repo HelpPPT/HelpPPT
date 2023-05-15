@@ -30,19 +30,19 @@ const Proofreading: React.FC = () => {
     },
     {
       slideId: "0",
-      text: "This is a sentence. This is another sentence.",
+      text: "this is a sentence.  This is another sentence.",
     },
     {
       slideId: "1",
-      text: "트리(Tree)의 개념 트리는 노드로 이루어진 자료구조로 스택이나 큐와 같은 선형 구조가 아닌 비선형 자료구조이다.",
+      text: "트리(Tree)의 개념 트리는 노드로 이루어진 자료구조로 스택이나 큐와 같은 선형 구조가 아닌 비선형 자료구조이다",
     },
     {
       slideId: "1",
-      text: "트리는 계층적 관계를 표현하는 자료구조이다.",
+      text: "트리는 계층적 관계를     표현하는 자료구조이다.",
     },
     {
       slideId: "2",
-      text: "오늘은 집에 몇 시에 갈 수 있을까?",
+      text: "오늘은 집에 몇 시에 갈 수 있을까???",
     },
   ];
 

@@ -1,13 +1,14 @@
-import { Body2, makeStyles, PresenceBadge, shorthands } from "@fluentui/react-components";
+import { Body1, makeStyles, PresenceBadge, shorthands } from "@fluentui/react-components";
 import React from "react";
 
 const useStyles = makeStyles({
   text: {
+    display: "flex",
     ...shorthands.margin(0),
   },
 
   textIcon: {
-    ...shorthands.margin(0, "8px", 0, "10px"),
+    ...shorthands.margin(0, "7px", 0, "15px"),
   },
 });
 
@@ -19,10 +20,10 @@ const InvalidMessage: React.FC<InvalidMessageProps> = ({ message }: InvalidMessa
   const styles = useStyles();
 
   return (
-    <Body2 className={styles.text}>
-      <PresenceBadge className={styles.textIcon} size="small" status="blocked" />
+    <Body1 className={styles.text}>
+      <PresenceBadge className={styles.textIcon} size="small" status="out-of-office" />
       {message}
-    </Body2>
+    </Body1>
   );
 };
 
