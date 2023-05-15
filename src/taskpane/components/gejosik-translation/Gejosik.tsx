@@ -105,6 +105,7 @@ export const Gejosik: React.FunctionComponent = () => {
           const g_after_selected_idx = g_before_selected_idx + gejosik_vocab.length;
 
           if (sentence == g_sentence) return null;
+          if (g_sentence == "") return null;
 
           return (
             <Card className={styles.card} key={key}>
