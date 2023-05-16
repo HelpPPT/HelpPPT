@@ -59,7 +59,6 @@ export const WordUnitier: React.FC = () => {
         단어 통일
       </Button>
       <ClusterList wordClusters={wordClusters} />
-      {/* <WordClusterList wordClusters={wordClusters} /> */}
     </div>
   );
 };
