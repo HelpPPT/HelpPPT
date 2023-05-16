@@ -1,10 +1,11 @@
-import { Body1, makeStyles, PresenceBadge, shorthands } from "@fluentui/react-components";
+import { Caption1, makeStyles, PresenceBadge, shorthands } from "@fluentui/react-components";
 import React from "react";
 
 const useStyles = makeStyles({
   text: {
     display: "flex",
     ...shorthands.margin(0),
+    fontSize: "13px",
   },
 
   textIcon: {
@@ -21,10 +22,10 @@ const InvalidMessage: React.FC<InvalidMessageProps> = ({ message }: InvalidMessa
   const styles = useStyles();
 
   return (
-    <Body1 className={styles.text}>
+    <Caption1 className={styles.text}>
       <PresenceBadge className={styles.textIcon} size="small" status="out-of-office" />
       {message}
-    </Body1>
+    </Caption1>
   );
 };
 
