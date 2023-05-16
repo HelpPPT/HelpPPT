@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
-import { getTextsFromSlides, SlideText } from "../common";
+import { getTextsFromSlides } from "../common";
 import axios from "axios";
 import Sentence from "./Sentence";
+import { SlideText } from "../common/main";
+import { Divider } from "@fluentui/react-components";
 
 const Proofreading: React.FC = () => {
-  const [sentences, setSentences] = React.useState<Array<string>>([]);
+  const [sentences, setSentences] = React.useState<Array<SlideText>>([]);
+  const slideCounter: Set<string> = new Set<string>();
 
   useEffect(() => {
     const fetchSentences = async () => {
       const textDatas: Array<SlideText> = await getTextsFromSlides();
-      const texts: Array<string> = textDatas.map((textData) => textData.text);
-      const redundancyRemovedTexts: Array<string> = Array.from(new Set(texts));
 
-      const sentences = await splitSentences(redundancyRemovedTexts);
-      setSentences(sentences);
+      console.log(textDatas);
+
+      // splitSentences need to be done.
+
+      setSentences(textDatas);
     };
     fetchSentences();
   }, []);
@@ -28,13 +32,16 @@ const Proofreading: React.FC = () => {
     return data.sentences;
   };
 
-  return (
-    <div>
-      {sentences.map((exampleText, index) => (
-        <Sentence key={index} sentence={exampleText} />
-      ))}
-    </div>
-  );
+  let temp: Array<JSX.Element> = [];
+  sentences.forEach((sentence: SlideText, index) => {
+    if (!slideCounter.has(sentence.slideId)) {
+      slideCounter.add(sentence.slideId);
+      temp = [...temp, <Divider key={index * 1000}>슬라이드 {slideCounter.size}</Divider>];
+    }
+    temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
+  });
+
+  return <div>{temp}</div>;
 };
 
 export default Proofreading;
