@@ -1,5 +1,4 @@
-import { Button, Card, CardHeader, makeStyles, shorthands, Subtitle2 } from "@fluentui/react-components";
-import { ChevronCircleRight48Filled } from "@fluentui/react-icons";
+import { Card, CardHeader, makeStyles, shorthands, Subtitle2 } from "@fluentui/react-components";
 import React from "react";
 import { SlideText } from "../common";
 import InvalidMessage from "./InvalidMessage";
@@ -28,11 +27,8 @@ const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
   const validationResult: SentenceValidationResult = validateSentence(slideText);
 
   return validationResult.isValid ? null : (
-    <Card className={styles.card}>
-      <CardHeader
-        header={<Subtitle2>{slideText.text}</Subtitle2>}
-        action={<Button appearance="subtle" icon={<ChevronCircleRight48Filled />} aria-label="Go to" />}
-      />
+    <Card className={styles.card} onClick={() => console.log(123)}>
+      <CardHeader header={<Subtitle2>{slideText.text}</Subtitle2>} />
       <div className={styles.validationResult}>
         {validationResult.messages.map((invalidMessage, i) => (
           <InvalidMessage key={i} message={invalidMessage} />

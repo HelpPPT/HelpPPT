@@ -9,6 +9,7 @@ const useStyles = makeStyles({
 
   textIcon: {
     ...shorthands.margin(0, "7px", 0, "15px"),
+    backgroundColor: "transparent",
   },
 });
 
