@@ -16,7 +16,7 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
       // console.log("Slide ID:", slide.id);
 
       for (const shape of slide.shapes.items) {
-        if (shape.type === "Unsupported") {
+        if (shape.type !== "GeometricShape") {
           continue;
         }
 
