@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Recommand } from "./Recommand";
-import { WordUnitier } from "./WordUnitier";
+// import { WordUnitier } from "./WordUnitier";
+import { WordUnitier } from "../../wordunitier/components/WordUniter2";
 import { Gejosik } from "./gejosik/Gejosik";
 import Proofreading from "../proofreading/Proofreading";
 import { OverflowTabList } from "../OverflowTabList";

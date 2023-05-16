@@ -79,7 +79,6 @@ export const WordUnitier: React.FC = () => {
         단어 통일
       </Button>
       <ClusterList wordClusters={wordClusters} />
-      {/* <WordClusterList wordClusters={wordClusters} /> */}
     </div>
 >>>>>>> 0e62772 (단어 통일 기능 구현 중)
   );
