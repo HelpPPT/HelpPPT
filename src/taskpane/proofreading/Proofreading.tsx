@@ -10,10 +10,10 @@ const Proofreading: React.FC = () => {
     const fetchSentences = async () => {
       const textDatas: Array<SlideText> = await getTextsFromSlides();
       const texts: Array<string> = textDatas.map((textData) => textData.text);
+      const redundancyRemovedTexts: Array<string> = Array.from(new Set(texts));
 
-      const sentences = await splitSentences(texts);
-      const redundancyRemovedSentences: Array<string> = Array.from(new Set(sentences));
-      setSentences(redundancyRemovedSentences);
+      const sentences = await splitSentences(redundancyRemovedTexts);
+      setSentences(sentences);
     };
     fetchSentences();
   }, []);
