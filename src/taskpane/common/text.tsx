@@ -64,10 +64,8 @@ export const selectText = async (searchText: string) =>
         context.load(shape, "textFrame/textRange/text");
         await context.sync();
 
-        const texts: Array<string> = shape.textFrame.textRange.text
-          .trim()
-          .replace(/[\n\r\v]/g, "\n")
-          .split("\n");
+        const texts: Array<string> = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n").split("\n");
+
         if (texts.find((textLine) => textLine.includes(searchText))) {
           shape.textFrame.textRange.setSelected();
           return;
