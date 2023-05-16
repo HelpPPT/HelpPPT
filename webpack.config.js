@@ -19,7 +19,7 @@ module.exports = async (env, options) => {
     devtool: "source-map",
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
-      vendor: ["react", "react-dom", "core-js", "@fluentui/react"],
+      vendor: ["react", "react-dom", "core-js", "@fluentui/react-components"],
       taskpane: ["react-hot-loader/patch", "./src/taskpane/index.tsx", "./src/taskpane/taskpane.html"],
       commands: "./src/commands/commands.ts",
     },

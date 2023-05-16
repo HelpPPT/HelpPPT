@@ -1,16 +1,22 @@
-import React from "react";
-import { Button, ButtonProps } from "@fluentui/react-components";
-import { getTextsFromSlides, Text } from "../common";
+import React, { useEffect } from "react";
+import { getTextsFromSlides, SlideText } from "../common";
 import axios from "axios";
+import Sentence from "./Sentence";
 
-const Proofreading: React.FC = (props: ButtonProps) => {
-  const dododo = async () => {
-    const textDatas: Array<Text> = await getTextsFromSlides();
-    const texts: Array<string> = textDatas.map((textData) => textData.text);
+const Proofreading: React.FC = () => {
+  const [sentences, setSentences] = React.useState<Array<string>>([]);
 
-    const sentences = await splitSentences(texts);
-    console.log(sentences);
-  };
+  useEffect(() => {
+    const fetchSentences = async () => {
+      const textDatas: Array<SlideText> = await getTextsFromSlides();
+      const texts: Array<string> = textDatas.map((textData) => textData.text);
+      const redundancyRemovedTexts: Array<string> = Array.from(new Set(texts));
+
+      const sentences = await splitSentences(redundancyRemovedTexts);
+      setSentences(sentences);
+    };
+    fetchSentences();
+  }, []);
 
   const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
     const { data } = await axios({
@@ -23,9 +29,11 @@ const Proofreading: React.FC = (props: ButtonProps) => {
   };
 
   return (
-    <Button {...props} appearance="primary" onClick={dododo}>
-      Example
-    </Button>
+    <div>
+      {sentences.map((exampleText, index) => (
+        <Sentence key={index} sentence={exampleText} />
+      ))}
+    </div>
   );
 };
 

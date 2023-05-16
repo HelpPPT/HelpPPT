@@ -1,6 +1,6 @@
 import * as React from "react";
 import { makeStyles, shorthands, Card, Text, Button } from "@fluentui/react-components";
-import { Icon } from "@fluentui/react/lib/Icon";
+import { ArrowClockwise24Regular } from "@fluentui/react-icons";
 import { fetchLines, convertLines, convertToGejosik } from "./fetch";
 
 const useStyles = makeStyles({
@@ -93,7 +93,7 @@ export const Gejosik: React.FunctionComponent = () => {
         appearance="subtle"
         shape="circular"
         size="large"
-        icon={<Icon iconName="Refresh"></Icon>}
+        icon={<ArrowClockwise24Regular />}
         onClick={() => init()}
       ></Button>
     </div>
