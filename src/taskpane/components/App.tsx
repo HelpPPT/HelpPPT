@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Recommand } from "./Recommand";
-// import { WordUnitier } from "./WordUnitier";
-import { WordUnitier } from "../../wordunitier/components/WordUniter2";
+import { WordUnitier } from "../../wordunitier/components/WordUniter";
 import { Gejosik } from "./gejosik/Gejosik";
 import { Tab, TabList, SelectTabData, SelectTabEvent, TabValue } from "@fluentui/react-components";
 import Proofreading from "../proofreading/Proofreading";

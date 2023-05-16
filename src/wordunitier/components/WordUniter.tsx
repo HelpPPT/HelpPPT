@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Accordion, makeStyles } from "@fluentui/react-components";
-import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
+import { getWordClusters } from "../api/GroupingAPI";
 import { getTextsFromSlides } from "../api/PowerpointAPI";
 import { ShowAccordionItem } from "./showAccordionItem";
 
