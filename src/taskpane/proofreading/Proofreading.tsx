@@ -7,17 +7,16 @@ const Proofreading: React.FC = () => {
   const [sentences, setSentences] = React.useState<Array<string>>([]);
 
   useEffect(() => {
+    const fetchSentences = async () => {
+      const textDatas: Array<SlideText> = await getTextsFromSlides();
+      const texts: Array<string> = textDatas.map((textData) => textData.text);
+
+      const sentences = await splitSentences(texts);
+      const redundancyRemovedSentences: Array<string> = Array.from(new Set(sentences));
+      setSentences(redundancyRemovedSentences);
+    };
     fetchSentences();
-  }, [sentences]);
-
-  const fetchSentences = async () => {
-    const textDatas: Array<SlideText> = await getTextsFromSlides();
-    const texts: Array<string> = textDatas.map((textData) => textData.text);
-
-    const sentences = await splitSentences(texts);
-    const redundancyRemovedSentences: Array<string> = Array.from(new Set(sentences));
-    setSentences(redundancyRemovedSentences);
-  };
+  }, []);
 
   const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
     const { data } = await axios({
