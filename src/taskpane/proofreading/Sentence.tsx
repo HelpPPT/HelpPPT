@@ -1,6 +1,6 @@
 import { Card, CardHeader, makeStyles, shorthands, Subtitle2, Text } from "@fluentui/react-components";
 import React from "react";
-import { selectText } from "../common";
+import { findAndFocusText } from "../common";
 import InvalidMessage from "./InvalidMessage";
 import { SentenceValidationResult, validateSentence } from "./validator";
 
@@ -29,7 +29,7 @@ const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
   return validationResult.isValid ? (
     <Text>All sentences are okay</Text>
   ) : (
-    <Card className={styles.card} onClick={() => selectText(sentence)}>
+    <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
       <CardHeader header={<Subtitle2>{sentence}</Subtitle2>} />
       <div className={styles.validationResult}>
         {validationResult.messages.map((invalidMessage, i) => (

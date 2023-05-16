@@ -41,7 +41,7 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
     return textBuffer;
   });
 
-export const selectText = async (searchText: string) =>
+export const findAndFocusText = async (searchText: string) =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
     const slides = context.presentation.slides;
 
@@ -50,7 +50,7 @@ export const selectText = async (searchText: string) =>
 
     for (const slide of slides.items) {
       for (const shape of slide.shapes.items) {
-        if (shape.type === "Unsupported") {
+        if (shape.type !== "GeometricShape") {
           continue;
         }
 
@@ -64,10 +64,11 @@ export const selectText = async (searchText: string) =>
         context.load(shape, "textFrame/textRange/text");
         await context.sync();
 
-        const texts: Array<string> = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n").split("\n");
+        const text: string = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n");
 
-        if (texts.find((textLine) => textLine.includes(searchText))) {
-          shape.textFrame.textRange.setSelected();
+        if (text.includes(searchText)) {
+          const [start, offset] = [text.indexOf(searchText), searchText.length];
+          shape.textFrame.textRange.getSubstring(start, offset).setSelected();
           return;
         }
       }
