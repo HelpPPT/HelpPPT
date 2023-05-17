@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
-import { getTextsFromSlides, SlideText } from "../common";
+import { getTextsFromSlides } from "../common";
 import axios from "axios";
 import Sentence from "./Sentence";
+import { SlideText } from "../common/main";
+import { Divider } from "@fluentui/react-components";
 
 const Proofreading: React.FC = () => {
-  const [sentences, setSentences] = React.useState<Array<string>>([]);
+  const [sentences, setSentences] = React.useState<Array<SlideText>>([]);
+  const slideCounter: Set<string> = new Set<string>();
 
   useEffect(() => {
     const fetchSentences = async () => {
-      const textDatas: Array<SlideText> = await getTextsFromSlides();
-      const texts: Array<string> = textDatas.map((textData) => textData.text);
-      const redundancyRemovedTexts: Array<string> = Array.from(new Set(texts));
+      const textData: Array<SlideText> = await getTextsFromSlides();
+      let splittedSentences: Array<SlideText> = [];
 
-      const sentences = await splitSentences(redundancyRemovedTexts);
-      setSentences(sentences);
+      // TODO: poor performance, need improvement
+      for (const textDatum of textData) {
+        const splits: Array<string> = await splitSentences([textDatum.text]);
+        splits.forEach((split) => {
+          splittedSentences = [...splittedSentences, { text: split, slideId: textDatum.slideId }];
+        });
+      }
+      setSentences(splittedSentences);
     };
     fetchSentences();
   }, []);
@@ -21,20 +29,27 @@ const Proofreading: React.FC = () => {
   const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
     const { data } = await axios({
       method: "POST",
-      url: "http://127.0.0.1:8000/sentence-split",
+      url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
       data: { sentences },
     });
-
-    return data.sentences;
+    return data.body.sentences;
   };
 
-  return (
-    <div>
-      {sentences.map((exampleText, index) => (
-        <Sentence key={index} sentence={exampleText} />
-      ))}
-    </div>
-  );
+  let temp: Array<JSX.Element> = [];
+  sentences.forEach((sentence: SlideText, index) => {
+    if (!slideCounter.has(sentence.slideId)) {
+      slideCounter.add(sentence.slideId);
+      temp = [
+        ...temp,
+        <Divider appearance="brand" key={-(index + 1)}>
+          슬라이드 {slideCounter.size}
+        </Divider>,
+      ];
+    }
+    temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
+  });
+
+  return <div>{temp}</div>;
 };
 
 export default Proofreading;

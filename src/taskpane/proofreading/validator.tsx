@@ -1,4 +1,4 @@
-import { SlideText } from "../common";
+import { SlideText } from "../common/main";
 
 export type SentenceValidationResult = {
   isValid: boolean;
