@@ -26,7 +26,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
     };
 
     initData();
-  }, []);
+  }, [changedWordList]);
 
   const getValidLinesMap = async (lines: Array<string>) => {
     let resultsMapList = [];
@@ -53,7 +53,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 
   const convertLine = (line: string, index: { start: number; end: number }) => {
     const prefix = line.substring(0, index["start"]); // 변경 대상 단어 앞의 문자열
-    const suffix = line.substring(index["end"] + 1); // 변경 대상 단어 뒤의 문자열
+    const suffix = line.substring(index["end"]); // 변경 대상 단어 뒤의 문자열
     const modifiedSentence = prefix + mainWord + suffix; // 변경된 문자열 생성
     return modifiedSentence;
   };
