@@ -5,22 +5,15 @@ import { unitifyWordAll } from "../api/PowerpointAPI";
 export interface UnitifyWordProps {
   changedWordsList: Array<string>;
   mainWord: string;
-  setShowRecommendList: (show: boolean) => void;
 }
 
-export const UnitifyWord: React.FC<UnitifyWordProps> = ({ changedWordsList, mainWord, setShowRecommendList }) => {
+export const UnitifyWord: React.FC<UnitifyWordProps> = ({ changedWordsList, mainWord }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.btn}>
       <Button onClick={() => unitifyWordAll(changedWordsList, mainWord)}>모두 변경</Button>
-      <Button
-        onClick={() => {
-          setShowRecommendList(true);
-        }}
-      >
-        일부 변경
-      </Button>
+      <Button>일부 변경</Button>
     </div>
   );
 };

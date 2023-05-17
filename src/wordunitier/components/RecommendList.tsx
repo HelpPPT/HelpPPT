@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Card, Text, makeStyles } from "@fluentui/react-components";
+import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
 import { fetchLines, convertToGejosik } from "../../taskpane/components/gejosik/fetch";
+import { unitifyWordAll } from "../api/PowerpointAPI";
 
 export interface RecommendListProps {
   changedWordList: Array<string>;
@@ -63,7 +64,11 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   };
 
   return (
-    <div>
+    <div className={classes.colItems}>
+      <Button className={classes.allChangeBtn} onClick={() => unitifyWordAll(changedWordList, mainWord)}>
+        모두 변경
+      </Button>
+
       {beforeLinesMap.map(({ line, index }, cardIndex) => {
         if (hiddenCardIndexes.includes(cardIndex)) {
           return null;
@@ -85,10 +90,11 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 };
 
 const useStyles = makeStyles({
-  card: { marginTop: "5px" },
+  card: { ...shorthands.gap("10px"), ...shorthands.margin("5px"), display: "flex" },
   highlight: {
-    fontWeight: "bold",
     backgroundColor: "#ECF5FF",
     textDecorationColor: "#6B89E5",
   },
+  allChangeBtn: { backgroundColor: "#6B89E5", color: "white", ...shorthands.margin("5px"), alignItems: "center" },
+  colItems: { display: "flex", flexDirection: "column" },
 });

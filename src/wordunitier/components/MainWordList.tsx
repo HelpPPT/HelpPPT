@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input, ToggleButton, useId, makeStyles } from "@fluentui/react-components";
+import { Card, Input, ToggleButton, useId, makeStyles, shorthands } from "@fluentui/react-components";
 
 export interface MainWordListProps {
   cluster: Array<string>;
@@ -24,23 +24,41 @@ export const MainWordList: React.FunctionComponent<MainWordListProps> = ({ clust
   };
 
   return (
-    <div className={classes.togglebtn}>
-      {cluster.map((word, word_idx) => (
-        <ToggleButton
-          key={word_idx}
-          onClick={() => handleToggleClick(word_idx, word)}
-          checked={buttonCheckedList[word_idx]}
-          style={{ backgroundColor: selectedToggleIndex === word_idx ? "#EBEBEB" : "transparent" }}
-        >
-          {word}
-        </ToggleButton>
-      ))}
-      {/* <Input placeholder="바꿀 단어" id={inputId} onChange={(e) => changedMainWord(e.target.value)} /> */}
-      <Input placeholder="바꿀 단어" id={inputId} onChange={(e) => handleInputChange(e.target.value)} />
-    </div>
+    <Card className={classes.card}>
+      <header>
+        <b>대체 단어</b>
+      </header>
+      <div className={classes.btnList}>
+        {cluster.map((word, word_idx) => (
+          <ToggleButton
+            key={word_idx}
+            className={classes.toggleBtn}
+            onClick={() => handleToggleClick(word_idx, word)}
+            checked={buttonCheckedList[word_idx]}
+            style={{ backgroundColor: selectedToggleIndex === word_idx ? "#EBEBEB" : "transparent" }}
+          >
+            {word}
+          </ToggleButton>
+        ))}
+        <Input
+          className={classes.inputBox}
+          placeholder="바꿀 단어"
+          id={inputId}
+          onChange={(e) => handleInputChange(e.target.value)}
+        />
+      </div>
+    </Card>
   );
 };
 
 const useStyles = makeStyles({
-  togglebtn: { display: "flex", flexDirection: "column", marginRight: "7px" },
+  card: {
+    ...shorthands.gap("5px"),
+    ...shorthands.margin("10px"),
+    display: "flex",
+    flexGrow: 1,
+  },
+  btnList: { display: "flex", flexDirection: "column" },
+  toggleBtn: { ...shorthands.gap("5px"), ...shorthands.margin("5px"), display: "flex" },
+  inputBox: { ...shorthands.gap("5px"), ...shorthands.margin("5px") },
 });
