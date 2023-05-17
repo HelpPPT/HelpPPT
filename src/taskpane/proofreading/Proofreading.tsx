@@ -11,35 +11,53 @@ const Proofreading: React.FC = () => {
 
   useEffect(() => {
     const fetchSentences = async () => {
-      const textDatas: Array<SlideText> = await getTextsFromSlides();
+      const textData: Array<SlideText> = await getTextsFromSlides();
+      let splittedSentences: Array<SlideText> = [];
 
-      console.log(textDatas);
+      // poor performance
+      for (const textDatum of textData) {
+        console.log(textDatum);
+        const splits: Array<string> = await splitSentences([textDatum.text]);
+        console.log(splits);
+        splits.forEach((split) => {
+          splittedSentences = [...splittedSentences, { text: split, slideId: textDatum.slideId }];
+        });
+      }
 
-      // splitSentences need to be done.
+      console.log(splittedSentences);
 
-      setSentences(textDatas);
+      setSentences(splittedSentences);
     };
     fetchSentences();
   }, []);
 
-  const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
-    const { data } = await axios({
-      method: "POST",
-      url: "http://127.0.0.1:8000/sentence-split",
-      data: { sentences },
-    });
+  const splitSentences = async (slideTexts: Array<string>): Promise<Array<string>> => {
+    const res: Response = await fetch(
+      "https://hq8qv8fijj.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
+      {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({
+          sentences: slideTexts,
+        }),
+      }
+    );
+    const { sentences } = await res.json();
 
-    return data.sentences;
+    console.log(sentences);
+
+    return sentences;
   };
 
   let temp: Array<JSX.Element> = [];
   sentences.forEach((sentence: SlideText, index) => {
     if (!slideCounter.has(sentence.slideId)) {
       slideCounter.add(sentence.slideId);
-      temp = [...temp, <Divider key={index * 1000}>슬라이드 {slideCounter.size}</Divider>];
+      temp = [...temp, <Divider key={index * 1000 + 10000}>슬라이드 {slideCounter.size}</Divider>];
     }
     temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
   });
+  console.log(temp);
 
   return <div>{temp}</div>;
 };
