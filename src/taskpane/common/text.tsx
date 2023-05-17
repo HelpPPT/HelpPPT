@@ -9,7 +9,9 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
     context.load(slides, "id,shapes/items/type");
     await context.sync();
 
-    for (const slide of slides.items) {
+    for (const slideIndex in slides.items) {
+      const slide = slides.items[slideIndex];
+
       // console.log("Slide ID:", slide.id);
 
       for (const shape of slide.shapes.items) {
@@ -29,6 +31,7 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
 
         textBuffer.push({
           slideId: slide.id,
+          slideIndex: Number(slideIndex) + 1,
           text: shape.textFrame.textRange.text.trim().replace(/[\n\r\v]/g, "\n"),
         });
 

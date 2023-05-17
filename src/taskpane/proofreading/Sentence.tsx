@@ -1,4 +1,4 @@
-import { Card, CardHeader, makeStyles, shorthands, Subtitle2, Text } from "@fluentui/react-components";
+import { Card, CardHeader, makeStyles, shorthands, Subtitle2 } from "@fluentui/react-components";
 import React from "react";
 import { findAndFocusText } from "../common";
 import InvalidMessage from "./InvalidMessage";
@@ -9,6 +9,13 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     height: "fit-content",
     ...shorthands.margin("10px"),
+    ...shorthands.outline("1px", "solid", "var(--colorCompoundBrandBackground)"),
+    "&:hover": {
+      ...shorthands.outline("2px", "solid", "var(--colorCompoundBrandBackgroundHover)"),
+    },
+    "&:active": {
+      ...shorthands.outline("3px", "solid", "var(--colorCompoundBrandBackgroundPressed)"),
+    },
   },
   validationResult: {
     display: "flex",
@@ -24,7 +31,11 @@ type SentenceProps = {
 const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
   const styles = useStyles();
 
-  const validationResult: SentenceValidationResult = validateSentence({ slideId: "dummyIndex", text: sentence });
+  const validationResult: SentenceValidationResult = validateSentence({
+    slideId: "dummyIndex",
+    slideIndex: -1,
+    text: sentence,
+  });
 
   return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
