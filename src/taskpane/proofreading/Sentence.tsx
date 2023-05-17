@@ -9,12 +9,12 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     height: "fit-content",
     ...shorthands.margin("10px"),
-    ...shorthands.border("1px", "solid", "var(--colorCompoundBrandBackground)"),
+    ...shorthands.outline("1px", "solid", "var(--colorCompoundBrandBackground)"),
     "&:hover": {
-      ...shorthands.border("1px", "solid", "var(--colorCompoundBrandBackgroundHover)"),
+      ...shorthands.outline("2px", "solid", "var(--colorCompoundBrandBackgroundHover)"),
     },
-    "&:pressed": {
-      ...shorthands.border("1px", "solid", "var(--colorCompoundBrandBackgroundPressed)"),
+    "&:active": {
+      ...shorthands.outline("3px", "solid", "var(--colorCompoundBrandBackgroundPressed)"),
     },
   },
   validationResult: {
