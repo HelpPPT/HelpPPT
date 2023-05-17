@@ -14,50 +14,40 @@ const Proofreading: React.FC = () => {
       const textData: Array<SlideText> = await getTextsFromSlides();
       let splittedSentences: Array<SlideText> = [];
 
-      // poor performance
+      // TODO: poor performance, need improvement
       for (const textDatum of textData) {
-        console.log(textDatum);
         const splits: Array<string> = await splitSentences([textDatum.text]);
-        console.log(splits);
         splits.forEach((split) => {
           splittedSentences = [...splittedSentences, { text: split, slideId: textDatum.slideId }];
         });
       }
-
-      console.log(splittedSentences);
-
       setSentences(splittedSentences);
     };
     fetchSentences();
   }, []);
 
-  const splitSentences = async (slideTexts: Array<string>): Promise<Array<string>> => {
-    const res: Response = await fetch(
-      "https://hq8qv8fijj.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
-      {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({
-          sentences: slideTexts,
-        }),
-      }
-    );
-    const { sentences } = await res.json();
-
-    console.log(sentences);
-
-    return sentences;
+  const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
+    const { data } = await axios({
+      method: "POST",
+      url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
+      data: { sentences },
+    });
+    return data.body.sentences;
   };
 
   let temp: Array<JSX.Element> = [];
   sentences.forEach((sentence: SlideText, index) => {
     if (!slideCounter.has(sentence.slideId)) {
       slideCounter.add(sentence.slideId);
-      temp = [...temp, <Divider key={index * 1000 + 10000}>슬라이드 {slideCounter.size}</Divider>];
+      temp = [
+        ...temp,
+        <Divider appearance="brand" key={-(index + 1)}>
+          슬라이드 {slideCounter.size}
+        </Divider>,
+      ];
     }
     temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
   });
-  console.log(temp);
 
   return <div>{temp}</div>;
 };

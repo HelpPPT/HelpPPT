@@ -26,9 +26,7 @@ const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
 
   const validationResult: SentenceValidationResult = validateSentence({ slideId: "dummyIndex", text: sentence });
 
-  return validationResult.isValid ? (
-    <Text>All sentences are okay</Text>
-  ) : (
+  return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
       <CardHeader header={<Subtitle2>{sentence}</Subtitle2>} />
       <div className={styles.validationResult}>
