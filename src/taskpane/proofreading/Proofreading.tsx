@@ -3,9 +3,10 @@ import { getTextsFromSlides } from "../common";
 import axios from "axios";
 import Sentence from "./Sentence";
 import { SlideText } from "../common/main";
-import { Divider } from "@fluentui/react-components";
+import { Divider, Spinner } from "@fluentui/react-components";
 
 const Proofreading: React.FC = () => {
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [sentences, setSentences] = React.useState<Array<SlideText>>([]);
   const slideCounter: Set<string> = new Set<string>();
 
@@ -22,6 +23,7 @@ const Proofreading: React.FC = () => {
         });
       }
       setSentences(splittedSentences);
+      setLoading(false);
     };
     fetchSentences();
   }, []);
@@ -32,7 +34,7 @@ const Proofreading: React.FC = () => {
       url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
       data: { sentences },
     });
-    return data.body.sentences;
+    return data.sentences;
   };
 
   let temp: Array<JSX.Element> = [];
@@ -49,7 +51,7 @@ const Proofreading: React.FC = () => {
     temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
   });
 
-  return <div>{temp}</div>;
+  return loading ? <Spinner label="문장 불러오는중..." labelPosition="below" size="huge" /> : <div>{temp}</div>;
 };
 
 export default Proofreading;
