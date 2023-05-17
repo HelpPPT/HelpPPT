@@ -13,7 +13,6 @@ const Proofreading: React.FC = () => {
   useEffect(() => {
     const fetchSentences = async () => {
       const textData: Array<SlideText> = await getTextsFromSlides();
-      console.log(textData);
 
       let splittedSentences: Array<SlideText> = [];
 
