@@ -1,6 +1,5 @@
 import {
   makeStyles,
-  mergeClasses,
   shorthands,
   tokens,
   Button,
@@ -113,11 +112,6 @@ const useOverflowTabListStyles = makeStyles({
     ...shorthands.padding("5px"),
     zIndex: 0, //stop the browser resize handle from piercing the overflow menu
   },
-  horizontal: {
-    height: "fit-content",
-    resize: "horizontal",
-    width: "100%",
-  },
 });
 
 type OverflowTabListProps = {
@@ -134,7 +128,7 @@ export const OverflowTabList = ({ tabs, selectedTabId, setSelectedTabId }: Overf
   };
 
   return (
-    <div className={mergeClasses(styles.container, styles.horizontal)}>
+    <div className={styles.container}>
       <Overflow minimumVisible={2}>
         <TabList selectedValue={selectedTabId} onTabSelect={(_, d) => onTabSelect(d.value as string)}>
           {tabs.map((tab) => {
