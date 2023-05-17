@@ -13,13 +13,18 @@ const Proofreading: React.FC = () => {
   useEffect(() => {
     const fetchSentences = async () => {
       const textData: Array<SlideText> = await getTextsFromSlides();
+      console.log(textData);
+
       let splittedSentences: Array<SlideText> = [];
 
       // TODO: poor performance, need improvement
       for (const textDatum of textData) {
         const splits: Array<string> = await splitSentences([textDatum.text]);
         splits.forEach((split) => {
-          splittedSentences = [...splittedSentences, { text: split, slideId: textDatum.slideId }];
+          splittedSentences = [
+            ...splittedSentences,
+            { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
+          ];
         });
       }
       setSentences(splittedSentences);

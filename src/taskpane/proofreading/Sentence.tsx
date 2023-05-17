@@ -24,7 +24,11 @@ type SentenceProps = {
 const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
   const styles = useStyles();
 
-  const validationResult: SentenceValidationResult = validateSentence({ slideId: "dummyIndex", text: sentence });
+  const validationResult: SentenceValidationResult = validateSentence({
+    slideId: "dummyIndex",
+    slideIndex: -1,
+    text: sentence,
+  });
 
   return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
