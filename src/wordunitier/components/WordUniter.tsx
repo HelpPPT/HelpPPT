@@ -1,8 +1,16 @@
 import * as React from "react";
-import { Accordion, makeStyles } from "@fluentui/react-components";
-import { getWordClusters } from "../api/GroupingAPI";
+import { makeStyles, shorthands, Button } from "@fluentui/react-components";
+import { Skeleton, SkeletonItem, SkeletonProps } from "@fluentui/react-components/unstable";
+import { ArrowClockwise24Filled } from "@fluentui/react-icons";
+import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
 import { getTextsFromSlides } from "../api/PowerpointAPI";
-import { ShowAccordionItem } from "./showAccordionItem";
+import { ShowClusterItem } from "./ShowClusterItem";
+
+export const Loading = (props: Partial<SkeletonProps>) => (
+  <Skeleton {...props}>
+    <SkeletonItem />
+  </Skeleton>
+);
 
 export const WordUnitier: React.FC = () => {
   const [wordClusters, setWordClusters] = React.useState<Array<Array<string>>>([]);
@@ -21,18 +29,33 @@ export const WordUnitier: React.FC = () => {
   return (
     <div className={classes.clusterList}>
       {wordClusters.length > 0 ? (
-        <Accordion collapsible multiple defaultOpenItems="all">
-          {wordClusters.map((cluster, cluster_idx) => (
-            <ShowAccordionItem key={cluster_idx} cluster={cluster} cluster_idx={cluster_idx} />
-          ))}
-        </Accordion>
+        wordClusters.map((cluster, cluster_idx) => (
+          <ShowClusterItem key={cluster_idx} cluster={cluster} cluster_idx={cluster_idx} />
+        ))
       ) : (
-        <div>Loading...</div>
+        <Loading />
       )}
+      <Button
+        className={classes.refreshBtn}
+        shape="circular"
+        appearance="subtle"
+        size="large"
+        icon={<ArrowClockwise24Filled />}
+        onClick={() => {
+          getClusters();
+        }}
+      ></Button>
     </div>
   );
 };
 
 const useStyles = makeStyles({
-  clusterList: { marginTop: "1em", display: "flex", flexDirection: "column" },
+  clusterList: {
+    ...shorthands.gap("10px"),
+    ...shorthands.padding("10px"),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  refreshBtn: { position: "fixed", bottom: "5px", right: "5px" },
 });

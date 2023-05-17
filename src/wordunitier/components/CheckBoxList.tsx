@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Checkbox, makeStyles } from "@fluentui/react-components";
+import { Card, Checkbox, makeStyles, shorthands } from "@fluentui/react-components";
 
 export interface CheckBoxListProps {
   cluster: Array<string>;
@@ -25,19 +25,30 @@ export const CheckBoxList: React.FunctionComponent<CheckBoxListProps> = ({ clust
   };
 
   return (
-    <div className={classes.checkbox}>
-      {cluster.map((word, word_idx) => (
-        <Checkbox
-          key={word_idx}
-          checked={checkedItems.includes(word)}
-          onChange={() => handleCheckboxChange(word)}
-          label={word}
-        />
-      ))}
-    </div>
+    <Card className={classes.card}>
+      <header>
+        <b>후보 단어</b>
+      </header>
+      <div className={classes.checkBox}>
+        {cluster.map((word, word_idx) => (
+          <Checkbox
+            key={word_idx}
+            checked={checkedItems.includes(word)}
+            onChange={() => handleCheckboxChange(word)}
+            label={word}
+          />
+        ))}
+      </div>
+    </Card>
   );
 };
 
 const useStyles = makeStyles({
-  checkbox: { display: "flex", flexDirection: "column", marginRight: "7px" },
+  card: {
+    ...shorthands.gap("5px"),
+    ...shorthands.margin("10px"),
+    display: "flex",
+    flexGrow: 1,
+  },
+  checkBox: { display: "flex", flexDirection: "column", flexGrow: 1 },
 });
