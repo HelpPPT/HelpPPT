@@ -1,4 +1,4 @@
-import { Card, CardHeader, makeStyles, shorthands, Subtitle2 } from "@fluentui/react-components";
+import { Card, CardHeader, makeStyles, shorthands, Subtitle2, tokens } from "@fluentui/react-components";
 import React from "react";
 import { findAndFocusText } from "../common";
 import InvalidMessage from "./InvalidMessage";
@@ -9,12 +9,12 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     height: "fit-content",
     ...shorthands.margin("10px"),
-    ...shorthands.outline("1px", "solid", "var(--colorCompoundBrandBackground)"),
+    ...shorthands.outline("1px", "solid", tokens.colorCompoundBrandBackground),
     "&:hover": {
-      ...shorthands.outline("2px", "solid", "var(--colorCompoundBrandBackgroundHover)"),
+      ...shorthands.outline("2px", "solid", tokens.colorCompoundBrandBackgroundHover),
     },
     "&:active": {
-      ...shorthands.outline("3px", "solid", "var(--colorCompoundBrandBackgroundPressed)"),
+      ...shorthands.outline("3px", "solid", tokens.colorCompoundBrandBackgroundPressed),
     },
   },
   validationResult: {

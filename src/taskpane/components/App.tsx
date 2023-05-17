@@ -15,7 +15,7 @@ import {
   CalendarTodayFilled,
   CalendarTodayRegular,
 } from "@fluentui/react-icons";
-import { makeStyles } from "@fluentui/react-components";
+import { makeStyles, tokens } from "@fluentui/react-components";
 
 const Calendar3Day = bundleIcon(Calendar3DayFilled, Calendar3DayRegular);
 const CalendarAgenda = bundleIcon(CalendarAgendaFilled, CalendarAgendaRegular);
@@ -58,7 +58,7 @@ const tabs: MenuTab[] = [
 const useStyles = makeStyles({
   panel: {
     height: "100%",
-    backgroundColor: "var(--colorNeutralBackground2)",
+    backgroundColor: tokens.colorNeutralBackground2,
   },
 });
 
