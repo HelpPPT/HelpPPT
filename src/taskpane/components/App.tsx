@@ -15,6 +15,7 @@ import {
   CalendarTodayFilled,
   CalendarTodayRegular,
 } from "@fluentui/react-icons";
+import { makeStyles } from "@fluentui/react-components";
 
 const Calendar3Day = bundleIcon(Calendar3DayFilled, Calendar3DayRegular);
 const CalendarAgenda = bundleIcon(CalendarAgendaFilled, CalendarAgendaRegular);
@@ -53,18 +54,26 @@ const tabs: MenuTab[] = [
     icon: <Calendar3Day />,
   },
 ];
+
+const useStyles = makeStyles({
+  panel: {
+    height: "100%",
+    backgroundColor: "var(--colorNeutralBackground2)",
+  },
+});
+
 const App: React.FC<AppProps> = () => {
+  const styles = useStyles();
+
   const [selectedPage, setSelectedPage] = React.useState<string>("proofreading");
 
   return (
-    <div>
+    <div className={styles.panel}>
       <OverflowTabList tabs={tabs} selectedTabId={selectedPage} setSelectedTabId={setSelectedPage} />
-      <div className="panel">
-        {selectedPage === "wordUnitier" && <WordUnitier />}
-        {selectedPage === "gejosik" && <Gejosik />}
-        {selectedPage === "recommand" && <Recommand />}
-        {selectedPage === "proofreading" && <Proofreading />}
-      </div>
+      {selectedPage === "wordUnitier" && <WordUnitier />}
+      {selectedPage === "gejosik" && <Gejosik />}
+      {selectedPage === "recommand" && <Recommand />}
+      {selectedPage === "proofreading" && <Proofreading />}
     </div>
   );
 };
