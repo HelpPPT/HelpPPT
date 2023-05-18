@@ -11,7 +11,9 @@ export const fetchLines = async (): Promise<Array<string>> =>
 
     for (const slide of slides.items) {
       for (const shape of slide.shapes.items) {
-        if (shape.type === "Unsupported") continue;
+        if (shape.type !== "GeometricShape") {
+          continue;
+        }
         context.load(shape, "textFrame/hasText");
         await context.sync();
 
