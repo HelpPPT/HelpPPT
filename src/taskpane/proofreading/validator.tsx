@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorPaletteDarkOrangeForeground1,
   },
   yellowBadge: {
-    backgroundColor: tokens.colorPaletteYellowForeground1,
+    backgroundColor: tokens.colorPaletteYellowBorderActive,
   },
   berryBadge: {
     backgroundColor: tokens.colorPaletteBerryForeground1,
