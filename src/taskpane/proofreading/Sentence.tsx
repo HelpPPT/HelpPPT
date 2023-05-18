@@ -9,12 +9,12 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     height: "fit-content",
     ...shorthands.margin("10px"),
-    ...shorthands.outline("1px", "solid", tokens.colorCompoundBrandBackground),
     "&:hover": {
-      ...shorthands.outline("2px", "solid", tokens.colorCompoundBrandBackgroundHover),
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
     },
     "&:active": {
-      ...shorthands.outline("3px", "solid", tokens.colorCompoundBrandBackgroundPressed),
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+      ...shorthands.outline("2px", "solid", tokens.colorBrandForegroundInvertedHover),
     },
   },
   validationResult: {
@@ -41,8 +41,8 @@ const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
     <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
       <CardHeader header={<Subtitle2>{sentence}</Subtitle2>} />
       <div className={styles.validationResult}>
-        {validationResult.messages.map((invalidMessage, i) => (
-          <InvalidMessage key={i} message={invalidMessage} />
+        {validationResult.invalidDatas.map((invalidData, i) => (
+          <InvalidMessage key={i} badgeStyle={invalidData.badgeStyle} message={invalidData.message} />
         ))}
       </div>
     </Card>
