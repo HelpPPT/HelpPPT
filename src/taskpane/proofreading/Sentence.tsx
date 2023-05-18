@@ -41,8 +41,8 @@ const Sentence: React.FC<SentenceProps> = ({ sentence }: SentenceProps) => {
     <Card className={styles.card} onClick={() => findAndFocusText(sentence)}>
       <CardHeader header={<Subtitle2>{sentence}</Subtitle2>} />
       <div className={styles.validationResult}>
-        {validationResult.messages.map((invalidMessage, i) => (
-          <InvalidMessage key={i} message={invalidMessage} />
+        {validationResult.invalidDatas.map((invalidData, i) => (
+          <InvalidMessage key={i} badgeStyle={invalidData.badgeStyle} message={invalidData.message} />
         ))}
       </div>
     </Card>

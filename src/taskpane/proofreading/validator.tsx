@@ -1,43 +1,82 @@
+import { makeStyles, mergeClasses, shorthands, tokens } from "@fluentui/react-components";
 import { SlideText } from "../common/main";
 
 export type SentenceValidationResult = {
   isValid: boolean;
-  messages: Array<string>;
+  invalidDatas: Array<ValidatorData>;
 };
 
 type ValidatorData = {
   validatorFunc: Function;
+  badgeStyle: string;
   message: string;
 };
 
+const useStyles = makeStyles({
+  badge: {
+    backgroundColor: tokens.colorBrandForeground1,
+    ...shorthands.margin(0, "8px", 0, "4px"),
+  },
+  redBadge: {
+    backgroundColor: tokens.colorPaletteRedForeground1,
+  },
+  greenBadge: {
+    backgroundColor: tokens.colorPaletteGreenForeground1,
+  },
+  orangeBadge: {
+    backgroundColor: tokens.colorPaletteDarkOrangeForeground1,
+  },
+  yellowBadge: {
+    backgroundColor: tokens.colorPaletteYellowForeground1,
+  },
+  berryBadge: {
+    backgroundColor: tokens.colorPaletteBerryForeground1,
+  },
+  marigoldBadge: {
+    backgroundColor: tokens.colorPaletteMarigoldForeground1,
+  },
+  blueBadge: {
+    backgroundColor: tokens.colorPaletteBlueForeground2,
+  },
+});
+
 export const validateSentence = (slideText: SlideText): SentenceValidationResult => {
+  const styles = useStyles();
+
   const validatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,
+      badgeStyle: mergeClasses(styles.badge, styles.redBadge),
       message: "문장이 너무 길어요.",
     },
     {
       validatorFunc: validateEndWithPeriodOrQuestionOrExclamation,
+      badgeStyle: mergeClasses(styles.badge, styles.greenBadge),
       message: "문장이 마침표, 물음표, 느낌표로 끝나지 않았어요.",
     },
     {
       validatorFunc: validateCommaSpacing,
+      badgeStyle: mergeClasses(styles.badge, styles.orangeBadge),
       message: "쉼표 뒤에는 띄어쓰기를 해주세요.",
     },
     {
       validatorFunc: validateStartWithCapital,
+      badgeStyle: mergeClasses(styles.badge, styles.yellowBadge),
       message: "문장이 대문자로 시작하지 않았어요.",
     },
     {
       validatorFunc: validateNoConsecutiveSpaces,
+      badgeStyle: mergeClasses(styles.badge, styles.berryBadge),
       message: "띄어쓰기가 연속되었어요.",
     },
     {
       validatorFunc: validateSingleQuestionOrExclamation,
+      badgeStyle: mergeClasses(styles.badge, styles.marigoldBadge),
       message: "물음표나 느낌표가 2개 이상 있어요.",
     },
     {
       validatorFunc: validateNoDoubleNegatives,
+      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
       message: "'안'이나 '않'이 연속되었어요.",
     },
   ];
@@ -47,11 +86,11 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
       const isValid = validatorData.validatorFunc(slideText.text);
       if (!isValid) {
         acc.isValid = false;
-        acc.messages.push(validatorData.message);
+        acc.invalidDatas.push(validatorData);
       }
       return acc;
     },
-    { isValid: true, messages: [] } as SentenceValidationResult
+    { isValid: true, invalidDatas: [] } as SentenceValidationResult
   );
 
   return validationResult;

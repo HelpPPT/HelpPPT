@@ -10,23 +10,19 @@ const useStyles = makeStyles({
   text: {
     ...shorthands.margin(0),
   },
-
-  badge: {
-    backgroundColor: "red",
-    ...shorthands.margin(0, "8px", 0, "4px"),
-  },
 });
 
 type InvalidMessageProps = {
+  badgeStyle: string;
   message: string;
 };
 
-const InvalidMessage: React.FC<InvalidMessageProps> = ({ message }: InvalidMessageProps) => {
+const InvalidMessage: React.FC<InvalidMessageProps> = ({ badgeStyle, message }: InvalidMessageProps) => {
   const styles = useStyles();
 
   return (
     <div className={styles.container}>
-      <Badge className={styles.badge} size="tiny" />
+      <Badge className={badgeStyle} size="tiny" />
       <Body1 className={styles.text}>{message}</Body1>
     </div>
   );
