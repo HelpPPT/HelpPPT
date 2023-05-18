@@ -45,12 +45,7 @@ const Proofreading: React.FC = () => {
   sentences.forEach((sentence: SlideText, index) => {
     if (!slideCounter.has(sentence.slideId)) {
       slideCounter.add(sentence.slideId);
-      temp = [
-        ...temp,
-        <Divider appearance="brand" key={-(index + 1)}>
-          슬라이드 {slideCounter.size}
-        </Divider>,
-      ];
+      temp = [...temp, <Divider key={-(index + 1)}>슬라이드 {slideCounter.size}</Divider>];
     }
     temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
   });
