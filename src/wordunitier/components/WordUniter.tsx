@@ -40,7 +40,6 @@ export const WordUnitier: React.FC = () => {
 
     const sentences: string[] = splittedSentences.map((sentence) => sentence["text"]);
 
-    console.log(sentences);
     const clusters: Array<Array<string>> = await getWordClusters(sentences);
     setWordClusters(clusters);
   };
