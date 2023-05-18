@@ -3,8 +3,10 @@ import { makeStyles, shorthands, Button } from "@fluentui/react-components";
 import { Skeleton, SkeletonItem, SkeletonProps } from "@fluentui/react-components/unstable";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
 import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
-import { getTextsFromSlides } from "../api/PowerpointAPI";
+import { getTextsFromSlides } from "../../taskpane/common";
+import { SlideText } from "../../taskpane/common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
+import axios from "axios";
 
 export const Loading = (props: Partial<SkeletonProps>) => (
   <Skeleton {...props}>
@@ -21,9 +23,35 @@ export const WordUnitier: React.FC = () => {
   }, []);
 
   const getClusters = async () => {
-    const fullSentence: string = (await getTextsFromSlides()).join("\n");
-    const clusters: Array<Array<string>> = await getWordClusters(fullSentence);
+    const textData: Array<SlideText> = await getTextsFromSlides();
+
+    let splittedSentences: Array<SlideText> = [];
+
+    // TODO: poor performance, need improvement
+    for (const textDatum of textData) {
+      const splits: Array<string> = await splitSentences([textDatum.text]);
+      splits.forEach((split) => {
+        splittedSentences = [
+          ...splittedSentences,
+          { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
+        ];
+      });
+    }
+
+    const sentences: string[] = splittedSentences.map((sentence) => sentence["text"]);
+
+    console.log(sentences);
+    const clusters: Array<Array<string>> = await getWordClusters(sentences);
     setWordClusters(clusters);
+  };
+
+  const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
+    const { data } = await axios({
+      method: "POST",
+      url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
+      data: { sentences },
+    });
+    return data.sentences;
   };
 
   return (
