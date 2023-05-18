@@ -1,16 +1,19 @@
-import { Caption1, makeStyles, PresenceBadge, shorthands } from "@fluentui/react-components";
+import { Badge, Body1, makeStyles, shorthands } from "@fluentui/react-components";
 import React from "react";
 
 const useStyles = makeStyles({
-  text: {
+  container: {
     display: "flex",
-    ...shorthands.margin(0),
-    fontSize: "13px",
+    alignItems: "center",
   },
 
-  textIcon: {
-    ...shorthands.margin(0, "7px", 0, "15px"),
-    backgroundColor: "transparent",
+  text: {
+    ...shorthands.margin(0),
+  },
+
+  badge: {
+    backgroundColor: "red",
+    ...shorthands.margin(0, "8px", 0, "4px"),
   },
 });
 
@@ -22,10 +25,10 @@ const InvalidMessage: React.FC<InvalidMessageProps> = ({ message }: InvalidMessa
   const styles = useStyles();
 
   return (
-    <Caption1 className={styles.text}>
-      <PresenceBadge className={styles.textIcon} size="small" status="out-of-office" />
-      {message}
-    </Caption1>
+    <div className={styles.container}>
+      <Badge className={styles.badge} size="tiny" />
+      <Body1 className={styles.text}>{message}</Body1>
+    </div>
   );
 };
 
