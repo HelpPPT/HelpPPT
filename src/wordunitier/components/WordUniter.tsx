@@ -22,6 +22,10 @@ const useSkeletonStyles = makeStyles({
     justifyContent: "space-around",
   },
 
+  skeletonCard: {
+    ...shorthands.margin(0, 0, "10px", 0),
+  },
+
   secondRow: {
     display: "flex",
     flexDirection: "row",
@@ -39,7 +43,7 @@ export const Loading = (props: Partial<SkeletonProps>) => {
   return (
     <Skeleton {...props}>
       {Array.from(Array(5), (_, i) => (
-        <Card key={i}>
+        <Card key={i} className={styles.skeletonCard}>
           <SkeletonItem size={28} />
           <div className={styles.secondRow}>
             <Card className={styles.subCard}>
