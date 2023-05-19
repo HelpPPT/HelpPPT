@@ -41,36 +41,38 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
     return textBuffer;
   });
 
-export const findAndFocusText = async (searchText: string) =>
+export const findAndFocusText = async (searchSlideText: SlideText) =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    const searchText = searchSlideText.text;
+
     const slides = context.presentation.slides;
 
     context.load(slides, "id,shapes/items/type");
     await context.sync();
 
-    for (const slide of slides.items) {
-      for (const shape of slide.shapes.items) {
-        if (shape.type !== "GeometricShape") {
-          continue;
-        }
+    const slide = slides.items[searchSlideText.slideIndex - 1];
 
-        context.load(shape, "textFrame/hasText");
-        await context.sync();
+    for (const shape of slide.shapes.items) {
+      if (shape.type !== "GeometricShape") {
+        continue;
+      }
 
-        if (!shape.textFrame.hasText) {
-          continue;
-        }
+      context.load(shape, "textFrame/hasText");
+      await context.sync();
 
-        context.load(shape, "textFrame/textRange/text");
-        await context.sync();
+      if (!shape.textFrame.hasText) {
+        continue;
+      }
 
-        const text: string = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n");
+      context.load(shape, "textFrame/textRange/text");
+      await context.sync();
 
-        if (text.includes(searchText)) {
-          const [start, offset] = [text.indexOf(searchText), searchText.length];
-          shape.textFrame.textRange.getSubstring(start, offset).setSelected();
-          return;
-        }
+      const text: string = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n");
+
+      if (text.includes(searchText)) {
+        const [start, offset] = [text.indexOf(searchText), searchText.length];
+        shape.textFrame.textRange.getSubstring(start, offset).setSelected();
+        return;
       }
     }
   });

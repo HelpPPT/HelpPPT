@@ -47,7 +47,7 @@ const Proofreading: React.FC = () => {
       slideCounter.add(sentence.slideId);
       temp = [...temp, <Divider key={-(index + 1)}>슬라이드 {slideCounter.size}</Divider>];
     }
-    temp = [...temp, <Sentence key={index} sentence={sentence.text} />];
+    temp = [...temp, <Sentence key={index} slideText={sentence} />];
   });
 
   return loading ? <Spinner label="문장 불러오는중..." labelPosition="below" size="huge" /> : <div>{temp}</div>;
