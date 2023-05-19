@@ -1,6 +1,13 @@
 import * as React from "react";
-import { makeStyles, shorthands, Button } from "@fluentui/react-components";
-import { Skeleton, SkeletonItem, SkeletonProps } from "@fluentui/react-components/unstable";
+import {
+  makeStyles,
+  shorthands,
+  Button,
+  SkeletonProps,
+  Skeleton,
+  SkeletonItem,
+  Card,
+} from "@fluentui/react-components";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
 import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
 import { getTextsFromSlides } from "../../taskpane/common";
@@ -8,11 +15,49 @@ import { SlideText } from "../../taskpane/common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
 import axios from "axios";
 
-export const Loading = (props: Partial<SkeletonProps>) => (
-  <Skeleton {...props}>
-    <SkeletonItem />
-  </Skeleton>
-);
+const useSkeletonStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+  },
+
+  secondRow: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+
+  subCard: {
+    width: "45%",
+  },
+});
+
+export const Loading = (props: Partial<SkeletonProps>) => {
+  const styles = useSkeletonStyles();
+
+  return (
+    <Skeleton {...props}>
+      {Array.from(Array(5), (_, i) => (
+        <Card key={i}>
+          <SkeletonItem size={28} />
+          <div className={styles.secondRow}>
+            <Card className={styles.subCard}>
+              <SkeletonItem size={24} />
+              <SkeletonItem size={24} />
+              <SkeletonItem size={24} />
+            </Card>
+            <Card className={styles.subCard}>
+              <SkeletonItem size={24} />
+              <SkeletonItem size={24} />
+              <SkeletonItem size={24} />
+            </Card>
+          </div>
+        </Card>
+      ))}
+    </Skeleton>
+  );
+};
 
 export const WordUnitier: React.FC = () => {
   const [wordClusters, setWordClusters] = React.useState<Array<Array<string>>>([]);
