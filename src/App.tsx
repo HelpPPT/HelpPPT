@@ -1,6 +1,6 @@
 import * as React from "react";
 import Translation from "./translation/Translation";
-import WordUnitier from "./wordunitier/WordUniter";
+import WordUnification from "./wordunification/WordUnification";
 import Gejosik from "./gejosik/Gejosik";
 import Proofreading from "./proofreading/Proofreading";
 import OverflowTabList from "./OverflowTabList";
@@ -34,7 +34,7 @@ export type MenuTab = {
 
 const tabs: MenuTab[] = [
   {
-    id: "wordUnitier",
+    id: "wordUnification",
     name: "단어 통일",
     icon: <CalendarToday />,
   },
@@ -70,7 +70,7 @@ const App: React.FC<AppProps> = () => {
   return (
     <div className={styles.panel}>
       <OverflowTabList tabs={tabs} selectedTabId={selectedPage} setSelectedTabId={setSelectedPage} />
-      {selectedPage === "wordUnitier" && <WordUnitier />}
+      {selectedPage === "wordUnification" && <WordUnification />}
       {selectedPage === "gejosik" && <Gejosik />}
       {selectedPage === "translation" && <Translation />}
       {selectedPage === "proofreading" && <Proofreading />}
