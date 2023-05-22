@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, makeStyles } from "@fluentui/react-components";
-import { unitifyWordAll } from "../api/PowerpointAPI";
+import { unitifyWordAll } from "./api/powerpoint";
 
 export interface UnitifyWordProps {
   changedWordsList: Array<string>;

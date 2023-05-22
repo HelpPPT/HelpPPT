@@ -9,7 +9,7 @@ import {
   Card,
 } from "@fluentui/react-components";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
-import { getWordClusters } from "../wordunitier/api/GroupingAPI";
+import { getWordClusters } from "./api/grouping";
 import { getTextsFromSlides } from "../common";
 import { SlideText } from "../common/main";
 import { ShowClusterItem } from "./ShowClusterItem";

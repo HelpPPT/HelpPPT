@@ -1,4 +1,4 @@
-import { SlideText } from "./main";
+import { SlideText } from "../main";
 
 export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
