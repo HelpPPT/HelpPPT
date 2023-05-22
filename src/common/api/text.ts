@@ -29,10 +29,16 @@ export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
         context.load(shape, "textFrame/textRange/text");
         await context.sync();
 
-        textBuffer.push({
-          slideId: slide.id,
-          slideIndex: Number(slideIndex) + 1,
-          text: shape.textFrame.textRange.text.trim().replace(/[\n\r\v]/g, "\n"),
+        // shape.textFrame.textRange.text.trim().replace(/[\n\r\v]/g, "\n")
+        const lines: Array<string> = shape.textFrame.textRange.text.trim().split(/[\n\r\v]/g);
+        const validLines: Array<string> = lines.filter((line) => line.trim().length > 0);
+
+        validLines.map((validLine) => {
+          textBuffer.push({
+            slideId: slide.id,
+            slideIndex: Number(slideIndex) + 1,
+            text: validLine.trim(),
+          });
         });
 
         // console.log("Text:", shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n"));
