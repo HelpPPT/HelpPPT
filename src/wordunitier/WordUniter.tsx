@@ -9,9 +9,9 @@ import {
   Card,
 } from "@fluentui/react-components";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
-import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
-import { getTextsFromSlides } from "../../common";
-import { SlideText } from "../../common/main";
+import { getWordClusters } from "../wordunitier/api/GroupingAPI";
+import { getTextsFromSlides } from "../common";
+import { SlideText } from "../common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
 import axios from "axios";
 
