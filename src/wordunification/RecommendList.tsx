@@ -1,45 +1,78 @@
 import * as React from "react";
 import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
-import { fetchLines, convertToGejosik } from "../gejosik/fetch";
+import { convertToGejosik } from "../gejosik/fetch";
 import { unifyWordAll } from "./api/powerpoint";
+import { getTextsFromSlides } from "../common";
+import { SlideText } from "../common/main";
+import { splitSentences } from "./api/fetch";
 
 export interface RecommendListProps {
   changedWordList: Array<string>;
   mainWord: string;
 }
 
+export interface RecommendSentenceProps {
+  slideId: string;
+  slideIndex: number;
+  text: string;
+  index: { start: number; end: number };
+}
+
 export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, mainWord }) => {
   const classes = useStyles();
-  const [beforeLinesMap, setBeforeLinesMap] = React.useState<
-    Array<{ line: string; index: { start: number; end: number } }>
-  >([]);
+  const [sentencesMap, setSentencesMap] = React.useState<Array<RecommendSentenceProps>>([]);
   const [hiddenCardIndexes, setHiddenCardIndexes] = React.useState<number[]>([]);
 
   const pattern = new RegExp(`(${changedWordList.join("|")})`, "g");
 
   React.useEffect(() => {
     const initData = async () => {
-      const lines: Array<string> = await fetchLines();
-      const validLines = checkedLinesValid(lines);
-      const resultsMapList = await getValidLinesMap(validLines);
-      setBeforeLinesMap(resultsMapList);
+      const rawLine: Array<SlideText> = await fetchSentences();
+      const validLines: Array<SlideText> = checkedLinesValid(rawLine);
+      const resultsMapList: Array<RecommendSentenceProps> = await getValidLinesMap(validLines);
+      setSentencesMap(resultsMapList);
     };
 
     initData();
   }, [changedWordList]);
 
-  const getValidLinesMap = async (lines: Array<string>) => {
-    let resultsMapList = [];
-    for (const line of lines) {
-      const indexes = findMatchIndexes(line);
-      const resultsMap = indexes.map((index) => ({ line, index }));
-      resultsMapList = resultsMapList.concat(resultsMap);
+  const fetchSentences = async () => {
+    const textData: Array<SlideText> = await getTextsFromSlides();
+
+    let splittedSentences: Array<SlideText> = [];
+
+    for (const textDatum of textData) {
+      const splits: Array<string> = await splitSentences([textDatum.text]);
+      splits.forEach((split) => {
+        splittedSentences = [
+          ...splittedSentences,
+          { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
+        ];
+      });
     }
-    return resultsMapList;
+
+    return splittedSentences;
   };
 
-  const checkedLinesValid = (lines: Array<string>) => {
-    return lines.filter((line) => changedWordList.some((word) => line.includes(word)));
+  const checkedLinesValid = (lines: Array<SlideText>) => {
+    return lines.filter((line) => changedWordList.some((word) => line.text.includes(word)));
+  };
+
+  const getValidLinesMap = async (lines: Array<SlideText>) => {
+    let resultsMapList: Array<RecommendSentenceProps> = [];
+
+    for (const line of lines) {
+      const indexes = findMatchIndexes(line.text);
+      const resultsMap = indexes.map((index) => ({
+        text: line.text,
+        slideId: line.slideId,
+        slideIndex: line.slideIndex,
+        index: index,
+      }));
+      resultsMapList.push(...resultsMap);
+    }
+
+    return resultsMapList;
   };
 
   const findMatchIndexes = (line: string) => {
@@ -69,7 +102,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
         모두 변경
       </Button>
 
-      {beforeLinesMap.map(({ line, index }, cardIndex) => {
+      {sentencesMap.map(({ line, index }, cardIndex) => {
         if (hiddenCardIndexes.includes(cardIndex)) {
           return null;
         }
