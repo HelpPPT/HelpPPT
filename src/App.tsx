@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Translation } from "./translation/Translation";
+import Translation from "./translation/Translation";
 import { WordUnitier } from "./wordunitier/WordUniter";
 import Gejosik from "./gejosik/Gejosik";
 import Proofreading from "./proofreading/Proofreading";
@@ -44,7 +44,7 @@ const tabs: MenuTab[] = [
     icon: <CalendarAgenda />,
   },
   {
-    id: "Translation",
+    id: "translation",
     name: "영단어 자동완성",
     icon: <CalendarDay />,
   },
