@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Recommand } from "./Recommand";
-import { WordUnitier } from "../../wordunitier/components/WordUniter";
+import { Recommand } from "./translation/Recommand";
+import { WordUnitier } from "./wordunitier/components/WordUniter";
 import { Gejosik } from "./gejosik/Gejosik";
-import Proofreading from "../proofreading/Proofreading";
-import { OverflowTabList } from "../OverflowTabList";
+import Proofreading from "./proofreading/Proofreading";
+import { OverflowTabList } from "./OverflowTabList";
 import {
   bundleIcon,
   Calendar3DayFilled,

@@ -18,7 +18,7 @@ import {
 import * as React from "react";
 
 import { MoreHorizontalRegular, MoreHorizontalFilled, bundleIcon } from "@fluentui/react-icons";
-import { MenuTab } from "./components/App";
+import { MenuTab } from "./App";
 
 const MoreHorizontal = bundleIcon(MoreHorizontalFilled, MoreHorizontalRegular);
 

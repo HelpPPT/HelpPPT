@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import App from "./components/App";
+import App from "./App";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { AppContainer } from "react-hot-loader";
 import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
@@ -31,8 +31,8 @@ Office.onReady(() => {
 });
 
 if ((module as any).hot) {
-  (module as any).hot.accept("./components/App", () => {
-    const NextApp = require("./components/App").default;
+  (module as any).hot.accept("./App", () => {
+    const NextApp = require("./App").default;
     render(NextApp);
   });
 }

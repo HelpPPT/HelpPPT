@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
-import { fetchLines, convertToGejosik } from "../../taskpane/components/gejosik/fetch";
+import { fetchLines, convertToGejosik } from "../../gejosik/fetch";
 import { unitifyWordAll } from "../api/PowerpointAPI";
 
 export interface RecommendListProps {
