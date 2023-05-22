@@ -1,9 +1,13 @@
 import * as React from "react";
-import { Switch, Text } from "@fluentui/react-components";
+import { Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import axios from "axios";
 
-const Translation: React.FunctionComponent = () => {
+type TranslationProps = {
+  active: boolean;
+};
+
+const Translation: React.FunctionComponent<TranslationProps> = ({ active }: TranslationProps) => {
   const [isChecked, setChecked] = React.useState<boolean>(false);
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
@@ -115,7 +119,11 @@ const Translation: React.FunctionComponent = () => {
     return data;
   };
 
-  return <Switch checked={isChecked} label={isChecked ? "ON" : "OFF"} onClick={changeToggle} />;
+  return (
+    <div style={active ? null : { display: "none" }}>
+      <Switch checked={isChecked} label={isChecked ? "ON" : "OFF"} onClick={changeToggle} />
+    </div>
+  );
 };
 
 export default Translation;

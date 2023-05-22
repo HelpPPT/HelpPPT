@@ -26,6 +26,7 @@ export interface AppProps {
   title: string;
   isOfficeInitialized: boolean;
 }
+
 export type MenuTab = {
   id: string;
   name: string;
@@ -72,7 +73,7 @@ const App: React.FC<AppProps> = () => {
       <OverflowTabList tabs={tabs} selectedTabId={selectedPage} setSelectedTabId={setSelectedPage} />
       {selectedPage === "wordUnification" && <WordUnification />}
       {selectedPage === "gejosik" && <Gejosik />}
-      {selectedPage === "translation" && <Translation />}
+      <Translation active={selectedPage === "translation"} />
       {selectedPage === "proofreading" && <Proofreading />}
     </div>
   );
