@@ -63,7 +63,7 @@ export const Loading = (props: Partial<SkeletonProps>) => {
   );
 };
 
-export const WordUnitier: React.FC = () => {
+const WordUnitier: React.FC = () => {
   const [wordClusters, setWordClusters] = React.useState<Array<Array<string>>>([]);
   const classes = useStyles();
 
@@ -135,3 +135,5 @@ const useStyles = makeStyles({
   },
   refreshBtn: { position: "fixed", bottom: "5px", right: "5px" },
 });
+
+export default WordUnitier;

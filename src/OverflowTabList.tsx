@@ -146,3 +146,5 @@ export const OverflowTabList = ({ tabs, selectedTabId, setSelectedTabId }: Overf
     </div>
   );
 };
+
+export default OverflowTabList;
