@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
-import { convertToGejosik } from "../gejosik/fetch";
 import { unifyWordAll } from "./api/powerpoint";
-import { getTextsFromSlides } from "../common";
+import { getTextsFromSlides, findAndFocusText } from "../common";
 import { SlideText } from "../common/main";
-import { splitSentences } from "./api/fetch";
+import { splitSentences, convertToMainWord } from "./api/fetch";
 
 export interface RecommendListProps {
   changedWordList: Array<string>;
@@ -91,8 +90,9 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
     return modifiedSentence;
   };
 
-  const handleCardClick = async (index: { start: number; end: number }, line: string, cardIndex: number) => {
-    await convertToGejosik(line, convertLine(line, index));
+  const handleCardClick = async (sentenceData: RecommendSentenceProps, cardIndex: number) => {
+    findAndFocusText({ text: sentenceData.text, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
+    await convertToMainWord(sentenceData.text, convertLine(sentenceData.text, sentenceData.index));
     setHiddenCardIndexes((prevIndexes) => [...prevIndexes, cardIndex]);
   };
 
@@ -108,11 +108,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
         }
 
         return (
-          <Card
-            key={i}
-            className={classes.card}
-            onClick={() => handleCardClick(sentenceData.index, sentenceData.text, i)}
-          >
+          <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, i)}>
             <div>
               <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
               <Text underline className={classes.highlight}>
