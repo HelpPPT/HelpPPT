@@ -2,7 +2,7 @@ import { Card, CardHeader, makeStyles, shorthands, Subtitle2, tokens } from "@fl
 import React from "react";
 import { findAndFocusText } from "../common";
 import { SlideText } from "../common/main";
-import InvalidMessage from "./InvalidMessage";
+import { InvalidMessage } from "./InvalidMessage";
 import { SentenceValidationResult, validateSentence } from "./validator";
 
 const useStyles = makeStyles({
@@ -29,7 +29,7 @@ type SentenceProps = {
   slideText: SlideText;
 };
 
-const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
+export const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
   const styles = useStyles();
 
   const validationResult: SentenceValidationResult = validateSentence(slideText);
@@ -45,5 +45,3 @@ const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
     </Card>
   );
 };
-
-export default Sentence;
