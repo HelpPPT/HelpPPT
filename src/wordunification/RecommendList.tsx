@@ -102,18 +102,23 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
         모두 변경
       </Button>
 
-      {sentencesMap.map(({ line, index }, cardIndex) => {
-        if (hiddenCardIndexes.includes(cardIndex)) {
+      {sentencesMap.map((sentenceData, i) => {
+        if (hiddenCardIndexes.includes(i)) {
           return null;
         }
+
         return (
-          <Card key={cardIndex} className={classes.card} onClick={() => handleCardClick(index, line, cardIndex)}>
+          <Card
+            key={i}
+            className={classes.card}
+            onClick={() => handleCardClick(sentenceData.index, sentenceData.text, i)}
+          >
             <div>
-              <Text>{line.slice(0, index["start"])}</Text>
+              <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
               <Text underline className={classes.highlight}>
-                {line.slice(index["start"], index["end"])}
+                {sentenceData.text.slice(sentenceData.index["start"], sentenceData.index["end"])}
               </Text>
-              <Text>{line.slice(index["end"])}</Text>
+              <Text>{sentenceData.text.slice(sentenceData.index["end"])}</Text>
             </div>
           </Card>
         );
