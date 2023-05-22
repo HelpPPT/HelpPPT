@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
-import { fetchLines, convertToGejosik } from "../../taskpane/components/gejosik/fetch";
-import { unitifyWordAll } from "../api/PowerpointAPI";
+import { fetchLines, convertToGejosik } from "../gejosik/fetch";
+import { unifyWordAll } from "./api/powerpoint";
 
 export interface RecommendListProps {
   changedWordList: Array<string>;
@@ -65,7 +65,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 
   return (
     <div className={classes.colItems}>
-      <Button className={classes.allChangeBtn} onClick={() => unitifyWordAll(changedWordList, mainWord)}>
+      <Button className={classes.allChangeBtn} onClick={() => unifyWordAll(changedWordList, mainWord)}>
         모두 변경
       </Button>
 

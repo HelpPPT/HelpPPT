@@ -9,9 +9,9 @@ import {
   Card,
 } from "@fluentui/react-components";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
-import { getWordClusters } from "../../wordunitier/api/GroupingAPI";
-import { getTextsFromSlides } from "../../taskpane/common";
-import { SlideText } from "../../taskpane/common/main";
+import { getWordClusters } from "./api/grouping";
+import { getTextsFromSlides } from "../common";
+import { SlideText } from "../common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
 import axios from "axios";
 
@@ -63,7 +63,7 @@ export const Loading = (props: Partial<SkeletonProps>) => {
   );
 };
 
-export const WordUnitier: React.FC = () => {
+const WordUnification: React.FC = () => {
   const [wordClusters, setWordClusters] = React.useState<Array<Array<string>>>([]);
   const classes = useStyles();
 
@@ -135,3 +135,5 @@ const useStyles = makeStyles({
   },
   refreshBtn: { position: "fixed", bottom: "5px", right: "5px" },
 });
+
+export default WordUnification;

@@ -33,7 +33,7 @@ export const getTextsFromSlides = async (): Promise<Array<string>> =>
     return textBuffer;
   });
 
-export const unitifyWordAll = async (from: Array<string>, to: string) =>
+export const unifyWordAll = async (from: Array<string>, to: string) =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
     console.log(`${from} -> ${to}`);
 

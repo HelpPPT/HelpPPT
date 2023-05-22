@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Switch } from "@fluentui/react-components";
+import { Switch, Text } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import axios from "axios";
 
-export const Recommand: React.FunctionComponent = () => {
+const Translation: React.FunctionComponent = () => {
   const [isChecked, setChecked] = React.useState<boolean>(false);
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
@@ -13,33 +13,33 @@ export const Recommand: React.FunctionComponent = () => {
     const nextChecked: boolean = !isChecked;
 
     if (nextChecked) {
-      setRecommandationON();
+      setTranslationON();
     } else {
-      setRecommandationOFF();
+      setTranslationOFF();
     }
 
     setChecked(nextChecked);
   };
 
-  const setRecommandationON = () => {
-    setIntervalId(setInterval(recommandWord, 1000));
+  const setTranslationON = () => {
+    setIntervalId(setInterval(translatedWord, 1000));
   };
-  const setRecommandationOFF = () => {
+  const setTranslationOFF = () => {
     clearInterval(intervalId);
     setIntervalId(null);
   };
 
-  const recommandWord = async () => {
+  const translatedWord = async () => {
     const currentSelectedWord: string = await getSelectedText();
 
     if (currentSelectedWord && currentSelectedWord.endsWith("()")) {
-      _recommandWord(currentSelectedWord);
+      _translateWord(currentSelectedWord);
     } else if (currentSelectedWord && currentSelectedWord.endsWith("[]")) {
-      recommandByDragSelection();
+      translateByDragSelection();
     }
   };
 
-  const _recommandWord = async (currentSelectedWord: string) => {
+  const _translateWord = async (currentSelectedWord: string) => {
     await setSelectedText(currentSelectedWord.replace(/.{0,2}$/, ""));
 
     const originalSelectedWord: string = await getSelectedText();
@@ -47,12 +47,12 @@ export const Recommand: React.FunctionComponent = () => {
       return;
     }
 
-    const recommandWord: string = await getRecommandWord(originalSelectedWord);
+    const translateWord: string = await getTranslateWord(originalSelectedWord);
 
-    await setSelectedText(`${originalSelectedWord}(${recommandWord})`);
+    await setSelectedText(`${originalSelectedWord}(${translateWord})`);
   };
 
-  const recommandByDragSelection = async () => {
+  const translateByDragSelection = async () => {
     Office.context.document.getSelectedDataAsync<string>(Office.CoercionType.Text, (result) => {
       if (result.status !== Office.AsyncResultStatus.Succeeded) {
         return;
@@ -63,7 +63,7 @@ export const Recommand: React.FunctionComponent = () => {
         return;
       }
 
-      _recommandWord(selectedText);
+      _translateWord(selectedText);
     });
   };
 
@@ -95,16 +95,16 @@ export const Recommand: React.FunctionComponent = () => {
       textRange.text = value;
     });
 
-  const getRecommandWord = async (originalSelectedWord: string): Promise<string> => {
+  const getTranslateWord = async (originalSelectedWord: string): Promise<string> => {
     const translatedOriginalSelectedWord: string = await translateToEng(originalSelectedWord);
-    const recommandWord: string = translatedOriginalSelectedWord
+    const translatedWord: string = translatedOriginalSelectedWord
       .replace(/[.]*$/, "")
       .split(" ")
       .map(function (word) {
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
       .join(" ");
-    return recommandWord;
+    return translatedWord;
   };
 
   const translateToEng = async (text: string): Promise<string> => {
@@ -117,3 +117,5 @@ export const Recommand: React.FunctionComponent = () => {
 
   return <Switch checked={isChecked} label={isChecked ? "ON" : "OFF"} onClick={changeToggle} />;
 };
+
+export default Translation;

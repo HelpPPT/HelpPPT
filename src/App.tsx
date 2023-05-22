@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Recommand } from "./Recommand";
-import { WordUnitier } from "../../wordunitier/components/WordUniter";
-import { Gejosik } from "./gejosik/Gejosik";
-import Proofreading from "../proofreading/Proofreading";
-import { OverflowTabList } from "../OverflowTabList";
+import Translation from "./translation/Translation";
+import WordUnification from "./wordunification/WordUnification";
+import Gejosik from "./gejosik/Gejosik";
+import Proofreading from "./proofreading/Proofreading";
+import OverflowTabList from "./OverflowTabList";
 import {
   bundleIcon,
   Calendar3DayFilled,
@@ -34,7 +34,7 @@ export type MenuTab = {
 
 const tabs: MenuTab[] = [
   {
-    id: "wordUnitier",
+    id: "wordUnification",
     name: "단어 통일",
     icon: <CalendarToday />,
   },
@@ -44,7 +44,7 @@ const tabs: MenuTab[] = [
     icon: <CalendarAgenda />,
   },
   {
-    id: "recommand",
+    id: "translation",
     name: "영단어 자동완성",
     icon: <CalendarDay />,
   },
@@ -70,9 +70,9 @@ const App: React.FC<AppProps> = () => {
   return (
     <div className={styles.panel}>
       <OverflowTabList tabs={tabs} selectedTabId={selectedPage} setSelectedTabId={setSelectedPage} />
-      {selectedPage === "wordUnitier" && <WordUnitier />}
+      {selectedPage === "wordUnification" && <WordUnification />}
       {selectedPage === "gejosik" && <Gejosik />}
-      {selectedPage === "recommand" && <Recommand />}
+      {selectedPage === "translation" && <Translation />}
       {selectedPage === "proofreading" && <Proofreading />}
     </div>
   );
