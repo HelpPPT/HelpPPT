@@ -13,6 +13,7 @@ import { getWordClusters } from "./api/grouping";
 import { getTextsFromSlides } from "../common";
 import { SlideText } from "../common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
+import { splitSentences } from "./api/fetch";
 import axios from "axios";
 
 const useSkeletonStyles = makeStyles({
@@ -93,15 +94,6 @@ const WordUnification: React.FC = () => {
     setWordClusters(clusters);
   };
 
-  const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
-    const { data } = await axios({
-      method: "POST",
-      url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
-      data: { sentences },
-    });
-    return data.sentences;
-  };
-
   return (
     <div className={classes.clusterList}>
       {wordClusters.length > 0 ? (
@@ -111,7 +103,7 @@ const WordUnification: React.FC = () => {
       ) : (
         <Loading />
       )}
-      <Button
+      <Button // 새로고침 버튼
         className={classes.refreshBtn}
         shape="circular"
         appearance="subtle"
