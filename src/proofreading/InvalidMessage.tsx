@@ -17,7 +17,7 @@ type InvalidMessageProps = {
   message: string;
 };
 
-const InvalidMessage: React.FC<InvalidMessageProps> = ({ badgeStyle, message }: InvalidMessageProps) => {
+export const InvalidMessage: React.FC<InvalidMessageProps> = ({ badgeStyle, message }: InvalidMessageProps) => {
   const styles = useStyles();
 
   return (
@@ -27,5 +27,3 @@ const InvalidMessage: React.FC<InvalidMessageProps> = ({ badgeStyle, message }: 
     </div>
   );
 };
-
-export default InvalidMessage;

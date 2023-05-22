@@ -2,7 +2,6 @@ import * as React from "react";
 import Translation from "./translation/Translation";
 import WordUnification from "./wordunification/WordUnification";
 import Gejosik from "./gejosik/Gejosik";
-import Proofreading from "./proofreading/Proofreading";
 import OverflowTabList from "./OverflowTabList";
 import {
   bundleIcon,
@@ -16,6 +15,7 @@ import {
   CalendarTodayRegular,
 } from "@fluentui/react-icons";
 import { makeStyles, tokens } from "@fluentui/react-components";
+import { Proofreading } from "./proofreading";
 
 const Calendar3Day = bundleIcon(Calendar3DayFilled, Calendar3DayRegular);
 const CalendarAgenda = bundleIcon(CalendarAgendaFilled, CalendarAgendaRegular);

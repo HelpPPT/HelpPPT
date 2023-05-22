@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { getTextsFromSlides } from "../common";
 import axios from "axios";
-import Sentence from "./Sentence";
 import { SlideText } from "../common/main";
 import { Divider, Spinner } from "@fluentui/react-components";
+import { Sentence } from "./Sentence";
 
-const Proofreading: React.FC = () => {
+export const Proofreading: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [sentences, setSentences] = React.useState<Array<SlideText>>([]);
   const slideCounter: Set<string> = new Set<string>();
@@ -52,5 +52,3 @@ const Proofreading: React.FC = () => {
 
   return loading ? <Spinner label="문장 불러오는중..." labelPosition="below" size="huge" /> : <div>{temp}</div>;
 };
-
-export default Proofreading;
