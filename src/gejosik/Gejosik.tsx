@@ -99,3 +99,5 @@ export const Gejosik: React.FunctionComponent = () => {
     </div>
   );
 };
+
+export default Gejosik;

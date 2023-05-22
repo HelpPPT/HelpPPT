@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Translation } from "./translation/Translation";
 import { WordUnitier } from "./wordunitier/components/WordUniter";
-import { Gejosik } from "./gejosik/Gejosik";
+import Gejosik from "./gejosik/Gejosik";
 import Proofreading from "./proofreading/Proofreading";
 import { OverflowTabList } from "./OverflowTabList";
 import {
