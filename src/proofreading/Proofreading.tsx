@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { getTextsFromSlides } from "../common";
-import axios from "axios";
+import { getTextsFromSlides, splitSentences } from "../common";
 import { SlideText } from "../common/main";
 import { Divider, Spinner } from "@fluentui/react-components";
 import { Sentence } from "./Sentence";
@@ -13,33 +12,13 @@ export const Proofreading: React.FC = () => {
   useEffect(() => {
     const fetchSentences = async () => {
       const textData: Array<SlideText> = await getTextsFromSlides();
+      const sentences: Array<SlideText> = await splitSentences(textData);
 
-      let splittedSentences: Array<SlideText> = [];
-
-      // TODO: poor performance, need improvement
-      for (const textDatum of textData) {
-        const splits: Array<string> = await splitSentences([textDatum.text]);
-        splits.forEach((split) => {
-          splittedSentences = [
-            ...splittedSentences,
-            { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
-          ];
-        });
-      }
-      setSentences(splittedSentences);
+      setSentences(sentences);
       setLoading(false);
     };
     fetchSentences();
   }, []);
-
-  const splitSentences = async (sentences: Array<string>): Promise<Array<string>> => {
-    const { data } = await axios({
-      method: "POST",
-      url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
-      data: { sentences },
-    });
-    return data.sentences;
-  };
 
   let temp: Array<JSX.Element> = [];
   sentences.forEach((sentence: SlideText, index) => {
