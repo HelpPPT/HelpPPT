@@ -10,10 +10,9 @@ import {
 } from "@fluentui/react-components";
 import { ArrowClockwise24Filled } from "@fluentui/react-icons";
 import { getWordClusters } from "./api/grouping";
-import { getTextsFromSlides } from "../common";
+import { getSentencesFromSlides } from "../common";
 import { SlideText } from "../common/main";
 import { ShowClusterItem } from "./ShowClusterItem";
-import { splitSentences } from "./api/fetch";
 
 const useSkeletonStyles = makeStyles({
   container: {
@@ -72,23 +71,8 @@ const WordUnification: React.FC = () => {
   }, []);
 
   const getClusters = async () => {
-    const textData: Array<SlideText> = await getTextsFromSlides();
-
-    let splittedSentences: Array<SlideText> = [];
-
-    // TODO: poor performance, need improvement
-    for (const textDatum of textData) {
-      const splits: Array<string> = await splitSentences([textDatum.text]);
-      splits.forEach((split) => {
-        splittedSentences = [
-          ...splittedSentences,
-          { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
-        ];
-      });
-    }
-
-    const sentences: string[] = splittedSentences.map((sentence) => sentence["text"]);
-
+    const slideSentences: Array<SlideText> = await getSentencesFromSlides();
+    const sentences: string[] = slideSentences.map((sentence) => sentence.text);
     const clusters: Array<Array<string>> = await getWordClusters(sentences);
     setWordClusters(clusters);
   };
