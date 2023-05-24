@@ -1,4 +1,5 @@
 import { SlideText } from "../main";
+import { splitSentences } from "./sentenceSplit";
 
 export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
@@ -82,3 +83,9 @@ export const findAndFocusText = async (searchSlideText: SlideText) =>
       }
     }
   });
+
+export const getSentencesFromSlides = async (): Promise<Array<SlideText>> => {
+  const textData: Array<SlideText> = await getTextsFromSlides();
+  const sentences: Array<SlideText> = await splitSentences(textData);
+  return sentences;
+};
