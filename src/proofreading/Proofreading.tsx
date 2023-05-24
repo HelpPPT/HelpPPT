@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { getTextsFromSlides, splitSentences } from "../common";
+import { getSentencesFromSlides } from "../common";
 import { SlideText } from "../common/main";
 import { Divider, Spinner } from "@fluentui/react-components";
 import { Sentence } from "./Sentence";
@@ -10,14 +10,9 @@ export const Proofreading: React.FC = () => {
   const slideCounter: Set<string> = new Set<string>();
 
   useEffect(() => {
-    const fetchSentences = async () => {
-      const textData: Array<SlideText> = await getTextsFromSlides();
-      const sentences: Array<SlideText> = await splitSentences(textData);
-
-      setSentences(sentences);
-      setLoading(false);
-    };
-    fetchSentences();
+    getSentencesFromSlides()
+      .then((sentences) => setSentences(sentences))
+      .then(() => setLoading(false));
   }, []);
 
   let temp: Array<JSX.Element> = [];
