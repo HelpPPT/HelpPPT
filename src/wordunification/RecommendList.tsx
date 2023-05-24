@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
 import { unifyWordAll } from "./api/powerpoint";
-import { getTextsFromSlides, findAndFocusText } from "../common";
+import { findAndFocusText, getSentencesFromSlides } from "../common";
 import { SlideText } from "../common/main";
-import { splitSentences, convertToMainWord } from "./api/fetch";
+import { convertToMainWord } from "./api/fetch";
 
 export interface RecommendListProps {
   changedWordList: Array<string>;
@@ -26,7 +26,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 
   React.useEffect(() => {
     const initData = async () => {
-      const rawLine: Array<SlideText> = await fetchSentences();
+      const rawLine: Array<SlideText> = await getSentencesFromSlides();
       const validLines: Array<SlideText> = checkedLinesValid(rawLine);
       const resultsMapList: Array<RecommendSentenceProps> = await getValidLinesMap(validLines);
       setSentencesMap(resultsMapList);
@@ -34,24 +34,6 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 
     initData();
   }, [changedWordList]);
-
-  const fetchSentences = async () => {
-    const textData: Array<SlideText> = await getTextsFromSlides();
-
-    let splittedSentences: Array<SlideText> = [];
-
-    for (const textDatum of textData) {
-      const splits: Array<string> = await splitSentences([textDatum.text]);
-      splits.forEach((split) => {
-        splittedSentences = [
-          ...splittedSentences,
-          { text: split, slideId: textDatum.slideId, slideIndex: textDatum.slideIndex },
-        ];
-      });
-    }
-
-    return splittedSentences;
-  };
 
   const checkedLinesValid = (lines: Array<SlideText>) => {
     return lines.filter((line) => changedWordList.some((word) => line.text.includes(word)));
