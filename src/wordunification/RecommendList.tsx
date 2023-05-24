@@ -91,9 +91,10 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   };
 
   const handleCardClick = async (sentenceData: RecommendSentenceProps, cardIndex: number) => {
-    findAndFocusText({ text: sentenceData.text, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
-    await convertToMainWord(sentenceData.text, convertLine(sentenceData.text, sentenceData.index));
+    const convertSentence = convertLine(sentenceData.text, sentenceData.index);
+    await convertToMainWord(sentenceData.text, convertSentence);
     setHiddenCardIndexes((prevIndexes) => [...prevIndexes, cardIndex]);
+    findAndFocusText({ text: convertSentence, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
   };
 
   return (
