@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Input, ToggleButton, useId, makeStyles, shorthands } from "@fluentui/react-components";
+import { Card, Input, ToggleButton, useId, makeStyles, shorthands, tokens } from "@fluentui/react-components";
 
 export interface MainWordListProps {
   cluster: Array<string>;
@@ -35,7 +35,10 @@ export const MainWordList: React.FunctionComponent<MainWordListProps> = ({ clust
             className={classes.toggleBtn}
             onClick={() => handleToggleClick(word_idx, word)}
             checked={buttonCheckedList[word_idx]}
-            style={{ backgroundColor: selectedToggleIndex === word_idx ? "#EBEBEB" : "transparent" }}
+            style={{
+              backgroundColor:
+                selectedToggleIndex === word_idx ? tokens.colorBrandBackgroundInvertedHover : "transparent",
+            }}
           >
             {word}
           </ToggleButton>
@@ -59,6 +62,16 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
   btnList: { display: "flex", flexDirection: "column" },
-  toggleBtn: { ...shorthands.gap("5px"), ...shorthands.margin("5px"), display: "flex" },
+  toggleBtn: {
+    ...shorthands.gap("5px"),
+    ...shorthands.margin("5px"),
+    display: "flex",
+    "&:hover": {
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+    },
+  },
+  activeBtn: {
+    backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+  },
   inputBox: { ...shorthands.gap("5px"), ...shorthands.margin("5px") },
 });

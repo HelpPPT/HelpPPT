@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
+import { Card, Text, makeStyles, Button, shorthands, tokens } from "@fluentui/react-components";
 import { unifyWordAll } from "./api/powerpoint";
 import { findAndFocusText, getSentencesFromSlides } from "../common";
 import { SlideText } from "../common/main";
@@ -107,11 +107,35 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
 };
 
 const useStyles = makeStyles({
-  card: { ...shorthands.gap("10px"), ...shorthands.margin("5px"), display: "flex" },
-  highlight: {
-    backgroundColor: "#ECF5FF",
-    textDecorationColor: "#6B89E5",
+  card: {
+    ...shorthands.gap("10px"),
+    ...shorthands.margin("5px"),
+    display: "flex",
+    "&:hover": {
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+    },
+    "&:active": {
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+      ...shorthands.outline("2px", "solid", tokens.colorBrandForegroundInvertedHover),
+    },
   },
-  allChangeBtn: { backgroundColor: "#6B89E5", color: "white", ...shorthands.margin("5px"), alignItems: "center" },
+  highlight: {
+    backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+    textDecorationColor: tokens.colorBrandForegroundInvertedHover,
+  },
+  allChangeBtn: {
+    backgroundColor: tokens.colorBrandForegroundInverted,
+    color: "white",
+    ...shorthands.margin("5px"),
+    alignItems: "center",
+    "&:hover": {
+      backgroundColor: tokens.colorBrandForegroundOnLightHover,
+      color: "white",
+    },
+    "&:active": {
+      backgroundColor: tokens.colorBrandForegroundInverted,
+      color: "white",
+    },
+  },
   colItems: { display: "flex", flexDirection: "column" },
 });
