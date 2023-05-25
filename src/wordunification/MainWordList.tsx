@@ -9,16 +9,19 @@ export interface MainWordListProps {
 export const MainWordList: React.FunctionComponent<MainWordListProps> = ({ cluster, changedMainWord }) => {
   const [selectedToggleIndex, setSelectedToggleIndex] = React.useState(-1);
   const [buttonCheckedList, setButtonCheckedList] = React.useState(Array(cluster.length).fill(true));
+  const [customMainWord, setCustomMainWord] = React.useState("");
   const inputId = useId("input-with-placeholder");
   const classes = useStyles();
 
   const handleToggleClick = (index: number, word: string) => {
     setSelectedToggleIndex(index);
+    setCustomMainWord("");
     changedMainWord(word);
   };
 
   const handleInputChange = (word: string) => {
     setSelectedToggleIndex(-1);
+    setCustomMainWord(word);
     changedMainWord(word);
     setButtonCheckedList(Array(cluster.length).fill(false));
   };
@@ -47,6 +50,7 @@ export const MainWordList: React.FunctionComponent<MainWordListProps> = ({ clust
           className={classes.inputBox}
           placeholder="바꿀 단어"
           id={inputId}
+          value={customMainWord}
           onChange={(e) => handleInputChange(e.target.value)}
         />
       </div>
