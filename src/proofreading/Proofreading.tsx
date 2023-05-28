@@ -1,28 +1,36 @@
 import React, { useEffect } from "react";
-import { getSentencesFromSlides } from "../common";
-import { SlideText } from "../common/main";
-import { Divider, Spinner } from "@fluentui/react-components";
+import { getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
+import { SlideTexts } from "../common/main";
+import { Divider, makeStyles, Spinner } from "@fluentui/react-components";
 import { Sentence } from "./Sentence";
 
+const useStyles = makeStyles({
+  loader: {
+    height: "100%",
+  },
+});
+
 export const Proofreading: React.FC = () => {
+  const styles = useStyles();
+
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [sentences, setSentences] = React.useState<Array<SlideText>>([]);
-  const slideCounter: Set<string> = new Set<string>();
+  const [slideSentences, setSlideSentences] = React.useState<Array<SlideTexts>>([]);
 
   useEffect(() => {
     getSentencesFromSlides()
-      .then((sentences) => setSentences(sentences))
+      .then((sentences) => groupSlideTextsBySlide(sentences))
+      .then((slideSentences) => setSlideSentences(slideSentences))
       .then(() => setLoading(false));
   }, []);
 
-  let temp: Array<JSX.Element> = [];
-  sentences.forEach((sentence: SlideText, index) => {
-    if (!slideCounter.has(sentence.slideId)) {
-      slideCounter.add(sentence.slideId);
-      temp = [...temp, <Divider key={-(index + 1)}>슬라이드 {slideCounter.size}</Divider>];
-    }
-    temp = [...temp, <Sentence key={index} slideText={sentence} />];
-  });
+  const groupedSentences: Array<Array<JSX.Element>> = slideSentences.map((slideSentence) => [
+    <Divider key={slideSentence.slideId}>슬라이드 {slideSentence.slideIndex}</Divider>,
+    ...slideSentence.texts.map((sentence, index) => <Sentence key={index} slideText={sentence} />),
+  ]);
 
-  return loading ? <Spinner label="문장 불러오는중..." labelPosition="below" size="huge" /> : <div>{temp}</div>;
+  return loading ? (
+    <Spinner className={styles.loader} label="문장 불러오는중..." labelPosition="below" size="huge" />
+  ) : (
+    <div>{groupedSentences.map((groupedSentence) => groupedSentence)}</div>
+  );
 };
