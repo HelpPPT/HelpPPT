@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Text, makeStyles, Button, shorthands, tokens } from "@fluentui/react-components";
+import { Card, Text, makeStyles, Button, shorthands, tokens, Divider } from "@fluentui/react-components";
 import { unifyWordAll } from "./api/powerpoint";
 import { findAndFocusText, getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
 import { SlideText, SlideTexts } from "../common/main";
@@ -94,8 +94,9 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
         모두 변경
       </Button>
 
-      {groupedSentencesMap.map((sentencesMap, slideIndex) =>
-        sentencesMap.map((sentenceData, i) => {
+      {groupedSentencesMap.map((sentencesMap, slideIndex) => [
+        <Divider key={slideIndex}>슬라이드 {slideIndex}</Divider>,
+        ...sentencesMap.map((sentenceData, i) => {
           if (hiddenCardIndexes.includes(i)) {
             return null;
           }
@@ -103,7 +104,6 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
           return (
             <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, i)}>
               <div>
-                {slideIndex}
                 <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
                 <Text underline className={classes.highlight}>
                   {sentenceData.text.slice(sentenceData.index["start"], sentenceData.index["end"])}
@@ -112,8 +112,8 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
               </div>
             </Card>
           );
-        })
-      )}
+        }),
+      ])}
     </div>
   );
 };
