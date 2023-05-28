@@ -31,6 +31,6 @@ export const Proofreading: React.FC = () => {
   return loading ? (
     <Spinner className={styles.loader} label="문장 불러오는중..." labelPosition="below" size="huge" />
   ) : (
-    <div>{groupedSentences.map((groupedSentence) => groupedSentence)}</div>
+    <div>{...groupedSentences}</div>
   );
 };
