@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Card, Text, makeStyles, Button, shorthands } from "@fluentui/react-components";
+import { Card, Text, makeStyles, Button, shorthands, tokens, Divider } from "@fluentui/react-components";
 import { unifyWordAll } from "./api/powerpoint";
-import { findAndFocusText, getSentencesFromSlides } from "../common";
-import { SlideText } from "../common/main";
+import { findAndFocusText, getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
+import { SlideText, SlideTexts } from "../common/main";
 import { convertToMainWord } from "./api/fetch";
 
 export interface RecommendListProps {
@@ -19,7 +19,7 @@ export interface RecommendSentenceProps {
 
 export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, mainWord }) => {
   const classes = useStyles();
-  const [sentencesMap, setSentencesMap] = React.useState<Array<RecommendSentenceProps>>([]);
+  const [groupedSentencesMap, setGroupedSentencesMap] = React.useState<Array<Array<RecommendSentenceProps>>>([]);
   const [hiddenCardIndexes, setHiddenCardIndexes] = React.useState<number[]>([]);
 
   const pattern = new RegExp(`(${changedWordList.join("|")})`, "g");
@@ -28,8 +28,9 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
     const initData = async () => {
       const rawLine: Array<SlideText> = await getSentencesFromSlides();
       const validLines: Array<SlideText> = checkedLinesValid(rawLine);
-      const resultsMapList: Array<RecommendSentenceProps> = await getValidLinesMap(validLines);
-      setSentencesMap(resultsMapList);
+      const gruopedValidLines: Array<SlideTexts> = await groupSlideTextsBySlide(validLines);
+      const resultsMapList: Array<Array<RecommendSentenceProps>> = await getValidLinesMap(gruopedValidLines);
+      setGroupedSentencesMap(resultsMapList);
     };
 
     initData();
@@ -39,21 +40,29 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
     return lines.filter((line) => changedWordList.some((word) => line.text.includes(word)));
   };
 
-  const getValidLinesMap = async (lines: Array<SlideText>) => {
-    let resultsMapList: Array<RecommendSentenceProps> = [];
+  const getValidLinesMap = async (groupedLines: Array<SlideTexts>): Promise<Array<Array<RecommendSentenceProps>>> => {
+    const groupedResultMapList: Array<Array<RecommendSentenceProps>> = [];
 
-    for (const line of lines) {
-      const indexes = findMatchIndexes(line.text);
-      const resultsMap = indexes.map((index) => ({
-        text: line.text,
-        slideId: line.slideId,
-        slideIndex: line.slideIndex,
-        index: index,
-      }));
-      resultsMapList.push(...resultsMap);
+    for (const groupedLine of groupedLines) {
+      if (!groupedLine) {
+        continue;
+      }
+
+      const resultsMapList: Array<RecommendSentenceProps> = [];
+
+      for (const line of groupedLine.texts) {
+        const indexes = findMatchIndexes(line.text);
+        const resultsMap = indexes.map((index) => ({
+          ...line,
+          index: index,
+        }));
+        resultsMapList.push(...resultsMap);
+      }
+
+      groupedResultMapList[groupedLine.slideIndex] = resultsMapList;
     }
 
-    return resultsMapList;
+    return groupedResultMapList;
   };
 
   const findMatchIndexes = (line: string) => {
@@ -85,33 +94,60 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
         모두 변경
       </Button>
 
-      {sentencesMap.map((sentenceData, i) => {
-        if (hiddenCardIndexes.includes(i)) {
-          return null;
-        }
+      {groupedSentencesMap.map((sentencesMap, slideIndex) => [
+        <Divider key={slideIndex}>슬라이드 {slideIndex}</Divider>,
+        ...sentencesMap.map((sentenceData, i) => {
+          if (hiddenCardIndexes.includes(i)) {
+            return null;
+          }
 
-        return (
-          <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, i)}>
-            <div>
-              <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
-              <Text underline className={classes.highlight}>
-                {sentenceData.text.slice(sentenceData.index["start"], sentenceData.index["end"])}
-              </Text>
-              <Text>{sentenceData.text.slice(sentenceData.index["end"])}</Text>
-            </div>
-          </Card>
-        );
-      })}
+          return (
+            <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, i)}>
+              <div>
+                <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
+                <Text underline className={classes.highlight}>
+                  {sentenceData.text.slice(sentenceData.index["start"], sentenceData.index["end"])}
+                </Text>
+                <Text>{sentenceData.text.slice(sentenceData.index["end"])}</Text>
+              </div>
+            </Card>
+          );
+        }),
+      ])}
     </div>
   );
 };
 
 const useStyles = makeStyles({
-  card: { ...shorthands.gap("10px"), ...shorthands.margin("5px"), display: "flex" },
-  highlight: {
-    backgroundColor: "#ECF5FF",
-    textDecorationColor: "#6B89E5",
+  card: {
+    ...shorthands.gap("10px"),
+    ...shorthands.margin("5px"),
+    display: "flex",
+    "&:hover": {
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+    },
+    "&:active": {
+      backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+      ...shorthands.outline("2px", "solid", tokens.colorBrandForegroundInvertedHover),
+    },
   },
-  allChangeBtn: { backgroundColor: "#6B89E5", color: "white", ...shorthands.margin("5px"), alignItems: "center" },
+  highlight: {
+    backgroundColor: tokens.colorBrandBackgroundInvertedHover,
+    textDecorationColor: tokens.colorBrandForegroundInvertedHover,
+  },
+  allChangeBtn: {
+    backgroundColor: tokens.colorBrandForegroundInverted,
+    color: "white",
+    ...shorthands.margin("5px"),
+    alignItems: "center",
+    "&:hover": {
+      backgroundColor: tokens.colorBrandForegroundOnLightHover,
+      color: "white",
+    },
+    "&:active": {
+      backgroundColor: tokens.colorBrandForegroundInverted,
+      color: "white",
+    },
+  },
   colItems: { display: "flex", flexDirection: "column" },
 });

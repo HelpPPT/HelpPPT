@@ -1,4 +1,4 @@
-import { SlideText } from "../main";
+import { SlideText, SlideTexts } from "../main";
 import { splitSentences } from "./sentenceSplit";
 
 export const getTextsFromSlides = async (): Promise<Array<SlideText>> =>
@@ -88,4 +88,24 @@ export const getSentencesFromSlides = async (): Promise<Array<SlideText>> => {
   const textData: Array<SlideText> = await getTextsFromSlides();
   const sentences: Array<SlideText> = await splitSentences(textData);
   return sentences;
+};
+
+export const groupSlideTextsBySlide = async (slideTexts: Array<SlideText>): Promise<Array<SlideTexts>> => {
+  const groupedSlideTexts: Array<SlideTexts> = [];
+
+  for (const slideText of slideTexts) {
+    // just append when available
+    if (groupedSlideTexts[slideText.slideIndex] !== undefined) {
+      groupedSlideTexts[slideText.slideIndex].texts.push(slideText);
+      continue;
+    }
+
+    groupedSlideTexts[slideText.slideIndex] = {
+      slideId: slideText.slideId,
+      slideIndex: slideText.slideIndex,
+      texts: [slideText],
+    };
+  }
+
+  return groupedSlideTexts;
 };
