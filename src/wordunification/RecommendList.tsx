@@ -95,7 +95,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       </Button>
 
       {groupedSentencesMap.map((sentencesMap, slideIndex) => [
-        <Divider key={slideIndex}>슬라이드 {slideIndex}</Divider>,
+        <Divider key={sentencesMap[0].slideId}>슬라이드 {slideIndex}</Divider>,
         ...sentencesMap.map((sentenceData, i) => {
           if (hiddenCardIndexes.includes(i)) {
             return null;
