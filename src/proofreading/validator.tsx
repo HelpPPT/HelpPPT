@@ -50,29 +50,14 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
       message: "문장이 너무 길어요.",
     },
     {
-      validatorFunc: validateEndWithPeriodOrQuestionOrExclamation,
-      badgeStyle: mergeClasses(styles.badge, styles.greenBadge),
-      message: "문장이 마침표, 물음표, 느낌표로 끝나지 않았어요.",
-    },
-    {
       validatorFunc: validatePunctuationSpacing,
       badgeStyle: mergeClasses(styles.badge, styles.orangeBadge),
       message: "구두점 뒤에는 띄어쓰기를 해주세요.",
     },
     {
-      validatorFunc: validateStartWithCapital,
-      badgeStyle: mergeClasses(styles.badge, styles.yellowBadge),
-      message: "문장이 대문자로 시작하지 않았어요.",
-    },
-    {
       validatorFunc: validateNoConsecutiveSpaces,
       badgeStyle: mergeClasses(styles.badge, styles.berryBadge),
       message: "띄어쓰기가 연속되었어요.",
-    },
-    {
-      validatorFunc: validateSingleQuestionOrExclamation,
-      badgeStyle: mergeClasses(styles.badge, styles.marigoldBadge),
-      message: "물음표나 느낌표가 2개 이상 있어요.",
     },
     {
       validatorFunc: validateNoDoubleNegatives,
@@ -109,6 +94,7 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   const validationResult: SentenceValidationResult = validatorsData.reduce(
     (acc: SentenceValidationResult, validatorData: ValidatorData) => {
       const isValid = validatorData.validatorFunc(slideText.text);
+
       if (!isValid) {
         acc.isValid = false;
         acc.invalidDatas.push(validatorData);
@@ -121,26 +107,28 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   return validationResult;
 };
 
-const validateLengthLimit = (input: string, limit: number = 10): boolean => {
+const validateLengthLimit = (input: string, limit: number = 50): boolean => {
   return input.length <= limit;
-};
-
-const validateEndWithPeriodOrQuestionOrExclamation = (input: string): boolean => {
-  return /.*[.|?|!]$/.test(input);
 };
 
 const validatePunctuationSpacing = (input: string): boolean => {
   if (!/\s*[,;?!]\s*/.test(input)) return true;
-  else if (input.lastIndexOf(",") === input.length - 1) return true;
+  else if (/[,;?!]/.test(input[input.length - 1])) return true; // 여기 이상함!
   else return /[,;?!]\s+/.test(input);
 };
 
-const validateStartWithCapital = (input: string): boolean => {
-  return /^[A-Z|가-힣]/.test(input);
-};
-
 const validateNoConsecutiveSpaces = (input: string): boolean => {
-  return !/\s{2,}/.test(input);
+  let consecutive_spaces_cnt = 0;
+  let cnt = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] == " ") cnt++;
+    else {
+      consecutive_spaces_cnt = consecutive_spaces_cnt > cnt ? consecutive_spaces_cnt : cnt;
+      cnt = 0;
+    }
+  }
+  if (consecutive_spaces_cnt >= 2 && consecutive_spaces_cnt <= 4) return false;
+  else return true;
 };
 
 const validateClosingBrackets = (input: string): boolean => {
@@ -173,10 +161,6 @@ const validateMissingClosedQuotationMarks = (input: string): boolean => {
 
 const validateColonNotSpacing = (input: string): boolean => {
   return !/\s:/.test(input);
-};
-
-const validateSingleQuestionOrExclamation = (input: string): boolean => {
-  return (input.match(/\?|!/g) || []).length <= 1;
 };
 
 const validateNoDoubleNegatives = (input: string): boolean => {
