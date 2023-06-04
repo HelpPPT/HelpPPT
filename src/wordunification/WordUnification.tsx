@@ -73,7 +73,8 @@ const WordUnification: React.FC = () => {
   const getClusters = async () => {
     const slideSentences: Array<SlideText> = await getSentencesFromSlides();
     const sentences: string[] = slideSentences.map((sentence) => sentence.text);
-    const clusters: Array<Array<string>> = await getWordClusters(sentences, false, null);
+    // const clusters: Array<Array<string>> = await getWordClusters(sentences, false, null);
+    const clusters: Array<Array<string>> = await getWordClusters(sentences, true, "computer");
     setWordClusters(clusters);
   };
 
