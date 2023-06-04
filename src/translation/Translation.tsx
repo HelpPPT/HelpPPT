@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Button, Switch } from "@fluentui/react-components";
+import { Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import axios from "axios";
+import Option from "./Options";
 
 type TranslationProps = {
   active: boolean;
@@ -15,24 +16,24 @@ type TranslationOption = {
 };
 
 enum TranslationSuffix {
-  "()" = "()",
-  "[]" = "[]",
-  "{}" = "{}",
+  "( )" = "()",
+  "[ ]" = "[]",
+  "{ }" = "{}",
 }
 
 enum TargetLanguage {
-  KO = "ko",
-  EN = "en",
-  JA = "ja",
-  ZH = "zh",
+  "한국어" = "ko",
+  "영어" = "en",
+  "일본어" = "ja",
+  "중국어" = "zh",
 }
 
 const Translation: React.FunctionComponent<TranslationProps> = ({ active }: TranslationProps) => {
   const [options, setOptions] = React.useState<TranslationOption>({
     isTranslationON: false,
-    wordBaseTranslationSuffix: TranslationSuffix["()"],
-    selectBaseTranslationSuffix: TranslationSuffix["[]"],
-    targetLanguage: TargetLanguage.KO,
+    wordBaseTranslationSuffix: TranslationSuffix["( )"],
+    selectBaseTranslationSuffix: TranslationSuffix["[ ]"],
+    targetLanguage: TargetLanguage["한국어"],
   });
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
@@ -41,6 +42,7 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
   const optionHandler = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     setOptions({ ...options, [target.name]: target.value });
+    // console.dir({ ...options, [target.name]: target.value });
   };
 
   const toggleHandler = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -149,37 +151,19 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
       <div>
         <Switch name="isTranslationON" onClick={toggleHandler} />
       </div>
-      <div>
-        <div>
-          <Button
-            name="wordBaseTranslationSuffix"
-            value="()"
-            onClick={optionHandler}
-            size="large"
-            appearance={options.wordBaseTranslationSuffix === "()" ? "primary" : "secondary"}
-          >
-            ( )
-          </Button>
-          <Button
-            name="wordBaseTranslationSuffix"
-            value="[]"
-            onClick={optionHandler}
-            size="large"
-            appearance={options.wordBaseTranslationSuffix === "[]" ? "primary" : "secondary"}
-          >
-            [ ]
-          </Button>
-          <Button
-            name="wordBaseTranslationSuffix"
-            value="{}"
-            onClick={optionHandler}
-            size="large"
-            appearance={options.wordBaseTranslationSuffix === "{}" ? "primary" : "secondary"}
-          >
-            {"{ }"}
-          </Button>
-        </div>
-      </div>
+      <Option
+        name="wordBaseTranslationSuffix"
+        optionEnum={TranslationSuffix}
+        options={options}
+        optionHandler={optionHandler}
+      />
+      <Option
+        name="selectBaseTranslationSuffix"
+        optionEnum={TranslationSuffix}
+        options={options}
+        optionHandler={optionHandler}
+      />
+      <Option name="targetLanguage" optionEnum={TargetLanguage} options={options} optionHandler={optionHandler} />
     </div>
   );
 };
