@@ -45,5 +45,4 @@ export const convertToMainWord = async (searchSlideText: SlideText, main: string
       // replace
       shape.textFrame.textRange.text = changedLinesWithSplitter.join("");
     }
-
   });
