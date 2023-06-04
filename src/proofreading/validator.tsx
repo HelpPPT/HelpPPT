@@ -70,11 +70,6 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
       message: "괄호가 감싸지지 않았어요.",
     },
     {
-      validatorFunc: validateColonNotSpacing,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
-      message: ": 앞에 띄어쓰기가 있어요.",
-    },
-    {
       validatorFunc: validateMissingQuotationMarksBeforeRago,
       badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
       message: '라고 앞에 " 가 없어요.',
@@ -107,13 +102,14 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   return validationResult;
 };
 
-const validateLengthLimit = (input: string, limit: number = 50): boolean => {
+const validateLengthLimit = (input: string, limit: number = 100): boolean => {
   return input.length <= limit;
 };
 
 const validatePunctuationSpacing = (input: string): boolean => {
   if (!/\s*[,;?!]\s*/.test(input)) return true;
-  else if (/[,;?!]/.test(input[input.length - 1])) return true; // 여기 이상함!
+  else if (/[,;?!]/.test(input[input.length - 1])) return true;
+  else if (/\b\d+[.,]\d+\b/.test(input)) return true;
   else return /[,;?!]\s+/.test(input);
 };
 
@@ -127,11 +123,12 @@ const validateNoConsecutiveSpaces = (input: string): boolean => {
       cnt = 0;
     }
   }
-  if (consecutive_spaces_cnt >= 2 && consecutive_spaces_cnt <= 4) return false;
+  if (consecutive_spaces_cnt >= 3 && consecutive_spaces_cnt <= 5) return false;
   else return true;
 };
 
 const validateClosingBrackets = (input: string): boolean => {
+  if (/[가-힣a-zA-Z0-9]\)/.test(input)) return true;
   let open = 0,
     closed = 0;
   for (let c of input) {
