@@ -109,3 +109,24 @@ export const groupSlideTextsBySlide = async (slideTexts: Array<SlideText>): Prom
 
   return groupedSlideTexts;
 };
+
+export const getSelectedTextRange = async (): Promise<PowerPoint.TextRange> =>
+  PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    const textRange = context.presentation.getSelectedTextRange();
+    try {
+      await context.sync();
+    } catch (error) {
+      return null;
+    }
+
+    textRange.load("text");
+    await context.sync();
+    return textRange;
+  });
+
+export const setTextRangeText = async (textRange: PowerPoint.TextRange, text: string) =>
+  PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    textRange.load("text");
+    textRange.text = text;
+    await context.sync();
+  });
