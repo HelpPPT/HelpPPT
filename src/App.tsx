@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 const App: React.FC<AppProps> = () => {
   const styles = useStyles();
 
-  const [selectedPage, setSelectedPage] = React.useState<string>("proofreading");
+  const [selectedPage, setSelectedPage] = React.useState<string>("translation");
 
   return (
     <div className={styles.panel}>

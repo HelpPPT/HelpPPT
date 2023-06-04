@@ -8,21 +8,13 @@ type TranslationProps = {
 };
 
 const Translation: React.FunctionComponent<TranslationProps> = ({ active }: TranslationProps) => {
-  const [isChecked, setChecked] = React.useState<boolean>(false);
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
   const { setInterval, clearInterval } = useSetInterval();
 
-  const changeToggle = () => {
-    const nextChecked: boolean = !isChecked;
-
-    if (nextChecked) {
-      setTranslationON();
-    } else {
-      setTranslationOFF();
-    }
-
-    setChecked(nextChecked);
+  const toggleHandler = (event: React.MouseEvent<HTMLInputElement>) => {
+    const target: HTMLInputElement = event.target as HTMLInputElement;
+    target.checked ? setTranslationON() : setTranslationOFF();
   };
 
   const setTranslationON = () => {
@@ -121,7 +113,7 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
 
   return (
     <div style={active ? null : { display: "none" }}>
-      <Switch checked={isChecked} label={isChecked ? "ON" : "OFF"} onClick={changeToggle} />
+      <Switch onClick={toggleHandler} />
     </div>
   );
 };
