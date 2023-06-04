@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Switch } from "@fluentui/react-components";
+import { makeStyles, shorthands, Subtitle2, Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import Option from "./Options";
 import { getSelectedTextRange, setSelectedTextRangeText } from "../common";
@@ -29,12 +29,21 @@ enum TargetLanguage {
   "중국어" = "zh",
 }
 
+const useStyles = makeStyles({
+  title: {
+    marginTop: "1rem",
+    ...shorthands.padding("0.5rem", "0.5rem"),
+  },
+});
+
 const Translation: React.FunctionComponent<TranslationProps> = ({ active }: TranslationProps) => {
+  const styles = useStyles();
+
   const [options, setOptions] = React.useState<TranslationOption>({
     isTranslationON: false,
     wordBaseTranslationSuffix: TranslationSuffix["( )"],
     selectBaseTranslationSuffix: TranslationSuffix["[ ]"],
-    targetLanguage: TargetLanguage["한국어"],
+    targetLanguage: TargetLanguage["영어"],
   });
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
@@ -94,23 +103,31 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
   };
 
   return (
-    <div style={active ? null : { display: "none" }}>
+    <div style={active ? { display: "flex", flexDirection: "column" } : { display: "none" }}>
       <div>
-        <Switch name="isTranslationON" onClick={toggleHandler} />
+        <Switch
+          name="isTranslationON"
+          checked={options.isTranslationON}
+          label={options.isTranslationON ? "ON" : "OFF"}
+          onClick={toggleHandler}
+        />
       </div>
+      <Subtitle2 className={styles.title}>자동 완성 언어</Subtitle2>
+      <Option name="targetLanguage" optionEnum={TargetLanguage} options={options} optionHandler={optionHandler} />
+      <Subtitle2 className={styles.title}>커서 기반 자동 완성 명령어</Subtitle2>
       <Option
         name="wordBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
         options={options}
         optionHandler={optionHandler}
       />
+      <Subtitle2 className={styles.title}>선택 기반 자동 완성 명령어</Subtitle2>
       <Option
         name="selectBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
         options={options}
         optionHandler={optionHandler}
       />
-      <Option name="targetLanguage" optionEnum={TargetLanguage} options={options} optionHandler={optionHandler} />
     </div>
   );
 };
