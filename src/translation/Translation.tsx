@@ -1,10 +1,16 @@
 import * as React from "react";
-import { makeStyles, shorthands, Subtitle2, Switch } from "@fluentui/react-components";
+import { makeStyles, shorthands, Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import Option from "./Options";
 import { getSelectedTextRange, setSelectedTextRangeText } from "../common";
 import { translate } from "./api/translationAPI";
-import { TranslateAuto24Filled, TranslateOff24Regular } from "@fluentui/react-icons";
+import {
+  LocalLanguage24Regular,
+  PanelRightCursor24Regular,
+  SelectObjectSkewEdit24Regular,
+  TranslateAuto24Filled,
+  TranslateOff24Regular,
+} from "@fluentui/react-icons";
 
 type TranslationProps = {
   active: boolean;
@@ -117,17 +123,25 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
           onClick={toggleHandler}
         />
       </div>
-      <Subtitle2 className={styles.title}>자동완성 언어</Subtitle2>
-      <Option name="targetLanguage" optionEnum={TargetLanguage} options={options} optionHandler={optionHandler} />
-      <Subtitle2 className={styles.title}>커서 기반 자동완성 명령어</Subtitle2>
       <Option
+        title="자동완성 언어"
+        icon={<LocalLanguage24Regular />}
+        name="targetLanguage"
+        optionEnum={TargetLanguage}
+        options={options}
+        optionHandler={optionHandler}
+      />
+      <Option
+        title="커서 기반 자동완성 명령어"
+        icon={<PanelRightCursor24Regular />}
         name="wordBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
         options={options}
         optionHandler={optionHandler}
       />
-      <Subtitle2 className={styles.title}>선택 기반 자동완성 명령어</Subtitle2>
       <Option
+        title="선택 기반 자동완성 명령어"
+        icon={<SelectObjectSkewEdit24Regular />}
         name="selectBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
         options={options}
