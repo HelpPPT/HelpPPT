@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Switch } from "@fluentui/react-components";
+import { Button, Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import axios from "axios";
 
@@ -7,10 +7,41 @@ type TranslationProps = {
   active: boolean;
 };
 
+type TranslationOption = {
+  isTranslationON: boolean;
+  wordBaseTranslationSuffix: TranslationSuffix;
+  selectBaseTranslationSuffix: TranslationSuffix;
+  targetLanguage: TargetLanguage;
+};
+
+enum TranslationSuffix {
+  "()" = "()",
+  "[]" = "[]",
+  "{}" = "{}",
+}
+
+enum TargetLanguage {
+  KO = "ko",
+  EN = "en",
+  JA = "ja",
+  ZH = "zh",
+}
+
 const Translation: React.FunctionComponent<TranslationProps> = ({ active }: TranslationProps) => {
+  const [options, setOptions] = React.useState<TranslationOption>({
+    isTranslationON: false,
+    wordBaseTranslationSuffix: TranslationSuffix["()"],
+    selectBaseTranslationSuffix: TranslationSuffix["[]"],
+    targetLanguage: TargetLanguage.KO,
+  });
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
   const { setInterval, clearInterval } = useSetInterval();
+
+  const optionHandler = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLInputElement>) => {
+    const target = event.target as HTMLInputElement;
+    setOptions({ ...options, [target.name]: target.value });
+  };
 
   const toggleHandler = (event: React.MouseEvent<HTMLInputElement>) => {
     const target: HTMLInputElement = event.target as HTMLInputElement;
@@ -19,10 +50,12 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
 
   const setTranslationON = () => {
     setIntervalId(setInterval(translatedWord, 1000));
+    setOptions({ ...options, isTranslationON: true });
   };
   const setTranslationOFF = () => {
     clearInterval(intervalId);
     setIntervalId(null);
+    setOptions({ ...options, isTranslationON: false });
   };
 
   const translatedWord = async () => {
@@ -113,7 +146,40 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
 
   return (
     <div style={active ? null : { display: "none" }}>
-      <Switch onClick={toggleHandler} />
+      <div>
+        <Switch name="isTranslationON" onClick={toggleHandler} />
+      </div>
+      <div>
+        <div>
+          <Button
+            name="wordBaseTranslationSuffix"
+            value="()"
+            onClick={optionHandler}
+            size="large"
+            appearance={options.wordBaseTranslationSuffix === "()" ? "primary" : "secondary"}
+          >
+            ( )
+          </Button>
+          <Button
+            name="wordBaseTranslationSuffix"
+            value="[]"
+            onClick={optionHandler}
+            size="large"
+            appearance={options.wordBaseTranslationSuffix === "[]" ? "primary" : "secondary"}
+          >
+            [ ]
+          </Button>
+          <Button
+            name="wordBaseTranslationSuffix"
+            value="{}"
+            onClick={optionHandler}
+            size="large"
+            appearance={options.wordBaseTranslationSuffix === "{}" ? "primary" : "secondary"}
+          >
+            {"{ }"}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
