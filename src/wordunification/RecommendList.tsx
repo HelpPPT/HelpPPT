@@ -20,7 +20,9 @@ export interface RecommendSentenceProps {
 export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, mainWord }) => {
   const classes = useStyles();
   const [groupedSentencesMap, setGroupedSentencesMap] = React.useState<Array<Array<RecommendSentenceProps>>>([]);
-  const [hiddenCardIndexes, setHiddenCardIndexes] = React.useState<number[]>([]);
+  const [hiddenCardIndexes, setHiddenCardIndexes] = React.useState<Array<{ slideIndex: number; cardIndex: number }>>(
+    []
+  );
 
   const pattern = new RegExp(`(${changedWordList.join("|")})`, "g");
 
@@ -37,7 +39,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   }, [changedWordList]);
 
   const checkedLinesValid = (lines: Array<SlideText>) => {
-    return lines.filter((line) => changedWordList.some((word) => line.text.includes(word)));
+    return lines.filter((line) => changedWordList.some((word) => line.text.toLowerCase().includes(word)));
   };
 
   const getValidLinesMap = async (groupedLines: Array<SlideTexts>): Promise<Array<Array<RecommendSentenceProps>>> => {
@@ -68,7 +70,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   const findMatchIndexes = (line: string) => {
     const indexes = [];
     let match;
-    while ((match = pattern.exec(line)) !== null) {
+    while ((match = pattern.exec(line.toLowerCase())) !== null) {
       indexes.push({ start: match.index, end: pattern.lastIndex });
     }
     return indexes;
@@ -81,10 +83,19 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
     return modifiedSentence;
   };
 
-  const handleCardClick = async (sentenceData: RecommendSentenceProps, cardIndex: number) => {
+  const handleCardClick = async (
+    sentenceData: RecommendSentenceProps,
+    cardIndex: { slideIndex: number; cardIndex: number }
+  ) => {
     const convertSentence = convertLine(sentenceData.text, sentenceData.index);
-    await convertToMainWord(sentenceData.text, convertSentence);
-    setHiddenCardIndexes((prevIndexes) => [...prevIndexes, cardIndex]);
+    await convertToMainWord(
+      { text: sentenceData.text, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex },
+      convertSentence
+    );
+    setHiddenCardIndexes((prevIndexes) => [
+      ...prevIndexes,
+      { slideIndex: cardIndex.slideIndex, cardIndex: cardIndex.cardIndex },
+    ]);
     findAndFocusText({ text: convertSentence, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
   };
 
@@ -97,12 +108,18 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       {groupedSentencesMap.map((sentencesMap, slideIndex) => [
         <Divider key={sentencesMap[0].slideId}>슬라이드 {slideIndex}</Divider>,
         ...sentencesMap.map((sentenceData, i) => {
-          if (hiddenCardIndexes.includes(i)) {
-            return null;
+          const cardIndex = { slideIndex: slideIndex, cardIndex: i };
+
+          if (
+            hiddenCardIndexes.some(
+              (hiddenIndex) => hiddenIndex.slideIndex === slideIndex && hiddenIndex.cardIndex === i
+            )
+          ) {
+            return null; // 해당 인덱스의 카드는 렌더링하지 않음
           }
 
           return (
-            <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, i)}>
+            <Card key={i} className={classes.card} onClick={() => handleCardClick(sentenceData, cardIndex)}>
               <div>
                 <Text>{sentenceData.text.slice(0, sentenceData.index["start"])}</Text>
                 <Text underline className={classes.highlight}>
