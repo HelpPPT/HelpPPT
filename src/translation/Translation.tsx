@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
-import axios from "axios";
 import Option from "./Options";
+import { getSelectedTextRange, setSelectedTextRangeText } from "../common";
+import { translate } from "./api/translationAPI";
 
 type TranslationProps = {
   active: boolean;
@@ -42,7 +43,6 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
   const optionHandler = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     setOptions({ ...options, [target.name]: target.value });
-    // console.dir({ ...options, [target.name]: target.value });
   };
 
   const toggleHandler = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -61,89 +61,36 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
   };
 
   const translatedWord = async () => {
-    const currentSelectedWord: string = await getSelectedText();
+    const currentSelectedWordTextRange: PowerPoint.TextRange = await getSelectedTextRange();
+    const currentSelectedWord: string = currentSelectedWordTextRange.text;
 
-    if (currentSelectedWord && currentSelectedWord.endsWith("()")) {
-      _translateWord(currentSelectedWord);
-    } else if (currentSelectedWord && currentSelectedWord.endsWith("[]")) {
-      translateByDragSelection();
+    if (currentSelectedWord && currentSelectedWord.endsWith(options.wordBaseTranslationSuffix)) {
+      const originalWordTextRange: PowerPoint.TextRange = await getOriginalWord();
+      const originalWord: string = originalWordTextRange.text;
+      const translatedWord = await translate(originalWord, options.targetLanguage);
+      await setSelectedTextRangeText(`${originalWord}(${translatedWord})`);
+    } else if (currentSelectedWord && currentSelectedWord.endsWith(options.selectBaseTranslationSuffix)) {
+      Office.context.document.getSelectedDataAsync<string>(Office.CoercionType.Text, async (result) => {
+        if (result.status !== Office.AsyncResultStatus.Succeeded) return;
+
+        const selectedText: string = result.value.trim();
+        if (!(selectedText && selectedText.endsWith(options.selectBaseTranslationSuffix))) {
+          return;
+        }
+
+        const originalWord: string = selectedText.substring(
+          0,
+          selectedText.length - options.selectBaseTranslationSuffix.length
+        );
+        const translatedWord = await translate(originalWord, options.targetLanguage);
+        await setSelectedTextRangeText(`${originalWord}(${translatedWord})`);
+      });
     }
   };
 
-  const _translateWord = async (currentSelectedWord: string) => {
-    await setSelectedText(currentSelectedWord.replace(/.{0,2}$/, ""));
-
-    const originalSelectedWord: string = await getSelectedText();
-    if (!originalSelectedWord) {
-      return;
-    }
-
-    const translateWord: string = await getTranslateWord(originalSelectedWord);
-
-    await setSelectedText(`${originalSelectedWord}(${translateWord})`);
-  };
-
-  const translateByDragSelection = async () => {
-    Office.context.document.getSelectedDataAsync<string>(Office.CoercionType.Text, (result) => {
-      if (result.status !== Office.AsyncResultStatus.Succeeded) {
-        return;
-      }
-
-      const selectedText: string = result.value.trim();
-      if (!(selectedText && selectedText.endsWith("[]"))) {
-        return;
-      }
-
-      _translateWord(selectedText);
-    });
-  };
-
-  const getSelectedText = async (): Promise<string> =>
-    PowerPoint.run(async (context: PowerPoint.RequestContext) => {
-      const textRange = context.presentation.getSelectedTextRange();
-      try {
-        await context.sync();
-      } catch (error) {
-        return "";
-      }
-
-      textRange.load("text");
-      await context.sync();
-      return textRange.text.trim();
-    });
-
-  const setSelectedText = async (value: any) =>
-    PowerPoint.run(async (context: PowerPoint.RequestContext) => {
-      const textRange = context.presentation.getSelectedTextRange();
-      try {
-        await context.sync();
-      } catch (error) {
-        return;
-      }
-
-      textRange.load("text");
-      await context.sync();
-      textRange.text = value;
-    });
-
-  const getTranslateWord = async (originalSelectedWord: string): Promise<string> => {
-    const translatedOriginalSelectedWord: string = await translateToEng(originalSelectedWord);
-    const translatedWord: string = translatedOriginalSelectedWord
-      .replace(/[.]*$/, "")
-      .split(" ")
-      .map(function (word) {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      })
-      .join(" ");
-    return translatedWord;
-  };
-
-  const translateToEng = async (text: string): Promise<string> => {
-    const { data } = await axios({
-      method: "GET",
-      url: `https://mix79ljpyh.execute-api.ap-northeast-2.amazonaws.com/default/googleTranslationV2?text=${text}`,
-    });
-    return data;
+  const getOriginalWord = async (): Promise<PowerPoint.TextRange> => {
+    await setSelectedTextRangeText("");
+    return await getSelectedTextRange();
   };
 
   return (

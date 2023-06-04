@@ -115,18 +115,28 @@ export const getSelectedTextRange = async (): Promise<PowerPoint.TextRange> =>
     const textRange = context.presentation.getSelectedTextRange();
     try {
       await context.sync();
-    } catch (error) {
+    } catch {
       return null;
     }
 
     textRange.load("text");
     await context.sync();
+
     return textRange;
   });
 
-export const setTextRangeText = async (textRange: PowerPoint.TextRange, text: string) =>
+export const setSelectedTextRangeText = async (text: string) =>
   PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    const textRange = context.presentation.getSelectedTextRange();
+    try {
+      await context.sync();
+    } catch {
+      return null;
+    }
+
     textRange.load("text");
+    await context.sync();
+
     textRange.text = text;
     await context.sync();
   });
