@@ -59,6 +59,17 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
 
   const { setInterval, clearInterval } = useSetInterval();
 
+  React.useEffect(() => {
+    if (options.isTranslationON) {
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
+
+      const newIntervalId = setInterval(translatedWord, 1000);
+      setIntervalId(newIntervalId);
+    }
+  }, [options]);
+
   const optionHandler = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     setOptions({ ...options, [target.name]: target.value });
