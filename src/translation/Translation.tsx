@@ -3,8 +3,9 @@ import { makeStyles, shorthands, Switch } from "@fluentui/react-components";
 import { useSetInterval } from "@fluentui/react-hooks";
 import Option from "./Options";
 import { getSelectedTextRange, setSelectedTextRangeText } from "../common";
-import { translate } from "./api/translationAPI";
+import { translate, Translator } from "./api/translationAPI";
 import {
+  DeveloperBoardSearch24Regular,
   LocalLanguage24Regular,
   PanelRightCursor24Regular,
   SelectObjectSkewEdit24Regular,
@@ -21,6 +22,7 @@ type TranslationOption = {
   wordBaseTranslationSuffix: TranslationSuffix;
   selectBaseTranslationSuffix: TranslationSuffix;
   targetLanguage: TargetLanguage;
+  translator: Translator;
 };
 
 enum TranslationSuffix {
@@ -54,6 +56,7 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
     wordBaseTranslationSuffix: TranslationSuffix["( )"],
     selectBaseTranslationSuffix: TranslationSuffix["[ ]"],
     targetLanguage: TargetLanguage["영어"],
+    translator: Translator.Google,
   });
   const [intervalId, setIntervalId] = React.useState<number | null>(null);
 
@@ -97,7 +100,7 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
     if (currentSelectedWord && currentSelectedWord.endsWith(options.wordBaseTranslationSuffix)) {
       const originalWordTextRange: PowerPoint.TextRange = await getOriginalWord();
       const originalWord: string = originalWordTextRange.text;
-      const translatedWord = await translate(originalWord, options.targetLanguage);
+      const translatedWord = await translate(originalWord, options.targetLanguage, options.translator);
       await setSelectedTextRangeText(`${originalWord}(${translatedWord})`);
     } else if (currentSelectedWord && currentSelectedWord.endsWith(options.selectBaseTranslationSuffix)) {
       Office.context.document.getSelectedDataAsync<string>(Office.CoercionType.Text, async (result) => {
@@ -112,7 +115,7 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
           0,
           selectedText.length - options.selectBaseTranslationSuffix.length
         );
-        const translatedWord = await translate(originalWord, options.targetLanguage);
+        const translatedWord = await translate(originalWord, options.targetLanguage, options.translator);
         await setSelectedTextRangeText(`${originalWord}(${translatedWord})`);
       });
     }
@@ -134,6 +137,14 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
           onClick={toggleHandler}
         />
       </div>
+      <Option
+        title="번역기"
+        icon={<DeveloperBoardSearch24Regular />}
+        name="translator"
+        optionEnum={Translator}
+        options={options}
+        optionHandler={optionHandler}
+      />
       <Option
         title="자동완성 언어"
         icon={<LocalLanguage24Regular />}

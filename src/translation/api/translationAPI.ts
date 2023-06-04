@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export enum Translator {
-  GOOGLE = "google",
-  PAPAGO = "papago",
+  Google = "google",
+  Papage = "papago",
 }
 
 export const translate = async (text: string, lang: string, translator: Translator): Promise<string> => {
@@ -16,7 +16,7 @@ export const translate = async (text: string, lang: string, translator: Translat
 
 const __translate = async (text: string, lang: string, translator: Translator): Promise<string> => {
   const API_URL: string =
-    translator === Translator.GOOGLE
+    translator === Translator.Google
       ? "https://mix79ljpyh.execute-api.ap-northeast-2.amazonaws.com/default/googleTranslationV2"
       : "https://p1faduw6hl.execute-api.ap-northeast-2.amazonaws.com/default/papagoTranslate";
 
