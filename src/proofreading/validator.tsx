@@ -156,10 +156,6 @@ const validateMissingClosedQuotationMarks = (input: string): boolean => {
   return open === closed;
 };
 
-const validateColonNotSpacing = (input: string): boolean => {
-  return !/\s:/.test(input);
-};
-
 const validateNoDoubleNegatives = (input: string): boolean => {
   return !/안\s*[^ ]*\s*않았다/.test(input);
 };
