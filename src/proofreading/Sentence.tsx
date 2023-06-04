@@ -3,7 +3,7 @@ import React from "react";
 import { findAndFocusText } from "../common";
 import { SlideText } from "../common/main";
 import { InvalidMessage } from "./InvalidMessage";
-import { SentenceValidationResult, validateSentence } from "./validator";
+import { SentenceValidationResult } from "./validator";
 
 const useStyles = makeStyles({
   card: {
@@ -27,12 +27,11 @@ const useStyles = makeStyles({
 
 type SentenceProps = {
   slideText: SlideText;
+  validationResult: SentenceValidationResult;
 };
 
-export const Sentence: React.FC<SentenceProps> = ({ slideText }: SentenceProps) => {
+export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult }: SentenceProps) => {
   const styles = useStyles();
-
-  const validationResult: SentenceValidationResult = validateSentence(slideText);
 
   return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(slideText)}>
