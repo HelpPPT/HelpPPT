@@ -46,7 +46,7 @@ const tabs: MenuTab[] = [
   },
   {
     id: "translation",
-    name: "영단어 자동완성",
+    name: "번역 자동완성",
     icon: <CalendarDay />,
   },
   {

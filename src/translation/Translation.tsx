@@ -112,16 +112,16 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
           onClick={toggleHandler}
         />
       </div>
-      <Subtitle2 className={styles.title}>자동 완성 언어</Subtitle2>
+      <Subtitle2 className={styles.title}>자동완성 언어</Subtitle2>
       <Option name="targetLanguage" optionEnum={TargetLanguage} options={options} optionHandler={optionHandler} />
-      <Subtitle2 className={styles.title}>커서 기반 자동 완성 명령어</Subtitle2>
+      <Subtitle2 className={styles.title}>커서 기반 자동완성 명령어</Subtitle2>
       <Option
         name="wordBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
         options={options}
         optionHandler={optionHandler}
       />
-      <Subtitle2 className={styles.title}>선택 기반 자동 완성 명령어</Subtitle2>
+      <Subtitle2 className={styles.title}>선택 기반 자동완성 명령어</Subtitle2>
       <Option
         name="selectBaseTranslationSuffix"
         optionEnum={TranslationSuffix}
