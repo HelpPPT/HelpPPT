@@ -30,14 +30,16 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       const validLines: Array<SlideText> = checkedLinesValid(rawLine);
       const gruopedValidLines: Array<SlideTexts> = await groupSlideTextsBySlide(validLines);
       const resultsMapList: Array<Array<RecommendSentenceProps>> = await getValidLinesMap(gruopedValidLines);
+      console.log(resultsMapList);
       setGroupedSentencesMap(resultsMapList);
+      // console.log(groupedSentencesMap);
     };
 
     initData();
   }, [changedWordList]);
 
   const checkedLinesValid = (lines: Array<SlideText>) => {
-    return lines.filter((line) => changedWordList.some((word) => line.text.includes(word)));
+    return lines.filter((line) => changedWordList.some((word) => line.text.toLowerCase().includes(word)));
   };
 
   const getValidLinesMap = async (groupedLines: Array<SlideTexts>): Promise<Array<Array<RecommendSentenceProps>>> => {
@@ -68,7 +70,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   const findMatchIndexes = (line: string) => {
     const indexes = [];
     let match;
-    while ((match = pattern.exec(line)) !== null) {
+    while ((match = pattern.exec(line.toLowerCase())) !== null) {
       indexes.push({ start: match.index, end: pattern.lastIndex });
     }
     return indexes;
@@ -82,6 +84,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   };
 
   const handleCardClick = async (sentenceData: RecommendSentenceProps, cardIndex: number) => {
+    console.log(cardIndex, sentenceData);
     const convertSentence = convertLine(sentenceData.text, sentenceData.index);
     await convertToMainWord(sentenceData.text, convertSentence);
     setHiddenCardIndexes((prevIndexes) => [...prevIndexes, cardIndex]);
