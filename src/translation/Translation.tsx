@@ -4,6 +4,7 @@ import { useSetInterval } from "@fluentui/react-hooks";
 import Option from "./Options";
 import { getSelectedTextRange, setSelectedTextRangeText } from "../common";
 import { translate } from "./api/translationAPI";
+import { TranslateAuto24Filled, TranslateOff24Regular } from "@fluentui/react-icons";
 
 type TranslationProps = {
   active: boolean;
@@ -30,6 +31,9 @@ enum TargetLanguage {
 }
 
 const useStyles = makeStyles({
+  onOffButton: {
+    ...shorthands.padding("0.5rem", "0.7rem", 0),
+  },
   title: {
     marginTop: "1rem",
     ...shorthands.padding("0.5rem", "0.5rem"),
@@ -104,7 +108,8 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
 
   return (
     <div style={active ? { display: "flex", flexDirection: "column" } : { display: "none" }}>
-      <div>
+      <div className={styles.onOffButton}>
+        {options.isTranslationON ? <TranslateAuto24Filled /> : <TranslateOff24Regular />}
         <Switch
           name="isTranslationON"
           checked={options.isTranslationON}
