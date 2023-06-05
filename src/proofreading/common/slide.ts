@@ -20,3 +20,35 @@ const getSentenceAndTextFromSlides = async (): Promise<Array<SlideText>> => {
   const sentences: Array<SlideText> = await splitSentences(textData);
   return textData.concat(sentences);
 };
+
+export const getSlideTextTotalLength = async (slideIndex: number): number =>
+  await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    let totalLength = 0;
+
+    const slides = context.presentation.slides;
+
+    context.load(slides, "id,shapes/items/type");
+    await context.sync();
+
+    const slide = slides.items[slideIndex - 1];
+
+    for (const shape of slide.shapes.items) {
+      if (shape.type !== "GeometricShape") {
+        continue;
+      }
+
+      context.load(shape, "textFrame/hasText");
+      await context.sync();
+
+      if (!shape.textFrame.hasText) {
+        continue;
+      }
+
+      context.load(shape, "textFrame/textRange/length");
+      await context.sync();
+
+      totalLength += shape.textFrame.textRange.length;
+    }
+
+    return totalLength;
+  });
