@@ -1,9 +1,10 @@
 import React from "react";
-import { Divider } from "@fluentui/react-components";
+import { CardHeader, Divider, Subtitle2 } from "@fluentui/react-components";
 import { Sentence } from "./Sentence";
 import { validateSentence } from "./validator";
 import { SlideTexts } from "../common/main";
 import { Card, makeStyles, shorthands, tokens } from "@fluentui/react-components";
+import { goToSlide } from "../common";
 
 type SlideValidationProps = {
   slideSentenceGroup: SlideTexts;
@@ -38,12 +39,15 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
   const len = slideSentenceGroup.texts.reduce((acc, cur) => {
     return acc + cur.text.length;
   }, 0);
-  console.log(slideSentenceGroup.slideIndex);
-  console.log(len);
+
   return validatedSentenceGroup.every((e) => e === null) ? null : (
     <>
       <Divider>슬라이드 {slideSentenceGroup.slideIndex}</Divider>
-      {len >= 400 ? <Card className={styles.card}>슬라이드에 글자가 너무 많아요.</Card> : null}
+      {len >= 400 ? (
+        <Card className={styles.card} onClick={() => goToSlide(slideSentenceGroup.slideIndex)}>
+          <CardHeader header={<Subtitle2>슬라이드에 글자가 너무 많아요.</Subtitle2>} />
+        </Card>
+      ) : null}
       {validatedSentenceGroup}
     </>
   );
