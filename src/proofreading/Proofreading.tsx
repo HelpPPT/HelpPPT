@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
 import { SlideTexts } from "../common/main";
-import { makeStyles, Spinner } from "@fluentui/react-components";
+import { Divider, makeStyles, Spinner } from "@fluentui/react-components";
 import { SlideValidation } from "./SlideValidation";
 
 const useStyles = makeStyles({
@@ -29,6 +29,9 @@ export const Proofreading: React.FC = () => {
   return loading ? (
     <Spinner className={styles.loader} label="문장 불러오는중..." labelPosition="below" size="huge" />
   ) : (
-    <div>{...slidesValidations}</div>
+    <div>
+      {...slidesValidations}
+      <Divider />
+    </div>
   );
 };
