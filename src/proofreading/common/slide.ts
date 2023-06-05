@@ -44,10 +44,10 @@ export const getSlideTextTotalLength = async (slideIndex: number): Promise<numbe
         continue;
       }
 
-      context.load(shape, "textFrame/textRange/length");
+      context.load(shape, "textFrame/textRange/text");
       await context.sync();
 
-      totalLength += shape.textFrame.textRange.length;
+      totalLength += shape.textFrame.textRange.text.length;
     }
 
     return totalLength;
