@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
 import { SlideTexts } from "../common/main";
 import { Divider, makeStyles, Spinner } from "@fluentui/react-components";
 import { SlideValidation } from "./SlideValidation";
+import { getValidationSentences } from "./common/slide";
 
 const useStyles = makeStyles({
   loader: {
@@ -17,8 +17,7 @@ export const Proofreading: React.FC = () => {
   const [slidesSentenceGroup, setSlidesSentenceGroup] = React.useState<Array<SlideTexts>>([]);
 
   useEffect(() => {
-    getSentencesFromSlides()
-      .then((sentences) => groupSlideTextsBySlide(sentences))
+    getValidationSentences()
       .then((slidesSentenceGroup) => setSlidesSentenceGroup(slidesSentenceGroup))
       .then(() => setLoading(false));
   }, []);
