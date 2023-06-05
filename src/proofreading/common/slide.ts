@@ -21,7 +21,7 @@ const getSentenceAndTextFromSlides = async (): Promise<Array<SlideText>> => {
   return textData.concat(sentences);
 };
 
-export const getSlideTextTotalLength = async (slideIndex: number): number =>
+export const getSlideTextTotalLength = async (slideIndex: number): Promise<number> =>
   await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
     let totalLength = 0;
 

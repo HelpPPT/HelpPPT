@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CardHeader, Divider, Subtitle2 } from "@fluentui/react-components";
 import { Sentence } from "./Sentence";
 import { validateSentence } from "./validator";
@@ -31,7 +31,13 @@ const LENGTH_LIMIT = 400;
 export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceGroup }: SlideValidationProps) => {
   const styles = useStyles();
 
-  const currentSlideTextTotalLength: number = getSlideTextTotalLength(slideSentenceGroup.slideIndex);
+  const [slideTextLength, setSlideTextLength] = useState<number>(0);
+
+  useEffect(() => {
+    getSlideTextTotalLength(slideSentenceGroup.slideIndex).then((slideTextLength) =>
+      setSlideTextLength(slideTextLength)
+    );
+  }, []);
 
   const validatedSentenceGroup = slideSentenceGroup.texts.map((sentence, index) => {
     const validationResult = validateSentence(sentence);
@@ -43,7 +49,7 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
   return validatedSentenceGroup.every((e) => e === null) ? null : (
     <>
       <Divider>슬라이드 {slideSentenceGroup.slideIndex}</Divider>
-      {currentSlideTextTotalLength >= LENGTH_LIMIT ? (
+      {slideTextLength >= LENGTH_LIMIT ? (
         <Card className={styles.card} onClick={() => goToSlide(slideSentenceGroup.slideIndex)}>
           <CardHeader header={<Subtitle2>슬라이드에 글자가 너무 많아요.</Subtitle2>} />
         </Card>
