@@ -16,6 +16,7 @@ import {
 } from "@fluentui/react-icons";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import { Proofreading } from "./proofreading";
+import { OnBoard } from "./onboarding/Onboard";
 
 const Calendar3Day = bundleIcon(Calendar3DayFilled, Calendar3DayRegular);
 const CalendarAgenda = bundleIcon(CalendarAgendaFilled, CalendarAgendaRegular);
@@ -67,11 +68,19 @@ const App: React.FC<AppProps> = () => {
   const styles = useStyles();
 
   const [selectedPage, setSelectedPage] = React.useState<string>("translation");
+  const [isCheckedDomain, setIsCheckedDomain] = React.useState<boolean>(false);
+  const [checkedDomain, setCheckedDomain] = React.useState<string>("");
 
-  return (
+  return !isCheckedDomain ? (
+    <OnBoard
+      checkedDomain={checkedDomain}
+      setCheckedDomain={setCheckedDomain}
+      setIsCheckedDomain={setIsCheckedDomain}
+    />
+  ) : (
     <div className={styles.panel}>
       <OverflowTabList tabs={tabs} selectedTabId={selectedPage} setSelectedTabId={setSelectedPage} />
-      {selectedPage === "wordUnification" && <WordUnification />}
+      {selectedPage === "wordUnification" && <WordUnification checkedDomain={checkedDomain} />}
       {selectedPage === "gejosik" && <Gejosik />}
       <Translation active={selectedPage === "translation"} />
       {selectedPage === "proofreading" && <Proofreading />}
