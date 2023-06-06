@@ -62,19 +62,37 @@ export const Loading = (props: Partial<SkeletonProps>) => {
   );
 };
 
-const WordUnification: React.FC = () => {
+export interface WordUnificationProps {
+  checkedDomain: string;
+}
+
+const WordUnification: React.FC<WordUnificationProps> = ({ checkedDomain }) => {
   const [wordClusters, setWordClusters] = React.useState<Array<Array<string>>>([]);
+  const [isFilter, setIsFilter] = React.useState<boolean>(false);
+  const [glossaryName, setGlossaryName] = React.useState<string>(null);
+  const [isUpdate, setIsUpdate] = React.useState<boolean>(false);
+
   const classes = useStyles();
 
   React.useEffect(() => {
-    getClusters();
+    if (checkedDomain != "null") {
+      setIsFilter(true);
+      setGlossaryName(checkedDomain);
+    }
+    setIsUpdate(true);
   }, []);
 
+  React.useEffect(() => {
+    if (isUpdate) {
+      getClusters();
+    }
+  }, [isFilter, glossaryName]);
+
   const getClusters = async () => {
+    // console.log(isFilter, glossaryName);
     const slideSentences: Array<SlideText> = await getSentencesFromSlides();
     const sentences: string[] = slideSentences.map((sentence) => sentence.text);
-    // const clusters: Array<Array<string>> = await getWordClusters(sentences, false, null);
-    const clusters: Array<Array<string>> = await getWordClusters(sentences, true, "computer");
+    const clusters: Array<Array<string>> = await getWordClusters(sentences, isFilter, glossaryName);
     setWordClusters(clusters);
   };
 
