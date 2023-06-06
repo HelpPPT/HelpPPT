@@ -1,5 +1,15 @@
-import { Text, Card, Checkbox, Button, makeStyles, shorthands, tokens } from "@fluentui/react-components";
-import { HeartCircleHint48Regular } from "@fluentui/react-icons";
+import {
+  Text,
+  Card,
+  Subtitle2,
+  Checkbox,
+  Button,
+  makeStyles,
+  shorthands,
+  tokens,
+  CardHeader,
+} from "@fluentui/react-components";
+import { HeartCircleHint48Regular, BookSearch24Regular } from "@fluentui/react-icons";
 import React from "react";
 
 export interface OnBoardProps {
@@ -21,7 +31,14 @@ export const OnBoard: React.FC<OnBoardProps> = ({ checkedDomain, setCheckedDomai
 
   return showCheckPage ? (
     <Card className={classes.card}>
-      <header>사용할 도메인을 선택해주세요</header>
+      <CardHeader
+        header={
+          <div className={classes.cardHeader}>
+            <div className={classes.icon}>{<BookSearch24Regular />}</div>
+            <Subtitle2>사용할 도메인을 선택해주세요</Subtitle2>
+          </div>
+        }
+      />
       <div className={classes.cardItem}>
         <Checkbox
           checked={checkedDomain == "computer"}
@@ -51,8 +68,11 @@ export const OnBoard: React.FC<OnBoardProps> = ({ checkedDomain, setCheckedDomai
     </Card>
   ) : (
     <div className={classes.title}>
-      <HeartCircleHint48Regular />
-      <Text weight="semibold" className={classes.titleFont}>
+      <Text size={800} weight="bold" className={classes.text}>
+        HelpPPT
+      </Text>
+
+      <Text size={500} weight="semibold" className={classes.titleFont}>
         나만의 발표 제작 도우미
       </Text>
     </div>
@@ -69,12 +89,16 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
   },
-
+  icon: {
+    ...shorthands.margin("0.25rem", "0.3rem", 0, 0),
+  },
   cardHeader: {
-    fontWeight: "bold",
+    display: "flex",
+    alignItems: "center",
   },
 
   title: {
+    ...shorthands.padding("30px"),
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -84,7 +108,9 @@ const useStyles = makeStyles({
   titleFont: {
     fontFamily: "GoryeongStrawberry",
   },
-
+  text: {
+    ...shorthands.margin("10px"),
+  },
   nextBtn: {
     backgroundColor: tokens.colorBrandForegroundInverted,
     color: "white",
