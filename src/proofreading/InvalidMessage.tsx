@@ -34,12 +34,14 @@ export const InvalidMessage: React.FC<InvalidMessageProps> = ({
   const styles = useStyles();
 
   const setFontSize24 = () => setTimeout(() => setFontSize(slideText, 24), 250);
+  const unifyFontSize = () => setTimeout(() => setFontSize(slideText, -1), 250);
 
   const onClickHandler = (() => {
-    if (message === "폰트 사이즈는 24pt 이상이어야 해요.") {
-      return setFontSize24;
-    }
-    return () => {};
+    const funcMap = {
+      "폰트 사이즈는 24pt 이상이어야 해요.": setFontSize24,
+      "폰트 사이즈가 일정하지 않아요.": unifyFontSize,
+    };
+    return funcMap[message] || (() => {});
   })();
 
   return (
