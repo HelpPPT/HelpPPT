@@ -41,8 +41,8 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
       setSlideTextLength(slideTextLength)
     );
     Promise.all(
-      slideSentenceGroup.texts.map((sentence, index) => {
-        const validationResult = validateSentence(sentence, badgeStyle);
+      slideSentenceGroup.texts.map(async (sentence, index) => {
+        const validationResult = await validateSentence(sentence, badgeStyle);
         return validationResult.isValid ? null : (
           <Sentence key={index} slideText={sentence} validationResult={validationResult} />
         );
