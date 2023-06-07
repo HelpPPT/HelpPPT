@@ -52,3 +52,47 @@ export const getSlideTextTotalLength = async (slideIndex: number): Promise<numbe
 
     return totalLength;
   });
+
+export const getTextFont = async (searchSlideText: SlideText): Promise<PowerPoint.ShapeFont> =>
+  await PowerPoint.run(async (context: PowerPoint.RequestContext) => {
+    const searchText = searchSlideText.text;
+
+    const slides = context.presentation.slides;
+
+    context.load(slides, "id,shapes/items/type");
+    await context.sync();
+
+    const slide = slides.items[searchSlideText.slideIndex - 1];
+
+    for (const shape of slide.shapes.items) {
+      if (shape.type !== "GeometricShape") {
+        continue;
+      }
+
+      context.load(shape, "textFrame/hasText");
+      await context.sync();
+
+      if (!shape.textFrame.hasText) {
+        continue;
+      }
+
+      context.load(shape, "textFrame/textRange/text");
+      await context.sync();
+
+      const text: string = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n");
+
+      if (text.includes(searchText)) {
+        const [start, offset] = [text.indexOf(searchText), searchText.length];
+
+        const textRange: PowerPoint.TextRange = shape.textFrame.textRange.getSubstring(start, offset);
+        context.load(textRange, "font");
+        await context.sync();
+
+        const font: PowerPoint.ShapeFont = textRange.font;
+        context.load(textRange, "bold,color,italic,name,size,underline");
+        await context.sync();
+        return font;
+      }
+    }
+    return null;
+  });
