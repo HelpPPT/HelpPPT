@@ -1,4 +1,4 @@
-import { makeStyles, mergeClasses, shorthands, tokens } from "@fluentui/react-components";
+import { mergeClasses } from "@fluentui/react-components";
 import { SlideText } from "../common/main";
 import { getTextFont } from "./common/slide";
 
@@ -13,41 +13,11 @@ type ValidatorData = {
   message: string;
 };
 
-const useStyles = makeStyles({
-  badge: {
-    backgroundColor: tokens.colorBrandForeground1,
-    ...shorthands.margin(0, "8px", 0, "4px"),
-  },
-  redBadge: {
-    backgroundColor: tokens.colorPaletteRedForeground1,
-  },
-  greenBadge: {
-    backgroundColor: tokens.colorPaletteGreenForeground1,
-  },
-  orangeBadge: {
-    backgroundColor: tokens.colorPaletteDarkOrangeForeground1,
-  },
-  yellowBadge: {
-    backgroundColor: tokens.colorPaletteYellowBorderActive,
-  },
-  berryBadge: {
-    backgroundColor: tokens.colorPaletteBerryForeground1,
-  },
-  marigoldBadge: {
-    backgroundColor: tokens.colorPaletteMarigoldForeground1,
-  },
-  blueBadge: {
-    backgroundColor: tokens.colorPaletteBlueForeground2,
-  },
-});
-
-export const validateSentence = (slideText: SlideText): SentenceValidationResult => {
-  const styles = useStyles();
-
+export const validateSentence = (slideText: SlideText, badgeStyles: any): SentenceValidationResult => {
   const textValidatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,
-      badgeStyle: mergeClasses(styles.badge, styles.redBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.redBadge),
       message: "한 줄이 너무 길어요.",
     },
   ];
@@ -55,42 +25,42 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   const sentenceValidatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,
-      badgeStyle: mergeClasses(styles.badge, styles.redBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.redBadge),
       message: "문장이 너무 길어요.",
     },
     {
       validatorFunc: validatePunctuationSpacing,
-      badgeStyle: mergeClasses(styles.badge, styles.orangeBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
       message: "구두점 뒤에는 띄어쓰기를 해주세요.",
     },
     {
       validatorFunc: validateNoConsecutiveSpaces,
-      badgeStyle: mergeClasses(styles.badge, styles.berryBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
       message: "띄어쓰기가 연속되었어요.",
     },
     {
       validatorFunc: validateNoDoubleNegatives,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
       message: "'안'이나 '않'이 연속되었어요.",
     },
     {
       validatorFunc: validateClosingBrackets,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
       message: "괄호가 감싸지지 않았어요.",
     },
     {
       validatorFunc: validateMissingQuotationMarksBeforeRago,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
       message: '라고 앞에 " 가 없어요.',
     },
     {
       validatorFunc: validateMissingClosedQuotationMarks,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
       message: '" 로 완전히 둘러쌓이지 않았어요.',
     },
     {
       validatorFunc: validateFirstCharacterCapitalLetter,
-      badgeStyle: mergeClasses(styles.badge, styles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
       message: "문장의 처음은 대문자로 시작해야 해요.",
     },
   ];
