@@ -18,7 +18,7 @@ export const getValidationSentences = async (): Promise<Array<SlideTexts>> => {
 const getSentenceAndTextFromSlides = async (): Promise<Array<SlideText>> => {
   const textData: Array<SlideText> = await getTextsFromSlides();
   const sentences: Array<SlideText> = await splitSentences(textData);
-  return textData.concat(sentences);
+  return sentences.concat(textData);
 };
 
 export const getSlideTextTotalLength = async (slideIndex: number): Promise<number> =>
