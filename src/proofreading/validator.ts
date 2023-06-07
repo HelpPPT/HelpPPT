@@ -43,7 +43,15 @@ const useStyles = makeStyles({
 export const validateSentence = (slideText: SlideText): SentenceValidationResult => {
   const styles = useStyles();
 
-  const validatorsData: Array<ValidatorData> = [
+  const textValidatorsData: Array<ValidatorData> = [
+    {
+      validatorFunc: validateLengthLimit,
+      badgeStyle: mergeClasses(styles.badge, styles.redBadge),
+      message: "한 줄이 너무 길어요.",
+    },
+  ];
+
+  const sentenceValidatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,
       badgeStyle: mergeClasses(styles.badge, styles.redBadge),
@@ -86,6 +94,7 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
     },
   ];
 
+  const validatorsData: Array<ValidatorData> = slideText?.isSentence ? sentenceValidatorsData : textValidatorsData;
   const validationResult: SentenceValidationResult = validatorsData.reduce(
     (acc: SentenceValidationResult, validatorData: ValidatorData) => {
       const isValid = validatorData.validatorFunc(slideText.text);
