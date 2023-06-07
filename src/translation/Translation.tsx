@@ -116,6 +116,8 @@ const Translation: React.FunctionComponent<TranslationProps> = ({ active }: Tran
           0,
           selectedText.length - options.selectBaseTranslationSuffix.length
         );
+        await setSelectedTextRangeText(originalWord);
+
         const translatedWord = await translate(originalWord, options.targetLanguage, options.translator);
         await setSelectedTextRangeText(`${originalWord}(${translatedWord})`);
       });
