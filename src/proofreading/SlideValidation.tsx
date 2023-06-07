@@ -34,19 +34,21 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
   const badgeStyle = useBadgeStyles();
 
   const [slideTextLength, setSlideTextLength] = useState<number>(0);
+  const [validatedSentenceGroup, setValidatedSentenceGroup] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
     getSlideTextTotalLength(slideSentenceGroup.slideIndex).then((slideTextLength) =>
       setSlideTextLength(slideTextLength)
     );
+    Promise.all(
+      slideSentenceGroup.texts.map((sentence, index) => {
+        const validationResult = validateSentence(sentence, badgeStyle);
+        return validationResult.isValid ? null : (
+          <Sentence key={index} slideText={sentence} validationResult={validationResult} />
+        );
+      })
+    ).then((result) => setValidatedSentenceGroup(result));
   }, []);
-
-  const validatedSentenceGroup = slideSentenceGroup.texts.map((sentence, index) => {
-    const validationResult = validateSentence(sentence, badgeStyle);
-    return validationResult.isValid ? null : (
-      <Sentence key={index} slideText={sentence} validationResult={validationResult} />
-    );
-  });
 
   return validatedSentenceGroup.every((e) => e === null) ? null : (
     <>
