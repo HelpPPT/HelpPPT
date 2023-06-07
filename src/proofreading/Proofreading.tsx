@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import { SlideTexts } from "../common/main";
-import { Divider, makeStyles, Spinner } from "@fluentui/react-components";
+import { Button, Divider, makeStyles, Spinner } from "@fluentui/react-components";
 import { SlideValidation } from "./SlideValidation";
 import { getValidationSentences } from "./common/slide";
+import { ArrowClockwise24Regular } from "@fluentui/react-icons";
 
 const useStyles = makeStyles({
   loader: {
     height: "100%",
+  },
+  reload: {
+    position: "fixed",
+    bottom: "30px",
+    right: "25px",
   },
 });
 
@@ -20,7 +26,7 @@ export const Proofreading: React.FC = () => {
     getValidationSentences()
       .then((slidesSentenceGroup) => setSlidesSentenceGroup(slidesSentenceGroup))
       .then(() => setLoading(false));
-  }, []);
+  }, [loading]);
 
   const slidesValidations: Array<JSX.Element> = slidesSentenceGroup.map((slideSentenceGroup) => {
     return <SlideValidation key={slideSentenceGroup.slideId} slideSentenceGroup={slideSentenceGroup} />;
@@ -31,6 +37,14 @@ export const Proofreading: React.FC = () => {
     <div>
       {...slidesValidations}
       <Divider />
+      <Button
+        className={styles.reload}
+        appearance="subtle"
+        shape="circular"
+        size="large"
+        icon={<ArrowClockwise24Regular />}
+        onClick={() => setLoading(true)}
+      ></Button>
     </div>
   );
 };
