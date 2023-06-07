@@ -29,6 +29,7 @@ enum TranslationSuffix {
   "( )" = "()",
   "[ ]" = "[]",
   "{ }" = "{}",
+  "< >" = "<>",
 }
 
 enum TargetLanguage {
