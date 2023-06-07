@@ -7,5 +7,11 @@ export const splitSentences = async (slideTexts: Array<SlideText>): Promise<Arra
     url: "https://gd35659rx1.execute-api.ap-northeast-2.amazonaws.com/default/SentenceSplitter",
     data: { slideTexts },
   });
-  return data.slideTexts;
+
+  const slideSentences: Array<SlideText> = data.slideTexts.map((slideText: SlideText) => ({
+    ...slideText,
+    isSentence: true,
+  }));
+
+  return slideSentences;
 };
