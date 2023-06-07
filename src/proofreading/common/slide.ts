@@ -91,8 +91,10 @@ export const getTextFont = async (searchSlideText: SlideText): Promise<PowerPoin
         const font: PowerPoint.ShapeFont = textRange.font;
         context.load(textRange, "bold,color,italic,name,size,underline");
         await context.sync();
+
         return font;
       }
     }
+
     return null;
   });
