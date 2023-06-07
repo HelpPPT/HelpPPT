@@ -167,5 +167,5 @@ const validateInconsistentFontSize = async (slideText: SlideText): Promise<boole
 
 const validateTooSmallFontSize = async (slideText: SlideText): Promise<boolean> => {
   const font: PowerPoint.ShapeFont = await getTextFont(slideText);
-  return font.size >= 24;
+  return font.size !== 0 && font.size >= 24;
 };
