@@ -1,5 +1,6 @@
 import { makeStyles, mergeClasses, shorthands, tokens } from "@fluentui/react-components";
 import { SlideText } from "../common/main";
+import { getTextFont } from "./common/slide";
 
 export type SentenceValidationResult = {
   isValid: boolean;
@@ -179,4 +180,14 @@ const validateNoDoubleNegatives = (slideText: SlideText): boolean => {
 const validateFirstCharacterCapitalLetter = (slideText: SlideText): boolean => {
   const text: string = slideText.text;
   return !/^[a-z]/.test(text);
+};
+
+const validateFontSize = async (slideText: SlideText): Promise<boolean> => {
+  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
+  return font.size < 0;
+};
+
+const validateInconsistentFontSize = async (slideText: SlideText): Promise<boolean> => {
+  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
+  return font.size !== 0;
 };
