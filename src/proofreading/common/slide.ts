@@ -138,6 +138,14 @@ export const setFontSize = async (searchSlideText: SlideText, fontSize: number) 
         context.load(textRange, "size");
         await context.sync();
 
+        if (fontSize === -1) {
+          const firstLetterTextRange: PowerPoint.TextRange = textRange.getSubstring(0, 1);
+          context.load(firstLetterTextRange, "font/size");
+          await context.sync();
+
+          fontSize = firstLetterTextRange.font.size;
+        }
+
         font.size = fontSize;
         await context.sync();
       }
