@@ -7,7 +7,7 @@ export type SentenceValidationResult = {
 };
 
 type ValidatorData = {
-  validatorFunc: Function;
+  validatorFunc: (slideText: SlideText) => boolean;
   badgeStyle: string;
   message: string;
 };
@@ -97,7 +97,7 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   const validatorsData: Array<ValidatorData> = slideText?.isSentence ? sentenceValidatorsData : textValidatorsData;
   const validationResult: SentenceValidationResult = validatorsData.reduce(
     (acc: SentenceValidationResult, validatorData: ValidatorData) => {
-      const isValid = validatorData.validatorFunc(slideText.text);
+      const isValid = validatorData.validatorFunc(slideText);
 
       if (!isValid) {
         acc.isValid = false;
@@ -111,22 +111,25 @@ export const validateSentence = (slideText: SlideText): SentenceValidationResult
   return validationResult;
 };
 
-const validateLengthLimit = (input: string, limit: number = 100): boolean => {
-  return input.length <= limit;
+const validateLengthLimit = (slideText: SlideText, limit: number = 100): boolean => {
+  const text: string = slideText.text;
+  return text.length <= limit;
 };
 
-const validatePunctuationSpacing = (input: string): boolean => {
-  if (!/\s*[,;?!]\s*/.test(input)) return true;
-  else if (/[,;?!]/.test(input[input.length - 1])) return true;
-  else if (/\b\d+[.,]\d+\b/.test(input)) return true;
-  else return /[,;?!]\s+/.test(input);
+const validatePunctuationSpacing = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
+  if (!/\s*[,;?!]\s*/.test(text)) return true;
+  else if (/[,;?!]/.test(text[text.length - 1])) return true;
+  else if (/\b\d+[.,]\d+\b/.test(text)) return true;
+  else return /[,;?!]\s+/.test(text);
 };
 
-const validateNoConsecutiveSpaces = (input: string): boolean => {
+const validateNoConsecutiveSpaces = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
   let consecutive_spaces_cnt = 0;
   let cnt = 0;
-  for (let i = 0; i < input.length; i++) {
-    if (input[i] == " ") cnt++;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] == " ") cnt++;
     else {
       consecutive_spaces_cnt = consecutive_spaces_cnt > cnt ? consecutive_spaces_cnt : cnt;
       cnt = 0;
@@ -136,11 +139,12 @@ const validateNoConsecutiveSpaces = (input: string): boolean => {
   else return true;
 };
 
-const validateClosingBrackets = (input: string): boolean => {
-  if (/[가-힣a-zA-Z0-9]\)/.test(input)) return true;
+const validateClosingBrackets = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
+  if (/[가-힣a-zA-Z0-9]\)/.test(text)) return true;
   let open = 0,
     closed = 0;
-  for (let c of input) {
+  for (let c of text) {
     if (c == "(") open++;
     else if (c == ")") closed++;
   }
@@ -148,16 +152,18 @@ const validateClosingBrackets = (input: string): boolean => {
   return open === closed;
 };
 
-const validateMissingQuotationMarksBeforeRago = (input: string): boolean => {
+const validateMissingQuotationMarksBeforeRago = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
   // 라고 앞에 처음 나오는 단어(space) 제외하고 " 가 있어야 한다.
-  if (!/(라고)/.test(input)) return true;
-  else return /["”]\s*라고/.test(input);
+  if (!/(라고)/.test(text)) return true;
+  else return /["”]\s*라고/.test(text);
 };
 
-const validateMissingClosedQuotationMarks = (input: string): boolean => {
+const validateMissingClosedQuotationMarks = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
   let open = 0,
     closed = 0;
-  for (let c of input) {
+  for (let c of text) {
     if (c == '"' || c == "“") open++;
     else if (c == '"' || c == "”") closed++;
   }
@@ -165,10 +171,12 @@ const validateMissingClosedQuotationMarks = (input: string): boolean => {
   return open === closed;
 };
 
-const validateNoDoubleNegatives = (input: string): boolean => {
-  return !/안\s*[^ ]*\s*않았다/.test(input);
+const validateNoDoubleNegatives = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
+  return !/안\s*[^ ]*\s*않았다/.test(text);
 };
 
-const validateFirstCharacterCapitalLetter = (input: string): boolean => {
-  return !/^[a-z]/.test(input);
+const validateFirstCharacterCapitalLetter = (slideText: SlideText): boolean => {
+  const text: string = slideText.text;
+  return !/^[a-z]/.test(text);
 };
