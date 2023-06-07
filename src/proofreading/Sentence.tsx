@@ -38,7 +38,12 @@ export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult 
       <CardHeader header={<Subtitle2>{slideText.text}</Subtitle2>} />
       <div className={styles.validationResult}>
         {validationResult.invalidDatas.map((invalidData, i) => (
-          <InvalidMessage key={i} badgeStyle={invalidData.badgeStyle} message={invalidData.message} />
+          <InvalidMessage
+            key={i}
+            slideText={slideText}
+            badgeStyle={invalidData.badgeStyle}
+            message={invalidData.message}
+          />
         ))}
       </div>
     </Card>

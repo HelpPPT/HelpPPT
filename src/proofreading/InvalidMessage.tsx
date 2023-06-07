@@ -1,6 +1,7 @@
 import { Badge, Body1, Button, makeStyles, shorthands, tokens } from "@fluentui/react-components";
 import { Edit16Filled } from "@fluentui/react-icons";
 import React from "react";
+import { SlideText } from "../common/main";
 
 const useStyles = makeStyles({
   container: {
@@ -19,12 +20,19 @@ const useStyles = makeStyles({
 });
 
 type InvalidMessageProps = {
+  slideText: SlideText;
   badgeStyle: string;
   message: string;
 };
 
-export const InvalidMessage: React.FC<InvalidMessageProps> = ({ badgeStyle, message }: InvalidMessageProps) => {
+export const InvalidMessage: React.FC<InvalidMessageProps> = ({
+  slideText,
+  badgeStyle,
+  message,
+}: InvalidMessageProps) => {
   const styles = useStyles();
+
+  console.log(slideText);
 
   return (
     <div className={styles.container}>
