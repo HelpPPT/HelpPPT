@@ -39,7 +39,6 @@ export const Proofreading: React.FC = () => {
       <Divider />
       <Button
         className={styles.reload}
-        appearance="subtle"
         shape="circular"
         size="large"
         icon={<ArrowClockwise24Regular />}
