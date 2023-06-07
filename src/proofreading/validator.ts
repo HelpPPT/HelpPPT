@@ -30,37 +30,37 @@ export const validateSentence = async (slideText: SlideText, badgeStyles: any): 
     },
     {
       validatorFunc: validatePunctuationSpacing,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.greenBadge),
       message: "구두점 뒤에는 띄어쓰기를 해주세요.",
     },
     {
       validatorFunc: validateNoConsecutiveSpaces,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
       message: "띄어쓰기가 연속되었어요.",
     },
     {
       validatorFunc: validateNoDoubleNegatives,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
       message: "'안'이나 '않'이 연속되었어요.",
     },
     {
       validatorFunc: validateClosingBrackets,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
       message: "괄호가 감싸지지 않았어요.",
     },
     {
       validatorFunc: validateMissingQuotationMarksBeforeRago,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.marigoldBadge),
       message: '라고 앞에 " 가 없어요.',
     },
     {
       validatorFunc: validateMissingClosedQuotationMarks,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
       message: '" 로 완전히 둘러쌓이지 않았어요.',
     },
     {
       validatorFunc: validateFirstCharacterCapitalLetter,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
       message: "문장의 처음은 대문자로 시작해야 해요.",
     },
     // {
@@ -70,7 +70,7 @@ export const validateSentence = async (slideText: SlideText, badgeStyles: any): 
     // },
     {
       validatorFunc: validateInconsistentFontSize,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
       message: "폰트 사이즈가 일정하지 않아요.",
     },
   ];
