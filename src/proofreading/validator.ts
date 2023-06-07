@@ -63,15 +63,15 @@ export const validateSentence = async (slideText: SlideText, badgeStyles: any): 
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
       message: "문장의 처음은 대문자로 시작해야 해요.",
     },
-    // {
-    //   validatorFunc: validateFontSize,
-    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
-    //   message: "폰트 사이즈는 24pt 이상이어야 해요.",
-    // },
     {
       validatorFunc: validateInconsistentFontSize,
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
       message: "폰트 사이즈가 일정하지 않아요.",
+    },
+    {
+      validatorFunc: validateTooSmallFontSize,
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      message: "폰트 사이즈는 24pt 이상이어야 해요.",
     },
   ];
 
@@ -160,12 +160,12 @@ const validateFirstCharacterCapitalLetter = async (slideText: SlideText): Promis
   return !/^[a-z]/.test(text);
 };
 
-const validateFontSize = async (slideText: SlideText): Promise<boolean> => {
-  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
-  return font.size >= 24;
-};
-
 const validateInconsistentFontSize = async (slideText: SlideText): Promise<boolean> => {
   const font: PowerPoint.ShapeFont = await getTextFont(slideText);
   return font.size !== 0;
+};
+
+const validateTooSmallFontSize = async (slideText: SlideText): Promise<boolean> => {
+  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
+  return font.size >= 24;
 };
