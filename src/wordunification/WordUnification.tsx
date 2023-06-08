@@ -84,12 +84,12 @@ const WordUnification: React.FC<WordUnificationProps> = ({ checkedDomain }) => {
 
   React.useEffect(() => {
     if (isUpdate) {
+      // console.log(isFilter, glossaryName);
       getClusters();
     }
-  }, [isFilter, glossaryName]);
+  }, [isFilter, glossaryName, isUpdate]);
 
   const getClusters = async () => {
-    // console.log(isFilter, glossaryName);
     const slideSentences: Array<SlideText> = await getSentencesFromSlides();
     const sentences: string[] = slideSentences.map((sentence) => sentence.text);
     const clusters: Array<Array<string>> = await getWordClusters(sentences, isFilter, glossaryName);

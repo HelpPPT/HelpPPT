@@ -69,7 +69,7 @@ const App: React.FC<AppProps> = () => {
 
   const [selectedPage, setSelectedPage] = React.useState<string>("translation");
   const [isCheckedDomain, setIsCheckedDomain] = React.useState<boolean>(false);
-  const [checkedDomain, setCheckedDomain] = React.useState<string>("");
+  const [checkedDomain, setCheckedDomain] = React.useState<string>("null");
 
   return !isCheckedDomain ? (
     <OnBoard
