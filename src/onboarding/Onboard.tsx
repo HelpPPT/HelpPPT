@@ -9,7 +9,7 @@ import {
   tokens,
   CardHeader,
 } from "@fluentui/react-components";
-import { HeartCircleHint48Regular, BookSearch24Regular } from "@fluentui/react-icons";
+import { BookSearch24Regular } from "@fluentui/react-icons";
 import React from "react";
 
 export interface OnBoardProps {
@@ -72,7 +72,7 @@ export const OnBoard: React.FC<OnBoardProps> = ({ checkedDomain, setCheckedDomai
         HelpPPT
       </Text>
 
-      <Text size={500} weight="semibold" className={classes.titleFont}>
+      <Text size={500} weight="semibold">
         나만의 발표 제작 도우미
       </Text>
     </div>
@@ -93,21 +93,20 @@ const useStyles = makeStyles({
     ...shorthands.margin("0.25rem", "0.3rem", 0, 0),
   },
   cardHeader: {
+    height: "100%",
     display: "flex",
     alignItems: "center",
+    // ...shorthands.marginTop("50px")
   },
 
   title: {
-    ...shorthands.padding("30px"),
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
 
-  titleFont: {
-    fontFamily: "GoryeongStrawberry",
-  },
   text: {
     ...shorthands.margin("10px"),
   },

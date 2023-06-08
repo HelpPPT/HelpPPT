@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Text, makeStyles, Button, shorthands, tokens, Divider } from "@fluentui/react-components";
+import { Card, Text, makeStyles, Button, shorthands, tokens, Divider, Spinner } from "@fluentui/react-components";
 import { unifyWordAll } from "./api/powerpoint";
 import { findAndFocusText, getSentencesFromSlides, groupSlideTextsBySlide } from "../common";
 import { SlideText, SlideTexts } from "../common/main";
@@ -23,6 +23,7 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
   const [hiddenCardIndexes, setHiddenCardIndexes] = React.useState<Array<{ slideIndex: number; cardIndex: number }>>(
     []
   );
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const pattern = new RegExp(`(${changedWordList.join("|")})`, "g");
 
@@ -33,10 +34,12 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       const gruopedValidLines: Array<SlideTexts> = await groupSlideTextsBySlide(validLines);
       const resultsMapList: Array<Array<RecommendSentenceProps>> = await getValidLinesMap(gruopedValidLines);
       setGroupedSentencesMap(resultsMapList);
+      setIsLoading(false);
     };
 
     initData();
-  }, [changedWordList]);
+    // }, [changedWordList]);
+  }, [changedWordList, hiddenCardIndexes]);
 
   const checkedLinesValid = (lines: Array<SlideText>) => {
     return lines.filter((line) => changedWordList.some((word) => line.text.toLowerCase().includes(word)));
@@ -92,11 +95,12 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       { text: sentenceData.text, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex },
       convertSentence
     );
+    findAndFocusText({ text: convertSentence, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
     setHiddenCardIndexes((prevIndexes) => [
       ...prevIndexes,
       { slideIndex: cardIndex.slideIndex, cardIndex: cardIndex.cardIndex },
     ]);
-    findAndFocusText({ text: convertSentence, slideId: sentenceData.slideId, slideIndex: sentenceData.slideIndex });
+    setIsLoading(true);
   };
 
   return (
@@ -104,6 +108,15 @@ export const RecommendList: React.FC<RecommendListProps> = ({ changedWordList, m
       <Button className={classes.allChangeBtn} onClick={() => unifyWordAll(changedWordList, mainWord)}>
         모두 변경
       </Button>
+
+      {isLoading && (
+        <div className={classes.overlay}>
+          <Spinner />
+          <Text weight="semibold" className={classes.text}>
+            Loading...
+          </Text>
+        </div>
+      )}
 
       {groupedSentencesMap.map((sentencesMap, slideIndex) => [
         <Divider key={sentencesMap[0].slideId}>슬라이드 {slideIndex}</Divider>,
@@ -167,4 +180,21 @@ const useStyles = makeStyles({
     },
   },
   colItems: { display: "flex", flexDirection: "column" },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+  text: {
+    color: "white",
+    ...shorthands.margin("5px"),
+  },
 });
