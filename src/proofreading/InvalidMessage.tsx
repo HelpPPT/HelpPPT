@@ -45,7 +45,7 @@ export const InvalidMessage: React.FC<InvalidMessageProps> = ({
 
   const onClickHandler = (() => {
     const funcMap = {
-      "폰트 사이즈는 24pt 이상이어야 해요.": setFontSize24,
+      "글씨가 너무 작아요.": setFontSize24,
       "폰트 사이즈가 일정하지 않아요.": unifyFontSize,
       "문장이 개조식이면 더 좋아요.": setSentenceToGejosik,
     };
