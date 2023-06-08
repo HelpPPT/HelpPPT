@@ -34,8 +34,6 @@ type SentenceProps = {
 export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult, gejosikData }: SentenceProps) => {
   const styles = useStyles();
 
-  console.log(gejosikData);
-
   return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(slideText)}>
       <CardHeader header={<Subtitle2>{slideText.text}</Subtitle2>} />
@@ -46,6 +44,7 @@ export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult,
             slideText={slideText}
             badgeStyle={invalidData.badgeStyle}
             message={invalidData.message}
+            gejosikData={gejosikData}
           />
         ))}
       </div>
