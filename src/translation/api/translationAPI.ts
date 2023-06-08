@@ -2,7 +2,7 @@ import axios from "axios";
 
 export enum Translator {
   Google = "google",
-  Papage = "papago",
+  Papago = "papago",
 }
 
 export const translate = async (text: string, lang: string, translator: Translator): Promise<string> => {

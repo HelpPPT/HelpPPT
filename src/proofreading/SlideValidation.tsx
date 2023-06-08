@@ -10,6 +10,8 @@ import { useBadgeStyles } from "./common/badgeStyle";
 
 type SlideValidationProps = {
   slideSentenceGroup: SlideTexts;
+  gejosikData: Object;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const useStyles = makeStyles({
@@ -29,7 +31,11 @@ const useStyles = makeStyles({
 
 const LENGTH_LIMIT = 400;
 
-export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceGroup }: SlideValidationProps) => {
+export const SlideValidation: React.FC<SlideValidationProps> = ({
+  slideSentenceGroup,
+  gejosikData,
+  setLoading,
+}: SlideValidationProps) => {
   const styles = useStyles();
   const badgeStyle = useBadgeStyles();
 
@@ -37,20 +43,37 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
   const [validatedSentenceGroup, setValidatedSentenceGroup] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
+    const getSlideSentenceGroup = async () => {
+      const validatedSentenceGroup: Array<JSX.Element> = [];
+      const { texts } = slideSentenceGroup;
+
+      for (let index = 0; index < texts.length; index++) {
+        const sentence = texts[index];
+        const validationResult = await validateSentence(sentence, badgeStyle, gejosikData);
+        if (!validationResult.isValid) {
+          validatedSentenceGroup.push(
+            <Sentence
+              key={index}
+              slideText={sentence}
+              validationResult={validationResult}
+              gejosikData={gejosikData}
+              setLoading={setLoading}
+            />
+          );
+        }
+      }
+
+      return validatedSentenceGroup;
+    };
+
     getSlideTextTotalLength(slideSentenceGroup.slideIndex).then((slideTextLength) =>
       setSlideTextLength(slideTextLength)
     );
-    Promise.all(
-      slideSentenceGroup.texts.map(async (sentence, index) => {
-        const validationResult = await validateSentence(sentence, badgeStyle);
-        return validationResult.isValid ? null : (
-          <Sentence key={index} slideText={sentence} validationResult={validationResult} />
-        );
-      })
-    ).then((result) => setValidatedSentenceGroup(result));
+
+    getSlideSentenceGroup().then((result) => setValidatedSentenceGroup(result));
   }, []);
 
-  return validatedSentenceGroup.every((e) => e === null) ? null : (
+  return validatedSentenceGroup.length === 0 ? null : (
     <>
       <Divider>슬라이드 {slideSentenceGroup.slideIndex}</Divider>
       {slideTextLength >= LENGTH_LIMIT ? (

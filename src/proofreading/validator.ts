@@ -13,7 +13,11 @@ type ValidatorData = {
   message: string;
 };
 
-export const validateSentence = async (slideText: SlideText, badgeStyles: any): Promise<SentenceValidationResult> => {
+export const validateSentence = async (
+  slideText: SlideText,
+  badgeStyles: any,
+  gejosikData: Object
+): Promise<SentenceValidationResult> => {
   const textValidatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,
@@ -58,34 +62,40 @@ export const validateSentence = async (slideText: SlideText, badgeStyles: any): 
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
       message: '" 로 완전히 둘러쌓이지 않았어요.',
     },
-    {
-      validatorFunc: validateFirstCharacterCapitalLetter,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
-      message: "문장의 처음은 대문자로 시작해야 해요.",
-    },
     // {
-    //   validatorFunc: validateFontSize,
-    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
-    //   message: "폰트 사이즈는 24pt 이상이어야 해요.",
+    //   validatorFunc: validateFirstCharacterCapitalLetter,
+    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
+    //   message: "문장의 처음은 대문자로 시작해야 해요.",
     // },
     {
       validatorFunc: validateInconsistentFontSize,
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
       message: "폰트 사이즈가 일정하지 않아요.",
     },
+    {
+      validatorFunc: validateTooSmallFontSize,
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+      message: "폰트 사이즈는 24pt 이상이어야 해요.",
+    },
+    {
+      validatorFunc: async (slideText: SlideText) =>
+        !(slideText.text in gejosikData) || gejosikData[slideText.text].trim() === slideText.text.trim(),
+      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.redBadge),
+      message: "문장이 개조식이면 더 좋아요.",
+    },
   ];
 
   const validatorsData: Array<ValidatorData> = slideText?.isSentence ? sentenceValidatorsData : textValidatorsData;
   const validationResult: SentenceValidationResult = { isValid: true, invalidDatas: [] };
-  await Promise.all(
-    validatorsData.map(async (validatorData: ValidatorData) => {
-      const isValid = await validatorData.validatorFunc(slideText);
-      if (!isValid) {
-        validationResult.isValid = false;
-        validationResult.invalidDatas.push(validatorData);
-      }
-    })
-  );
+
+  for (let index = 0; index < validatorsData.length; index++) {
+    const validatorData: ValidatorData = validatorsData[index];
+    const isValid = await validatorData.validatorFunc(slideText);
+    if (!isValid) {
+      validationResult.isValid = false;
+      validationResult.invalidDatas.push(validatorData);
+    }
+  }
 
   return validationResult;
 };
@@ -155,17 +165,17 @@ const validateNoDoubleNegatives = async (slideText: SlideText): Promise<boolean>
   return !/안\s*[^ ]*\s*않았다/.test(text);
 };
 
-const validateFirstCharacterCapitalLetter = async (slideText: SlideText): Promise<boolean> => {
-  const text: string = slideText.text;
-  return !/^[a-z]/.test(text);
-};
-
-const validateFontSize = async (slideText: SlideText): Promise<boolean> => {
-  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
-  return font.size >= 24;
-};
+// const validateFirstCharacterCapitalLetter = async (slideText: SlideText): Promise<boolean> => {
+//   const text: string = slideText.text;
+//   return !/^[a-z]/.test(text);
+// };
 
 const validateInconsistentFontSize = async (slideText: SlideText): Promise<boolean> => {
   const font: PowerPoint.ShapeFont = await getTextFont(slideText);
   return font.size !== 0;
+};
+
+const validateTooSmallFontSize = async (slideText: SlideText): Promise<boolean> => {
+  const font: PowerPoint.ShapeFont = await getTextFont(slideText);
+  return font.size >= 24 || font.size === 0;
 };
