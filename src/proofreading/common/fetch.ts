@@ -9,6 +9,7 @@ export const dongConvertLines = async (sentences: Array<string>): Promise<Object
 
   const gejosikSentences: Object = {};
   for (const originalSentence in data) {
+    if (!data[originalSentence].to_change) continue;
     gejosikSentences[originalSentence] = data[originalSentence].gejosik_sentence;
   }
   return gejosikSentences;
