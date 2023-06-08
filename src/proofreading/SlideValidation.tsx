@@ -37,17 +37,30 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
   const [validatedSentenceGroup, setValidatedSentenceGroup] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
+    const getSlideSentenceGroup = async () => {
+      const validatedSentenceGroup: Array<JSX.Element> = [];
+      const { texts } = slideSentenceGroup;
+
+      for (let index = 0; index < texts.length; index++) {
+        const sentence = texts[index];
+        const validationResult = await validateSentence(sentence, badgeStyle);
+        if (!validationResult.isValid) {
+          console.log(slideSentenceGroup);
+
+          validatedSentenceGroup.push(
+            <Sentence key={index} slideText={sentence} validationResult={validationResult} />
+          );
+        }
+      }
+
+      return validatedSentenceGroup;
+    };
+
     getSlideTextTotalLength(slideSentenceGroup.slideIndex).then((slideTextLength) =>
       setSlideTextLength(slideTextLength)
     );
-    Promise.all(
-      slideSentenceGroup.texts.map(async (sentence, index) => {
-        const validationResult = await validateSentence(sentence, badgeStyle);
-        return validationResult.isValid ? null : (
-          <Sentence key={index} slideText={sentence} validationResult={validationResult} />
-        );
-      })
-    ).then((result) => setValidatedSentenceGroup(result));
+
+    getSlideSentenceGroup().then((result) => setValidatedSentenceGroup(result));
   }, []);
 
   return validatedSentenceGroup.every((e) => e === null) ? null : (
