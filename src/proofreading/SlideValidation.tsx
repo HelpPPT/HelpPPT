@@ -11,6 +11,7 @@ import { useBadgeStyles } from "./common/badgeStyle";
 type SlideValidationProps = {
   slideSentenceGroup: SlideTexts;
   gejosikData: Object;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const useStyles = makeStyles({
@@ -33,6 +34,7 @@ const LENGTH_LIMIT = 400;
 export const SlideValidation: React.FC<SlideValidationProps> = ({
   slideSentenceGroup,
   gejosikData,
+  setLoading,
 }: SlideValidationProps) => {
   const styles = useStyles();
   const badgeStyle = useBadgeStyles();
@@ -50,7 +52,13 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({
         const validationResult = await validateSentence(sentence, badgeStyle, gejosikData);
         if (!validationResult.isValid) {
           validatedSentenceGroup.push(
-            <Sentence key={index} slideText={sentence} validationResult={validationResult} gejosikData={gejosikData} />
+            <Sentence
+              key={index}
+              slideText={sentence}
+              validationResult={validationResult}
+              gejosikData={gejosikData}
+              setLoading={setLoading}
+            />
           );
         }
       }

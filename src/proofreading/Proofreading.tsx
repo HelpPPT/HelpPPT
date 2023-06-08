@@ -51,6 +51,7 @@ export const Proofreading: React.FC = () => {
           key={slideSentenceGroup.slideId}
           slideSentenceGroup={slideSentenceGroup}
           gejosikData={gejosikData}
+          setLoading={setLoading}
         />
       ))}
       <Divider />

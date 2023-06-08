@@ -26,6 +26,7 @@ type InvalidMessageProps = {
   badgeStyle: string;
   message: string;
   gejosikData: Object;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const InvalidMessage: React.FC<InvalidMessageProps> = ({
@@ -33,6 +34,7 @@ export const InvalidMessage: React.FC<InvalidMessageProps> = ({
   badgeStyle,
   message,
   gejosikData,
+  setLoading,
 }: InvalidMessageProps) => {
   const styles = useStyles();
 

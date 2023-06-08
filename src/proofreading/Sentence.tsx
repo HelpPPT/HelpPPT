@@ -29,9 +29,15 @@ type SentenceProps = {
   slideText: SlideText;
   validationResult: SentenceValidationResult;
   gejosikData: Object;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult, gejosikData }: SentenceProps) => {
+export const Sentence: React.FC<SentenceProps> = ({
+  slideText,
+  validationResult,
+  gejosikData,
+  setLoading,
+}: SentenceProps) => {
   const styles = useStyles();
 
   return validationResult.isValid ? null : (
@@ -45,6 +51,7 @@ export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult,
             badgeStyle={invalidData.badgeStyle}
             message={invalidData.message}
             gejosikData={gejosikData}
+            setLoading={setLoading}
           />
         ))}
       </div>
