@@ -73,7 +73,7 @@ export const OnBoard: React.FC<OnBoardProps> = ({ checkedDomain, setCheckedDomai
       </Text>
 
       <Text size={500} weight="semibold">
-        나만의 발표 제작 도우미~!
+        나만의 발표 제작 도우미
       </Text>
     </div>
   );
