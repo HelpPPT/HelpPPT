@@ -112,6 +112,7 @@ const WordUnification: React.FC<WordUnificationProps> = ({ checkedDomain }) => {
         size="large"
         icon={<ArrowClockwise24Filled />}
         onClick={() => {
+          setWordClusters([]);
           getClusters();
         }}
       ></Button>
