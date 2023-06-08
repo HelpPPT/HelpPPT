@@ -63,7 +63,7 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
     getSlideSentenceGroup().then((result) => setValidatedSentenceGroup(result));
   }, []);
 
-  return validatedSentenceGroup.every((e) => e === null) ? null : (
+  return validatedSentenceGroup.length === 0 ? null : (
     <>
       <Divider>슬라이드 {slideSentenceGroup.slideIndex}</Divider>
       {slideTextLength >= LENGTH_LIMIT ? (
