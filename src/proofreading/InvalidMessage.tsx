@@ -46,20 +46,22 @@ export const InvalidMessage: React.FC<InvalidMessageProps> = ({
       "폰트 사이즈가 일정하지 않아요.": unifyFontSize,
       "문장이 개조식이면 더 좋아요.": setSentenceToGejosik,
     };
-    return funcMap[message] || (() => {});
+    return funcMap[message] || null;
   })();
 
   return (
     <div className={styles.container}>
       <Badge className={badgeStyle} size="tiny" />
       <Body1 className={styles.text}>{message}</Body1>
-      <Button
-        className={styles.editButton}
-        onClick={onClickHandler}
-        appearance="subtle"
-        size="small"
-        icon={<Edit16Filled />}
-      />
+      {onClickHandler !== null && (
+        <Button
+          className={styles.editButton}
+          onClick={onClickHandler}
+          appearance="subtle"
+          size="small"
+          icon={<Edit16Filled />}
+        />
+      )}
     </div>
   );
 };
