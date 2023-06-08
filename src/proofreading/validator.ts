@@ -78,7 +78,8 @@ export const validateSentence = async (
       message: "폰트 사이즈는 24pt 이상이어야 해요.",
     },
     {
-      validatorFunc: async (slideText: SlideText) => gejosikData[slideText.text] === undefined,
+      validatorFunc: async (slideText: SlideText) =>
+        !(slideText.text in gejosikData) || gejosikData[slideText.text].trim() === slideText.text.trim(),
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.redBadge),
       message: "문장이 개조식이면 더 좋아요.",
     },
