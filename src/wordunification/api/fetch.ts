@@ -11,10 +11,6 @@ export const convertToMainWord = async (searchSlideText: SlideText, main: string
     const slide = slides.items[searchSlideText.slideIndex - 1];
 
     for (const shape of slide.shapes.items) {
-      if (shape.type === "Unsupported") {
-        continue;
-      }
-
       if (shape.type !== "GeometricShape") {
         continue;
       }
