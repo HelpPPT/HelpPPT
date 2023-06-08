@@ -24,7 +24,7 @@ export const ShowClusterItem: React.FC<ShowClusterItemProps> = ({ cluster, clust
         <MainWordList cluster={cluster} changedMainWord={setMainWord} />
       </div>
       {mainWord !== "" && checkedItems.length > 0 && (
-        <RecommendList changedWordList={checkedItems} mainWord={mainWord} />
+        <RecommendList changedWordList={checkedItems.sort((a, b) => b.length - a.length)} mainWord={mainWord} />
       )}
     </Card>
   );
