@@ -60,7 +60,7 @@ export const convertToGejosik = async (original: string, gejosik: string) =>
 
     for (const slide of slides.items) {
       for (const shape of slide.shapes.items) {
-        if (shape.type === "Unsupported") {
+        if (shape.type !== "GeometricShape") {
           continue;
         }
 
