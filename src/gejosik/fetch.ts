@@ -40,7 +40,7 @@ export const fetchLines = async (): Promise<Array<string>> =>
 export const convertLines = async (sentences: Array<string>): Promise<Map<string, Object>> => {
   const { data } = await axios({
     method: "POST",
-    url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik",
+    url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik-proxy",
     data: { sentences },
   });
 
