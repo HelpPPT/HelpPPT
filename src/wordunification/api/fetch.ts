@@ -25,20 +25,12 @@ export const convertToMainWord = async (searchSlideText: SlideText, main: string
       context.load(shape, "textFrame/textRange/text");
       await context.sync();
 
-      const linesWithSplitter: Array<string> = shape.textFrame.textRange.text.trim().split(/([\n\r\v])/g);
-      const validLinesWithSplitter: Array<string> = linesWithSplitter
-        .map((line) => ("\r\v\n".includes(line) ? line : line.trim()))
-        .filter((line) => line.length > 0);
-      const changedLinesWithSplitter: Array<string> = validLinesWithSplitter.map((line) => {
-        // keep separators
-        if ("\r\v\n".includes(line)) {
-          return line;
-        }
-        if (line != original) return line;
-        else return main;
-      });
-
-      // replace
-      shape.textFrame.textRange.text = changedLinesWithSplitter.join("");
+      const text: string = shape.textFrame.textRange.text.replace(/[\n\r\v]/g, "\n");
+      if (text.includes(original)) {
+        const [start, offset] = [text.indexOf(original), original.length];
+        const newText = text.substring(0, start) + main + text.substring(start + offset);
+        shape.textFrame.textRange.text = newText;
+        return;
+      }
     }
   });
