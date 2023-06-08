@@ -7,8 +7,6 @@ import {
   bundleIcon,
   Calendar3DayFilled,
   Calendar3DayRegular,
-  CalendarAgendaFilled,
-  CalendarAgendaRegular,
   CalendarDayFilled,
   CalendarDayRegular,
   CalendarTodayFilled,
@@ -19,7 +17,6 @@ import { Proofreading } from "./proofreading";
 import { OnBoard } from "./onboarding/Onboard";
 
 const Calendar3Day = bundleIcon(Calendar3DayFilled, Calendar3DayRegular);
-const CalendarAgenda = bundleIcon(CalendarAgendaFilled, CalendarAgendaRegular);
 const CalendarDay = bundleIcon(CalendarDayFilled, CalendarDayRegular);
 const CalendarToday = bundleIcon(CalendarTodayFilled, CalendarTodayRegular);
 
@@ -39,11 +36,6 @@ const tabs: MenuTab[] = [
     id: "wordUnification",
     name: "단어 통일",
     icon: <CalendarToday />,
-  },
-  {
-    id: "gejosik",
-    name: "개조식 전환",
-    icon: <CalendarAgenda />,
   },
   {
     id: "translation",
