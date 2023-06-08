@@ -4,7 +4,7 @@ import { Button, Divider, makeStyles, Spinner } from "@fluentui/react-components
 import { SlideValidation } from "./SlideValidation";
 import { getValidationSentences } from "./common/slide";
 import { ArrowClockwise24Regular } from "@fluentui/react-icons";
-import { dongConvertLines } from "../gejosik/fetch";
+import { dongConvertLines } from "./common/fetch";
 
 const useStyles = makeStyles({
   loader: {
@@ -22,7 +22,7 @@ export const Proofreading: React.FC = () => {
 
   const [loading, setLoading] = React.useState<boolean>(true);
   const [slidesSentenceGroup, setSlidesSentenceGroup] = React.useState<Array<SlideTexts>>([]);
-  const [gejosikData, setGejosikData] = React.useState<Map<string, string>>(new Map<string, string>());
+  const [gejosikData, setGejosikData] = React.useState<Object>({});
 
   useEffect(() => {
     if (!loading) {
@@ -36,7 +36,7 @@ export const Proofreading: React.FC = () => {
         const sentences: Array<string> = slidesSentenceGroup.flatMap((slideSentenceGroup) =>
           slideSentenceGroup.texts.map((sentence) => sentence.text)
         );
-        const _gejosikData = await dongConvertLines(sentences);
+        const _gejosikData: Object = await dongConvertLines(sentences);
         setGejosikData(_gejosikData);
       })
       .then(() => setLoading(false));

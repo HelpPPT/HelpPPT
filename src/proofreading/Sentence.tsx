@@ -28,10 +28,13 @@ const useStyles = makeStyles({
 type SentenceProps = {
   slideText: SlideText;
   validationResult: SentenceValidationResult;
+  gejosikData: Object;
 };
 
-export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult }: SentenceProps) => {
+export const Sentence: React.FC<SentenceProps> = ({ slideText, validationResult, gejosikData }: SentenceProps) => {
   const styles = useStyles();
+
+  console.log(gejosikData);
 
   return validationResult.isValid ? null : (
     <Card className={styles.card} onClick={() => findAndFocusText(slideText)}>

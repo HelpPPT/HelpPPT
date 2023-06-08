@@ -10,7 +10,7 @@ import { useBadgeStyles } from "./common/badgeStyle";
 
 type SlideValidationProps = {
   slideSentenceGroup: SlideTexts;
-  gejosikData: Map<string, string>;
+  gejosikData: Object;
 };
 
 const useStyles = makeStyles({
@@ -50,7 +50,7 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({
         const validationResult = await validateSentence(sentence, badgeStyle);
         if (!validationResult.isValid) {
           validatedSentenceGroup.push(
-            <Sentence key={index} slideText={sentence} validationResult={validationResult} />
+            <Sentence key={index} slideText={sentence} validationResult={validationResult} gejosikData={gejosikData} />
           );
         }
       }
@@ -64,8 +64,6 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({
 
     getSlideSentenceGroup().then((result) => setValidatedSentenceGroup(result));
   }, []);
-
-  console.log(gejosikData);
 
   return validatedSentenceGroup.length === 0 ? null : (
     <>
