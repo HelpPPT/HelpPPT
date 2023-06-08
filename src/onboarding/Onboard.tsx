@@ -111,7 +111,7 @@ const useStyles = makeStyles({
     ...shorthands.margin("10px"),
   },
   nextBtn: {
-    backgroundColor: tokens.colorBrandForegroundInverted,
+    backgroundColor: tokens.colorBrandForegroundOnLight,
     color: "white",
     ...shorthands.margin("5px"),
     alignItems: "center",
@@ -120,7 +120,7 @@ const useStyles = makeStyles({
       color: "white",
     },
     "&:active": {
-      backgroundColor: tokens.colorBrandForegroundInverted,
+      backgroundColor: tokens.colorBrandForegroundOnLight,
       color: "white",
     },
   },
