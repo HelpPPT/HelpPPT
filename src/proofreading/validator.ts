@@ -13,7 +13,11 @@ type ValidatorData = {
   message: string;
 };
 
-export const validateSentence = async (slideText: SlideText, badgeStyles: any): Promise<SentenceValidationResult> => {
+export const validateSentence = async (
+  slideText: SlideText,
+  badgeStyles: any,
+  gejosikData: Object
+): Promise<SentenceValidationResult> => {
   const textValidatorsData: Array<ValidatorData> = [
     {
       validatorFunc: validateLengthLimit,

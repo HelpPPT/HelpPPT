@@ -47,7 +47,7 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({
 
       for (let index = 0; index < texts.length; index++) {
         const sentence = texts[index];
-        const validationResult = await validateSentence(sentence, badgeStyle);
+        const validationResult = await validateSentence(sentence, badgeStyle, gejosikData);
         if (!validationResult.isValid) {
           validatedSentenceGroup.push(
             <Sentence key={index} slideText={sentence} validationResult={validationResult} gejosikData={gejosikData} />
