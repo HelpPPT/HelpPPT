@@ -38,10 +38,10 @@ export const InvalidMessage: React.FC<InvalidMessageProps> = ({
 }: InvalidMessageProps) => {
   const styles = useStyles();
 
-  const setFontSize24 = () => setTimeout(() => setFontSize(slideText, 24), 250);
-  const unifyFontSize = () => setTimeout(() => setFontSize(slideText, -1), 250);
+  const setFontSize24 = () => setTimeout(() => setFontSize(slideText, 24).then(() => setLoading(true)), 250);
+  const unifyFontSize = () => setTimeout(() => setFontSize(slideText, -1).then(() => setLoading(true)), 250);
   const setSentenceToGejosik = () =>
-    setTimeout(() => convertToGejosik(slideText.text, gejosikData[slideText.text]), 250);
+    setTimeout(() => convertToGejosik(slideText.text, gejosikData[slideText.text]).then(() => setLoading(true)), 250);
 
   const onClickHandler = (() => {
     const funcMap = {
