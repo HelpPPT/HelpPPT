@@ -75,7 +75,7 @@ export const validateSentence = async (
     {
       validatorFunc: validateTooSmallFontSize,
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
-      message: "폰트 사이즈는 24pt 이상이어야 해요.",
+      message: "글씨가 너무 작아요.",
     },
     {
       validatorFunc: async (slideText: SlideText) =>
