@@ -22,7 +22,7 @@ export const Proofreading: React.FC = () => {
 
   const [loading, setLoading] = React.useState<boolean>(true);
   const [slidesSentenceGroup, setSlidesSentenceGroup] = React.useState<Array<SlideTexts>>([]);
-  const [gejosikData, setGejosikData] = React.useState<Map<string, Object>>(new Map<string, Object>());
+  const [gejosikData, setGejosikData] = React.useState<Map<string, string>>(new Map<string, string>());
 
   useEffect(() => {
     if (!loading) {
@@ -47,7 +47,11 @@ export const Proofreading: React.FC = () => {
   ) : (
     <div>
       {slidesSentenceGroup.map((slideSentenceGroup) => (
-        <SlideValidation key={slideSentenceGroup.slideId} slideSentenceGroup={slideSentenceGroup} />
+        <SlideValidation
+          key={slideSentenceGroup.slideId}
+          slideSentenceGroup={slideSentenceGroup}
+          gejosikData={gejosikData}
+        />
       ))}
       <Divider />
       <Button

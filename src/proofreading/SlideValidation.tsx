@@ -10,6 +10,7 @@ import { useBadgeStyles } from "./common/badgeStyle";
 
 type SlideValidationProps = {
   slideSentenceGroup: SlideTexts;
+  gejosikData: Map<string, string>;
 };
 
 const useStyles = makeStyles({
@@ -29,7 +30,10 @@ const useStyles = makeStyles({
 
 const LENGTH_LIMIT = 400;
 
-export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceGroup }: SlideValidationProps) => {
+export const SlideValidation: React.FC<SlideValidationProps> = ({
+  slideSentenceGroup,
+  gejosikData,
+}: SlideValidationProps) => {
   const styles = useStyles();
   const badgeStyle = useBadgeStyles();
 
@@ -60,6 +64,8 @@ export const SlideValidation: React.FC<SlideValidationProps> = ({ slideSentenceG
 
     getSlideSentenceGroup().then((result) => setValidatedSentenceGroup(result));
   }, []);
+
+  console.log(gejosikData);
 
   return validatedSentenceGroup.length === 0 ? null : (
     <>
