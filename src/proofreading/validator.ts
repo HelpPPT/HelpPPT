@@ -62,11 +62,11 @@ export const validateSentence = async (
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.orangeBadge),
       message: '" 로 완전히 둘러쌓이지 않았어요.',
     },
-    {
-      validatorFunc: validateFirstCharacterCapitalLetter,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
-      message: "문장의 처음은 대문자로 시작해야 해요.",
-    },
+    // {
+    //   validatorFunc: validateFirstCharacterCapitalLetter,
+    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
+    //   message: "문장의 처음은 대문자로 시작해야 해요.",
+    // },
     {
       validatorFunc: validateInconsistentFontSize,
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
@@ -165,10 +165,10 @@ const validateNoDoubleNegatives = async (slideText: SlideText): Promise<boolean>
   return !/안\s*[^ ]*\s*않았다/.test(text);
 };
 
-const validateFirstCharacterCapitalLetter = async (slideText: SlideText): Promise<boolean> => {
-  const text: string = slideText.text;
-  return !/^[a-z]/.test(text);
-};
+// const validateFirstCharacterCapitalLetter = async (slideText: SlideText): Promise<boolean> => {
+//   const text: string = slideText.text;
+//   return !/^[a-z]/.test(text);
+// };
 
 const validateInconsistentFontSize = async (slideText: SlideText): Promise<boolean> => {
   const font: PowerPoint.ShapeFont = await getTextFont(slideText);
