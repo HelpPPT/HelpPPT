@@ -63,29 +63,29 @@ export const validateSentence = async (slideText: SlideText, badgeStyles: any): 
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
       message: "문장의 처음은 대문자로 시작해야 해요.",
     },
-    {
-      validatorFunc: validateInconsistentFontSize,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
-      message: "폰트 사이즈가 일정하지 않아요.",
-    },
-    {
-      validatorFunc: validateTooSmallFontSize,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
-      message: "폰트 사이즈는 24pt 이상이어야 해요.",
-    },
+    // {
+    //   validatorFunc: validateInconsistentFontSize,
+    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
+    //   message: "폰트 사이즈가 일정하지 않아요.",
+    // },
+    // {
+    //   validatorFunc: validateTooSmallFontSize,
+    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
+    //   message: "폰트 사이즈는 24pt 이상이어야 해요.",
+    // },
   ];
 
   const validatorsData: Array<ValidatorData> = slideText?.isSentence ? sentenceValidatorsData : textValidatorsData;
   const validationResult: SentenceValidationResult = { isValid: true, invalidDatas: [] };
-  await Promise.all(
-    validatorsData.map(async (validatorData: ValidatorData) => {
-      const isValid = await validatorData.validatorFunc(slideText);
-      if (!isValid) {
-        validationResult.isValid = false;
-        validationResult.invalidDatas.push(validatorData);
-      }
-    })
-  );
+
+  for (let index = 0; index < validatorsData.length; index++) {
+    const validatorData: ValidatorData = validatorsData[index];
+    const isValid = await validatorData.validatorFunc(slideText);
+    if (!isValid) {
+      validationResult.isValid = false;
+      validationResult.invalidDatas.push(validatorData);
+    }
+  }
 
   return validationResult;
 };

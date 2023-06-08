@@ -28,14 +28,13 @@ export const Proofreading: React.FC = () => {
       .then(() => setLoading(false));
   }, [loading]);
 
-  const slidesValidations: Array<JSX.Element> = slidesSentenceGroup.map((slideSentenceGroup) => {
-    return <SlideValidation key={slideSentenceGroup.slideId} slideSentenceGroup={slideSentenceGroup} />;
-  });
   return loading ? (
     <Spinner className={styles.loader} label="문장 불러오는중..." labelPosition="below" size="huge" />
   ) : (
     <div>
-      {...slidesValidations}
+      {slidesSentenceGroup.map((slideSentenceGroup) => (
+        <SlideValidation key={slideSentenceGroup.slideId} slideSentenceGroup={slideSentenceGroup} />
+      ))}
       <Divider />
       <Button
         className={styles.reload}
