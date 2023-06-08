@@ -43,11 +43,26 @@ export const convertLines = async (sentences: Array<string>): Promise<Map<string
     url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik-proxy",
     data: { sentences },
   });
+  console.log(data);
 
   const gejosikSentences: Map<string, Object> = new Map<string, Object>();
   // morphemes 를 제외한 나머지 객체들은 모두 필요
   Object.keys(data).forEach((key) => (gejosikSentences[key] = data[key]));
 
+  return gejosikSentences;
+};
+
+export const dongConvertLines = async (sentences: Array<string>): Promise<Map<string, string>> => {
+  const { data } = await axios({
+    method: "POST",
+    url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik-proxy",
+    data: { sentences },
+  });
+
+  const gejosikSentences: Map<string, string> = new Map<string, string>();
+  for (const originalSentence in data) {
+    gejosikSentences.set(originalSentence, data[originalSentence].gejosik_sentence);
+  }
   return gejosikSentences;
 };
 
