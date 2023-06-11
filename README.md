@@ -9,22 +9,16 @@
 <table>
     <tr align="center">
         <td style="min-width: 150px;">
-            <a href="https://github.com/hyeoni369">
-              <img src="https://github.com/nahyun902/nahyun902/assets/48917718/bbb8067b-7a78-4971-8deb-4cd64c86720c" width="100">
-              <br/><b>김동현</b>
-            </a>
+            <img src="https://github.com/nahyun902/nahyun902/assets/48917718/bbb8067b-7a78-4971-8deb-4cd64c86720c" width="100">
+            <br/><b><a href="https://github.com/hyeoni369">김동현</a></b>
         </td>
         <td style="min-width: 150px;">
-            <a href="https://github.com/bgb10">
-              <img src="https://github.com/nahyun902/nahyun902/assets/48917718/e81e749b-b232-4962-b2bc-225f93387747" width="100">
-              <br/><b>박관빈</b>
-            </a>
+            <img src="https://github.com/nahyun902/nahyun902/assets/48917718/e81e749b-b232-4962-b2bc-225f93387747" width="100">
+            <br/><b><a href="https://github.com/bgb10">박관빈</a></b>
         </td>
         <td style="min-width: 150px;">
-            <a href="https://github.com/nahyun902">
-              <img src="https://github.com/nahyun902/nahyun902/assets/48917718/d524dee1-6840-44f0-999d-b949938ac873" width="100">
-              <br/><b>이나현</b>
-            </a> 
+            <img src="https://github.com/nahyun902/nahyun902/assets/48917718/d524dee1-6840-44f0-999d-b949938ac873" width="100">
+            <br/><b><a href="https://github.com/nahyun902">이나현</a></b>
         </td>
     </tr>
 </table>
