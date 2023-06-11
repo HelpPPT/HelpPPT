@@ -56,7 +56,8 @@ export const Gejosik: React.FunctionComponent = () => {
     );
     const g_after_selected_idx = g_before_selected_idx + gejosik_vocab.length;
 
-    if (gejosik_sentence.trim() == "" || original_sentence == gejosik_sentence) return null;
+    if (gejosik_sentence.trim() == "" || original_sentence == gejosik_sentence || !gejosikEntry["to_change"])
+      return null;
 
     return (
       <Card

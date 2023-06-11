@@ -42,6 +42,9 @@ export const convertLines = async (sentences: Array<string>): Promise<Map<string
     method: "POST",
     url: "https://gr7hq4lgk4.execute-api.ap-northeast-2.amazonaws.com/gejosik-proxy",
     data: { sentences },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   });
   console.log(data);
 

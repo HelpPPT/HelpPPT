@@ -67,11 +67,11 @@ export const validateSentence = async (
     //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.yellowBadge),
     //   message: "문장의 처음은 대문자로 시작해야 해요.",
     // },
-    {
-      validatorFunc: validateInconsistentFontSize,
-      badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
-      message: "폰트 사이즈가 일정하지 않아요.",
-    },
+    // {
+    //   validatorFunc: validateInconsistentFontSize,
+    //   badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.berryBadge),
+    //   message: "폰트 사이즈가 일정하지 않아요.",
+    // },
     {
       validatorFunc: validateTooSmallFontSize,
       badgeStyle: mergeClasses(badgeStyles.badge, badgeStyles.blueBadge),
@@ -177,5 +177,5 @@ const validateInconsistentFontSize = async (slideText: SlideText): Promise<boole
 
 const validateTooSmallFontSize = async (slideText: SlideText): Promise<boolean> => {
   const font: PowerPoint.ShapeFont = await getTextFont(slideText);
-  return font.size >= 24 || font.size === 0;
+  return font.size >= 16 || font.size === 0;
 };
