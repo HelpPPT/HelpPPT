@@ -40,3 +40,6 @@ dist/**/*
 # ignore .lock
 yarn.lock
 package-lock.json
+
+# vscode
+.vscode

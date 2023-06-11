@@ -1,9 +1,9 @@
-import App from "./components/App";
-import { AppContainer } from "react-hot-loader";
-import { initializeIcons } from "@fluentui/font-icons-mdl2";
-import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import App from "./App";
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+import { AppContainer } from "react-hot-loader";
+import { FluentProvider, teamsLightTheme } from "@fluentui/react-components";
 
 /* global document, Office, module, require */
 
@@ -16,9 +16,9 @@ const title = "Contoso Task Pane Add-in";
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <ThemeProvider>
+      <FluentProvider theme={teamsLightTheme} style={{ height: "100%" }}>
         <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-      </ThemeProvider>
+      </FluentProvider>
     </AppContainer>,
     document.getElementById("container")
   );
@@ -31,8 +31,8 @@ Office.onReady(() => {
 });
 
 if ((module as any).hot) {
-  (module as any).hot.accept("./components/App", () => {
-    const NextApp = require("./components/App").default;
+  (module as any).hot.accept("./App", () => {
+    const NextApp = require("./App").default;
     render(NextApp);
   });
 }
