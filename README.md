@@ -11,19 +11,19 @@
         <td style="min-width: 150px;">
             <a href="https://github.com/hyeoni369">
               <img src="https://github.com/nahyun902/nahyun902/assets/48917718/bbb8067b-7a78-4971-8deb-4cd64c86720c" width="100">
-              <br/><b>김동현<br/></b>
+              <br/><b>김동현</b>
             </a>
         </td>
         <td style="min-width: 150px;">
             <a href="https://github.com/bgb10">
               <img src="https://github.com/nahyun902/nahyun902/assets/48917718/e81e749b-b232-4962-b2bc-225f93387747" width="100">
-              <br/><b>박관빈<br/></b>
+              <br/><b>박관빈</b>
             </a>
         </td>
         <td style="min-width: 150px;">
             <a href="https://github.com/nahyun902">
               <img src="https://github.com/nahyun902/nahyun902/assets/48917718/d524dee1-6840-44f0-999d-b949938ac873" width="100">
-              <br/><b>이나현<br/></b>
+              <br/><b>이나현</b>
             </a> 
         </td>
     </tr>
@@ -36,11 +36,11 @@
 
 하지만 퀄리티 있는 PPT를 만들기란 쉽지 않습니다 😥
 
-이러한 문제점을 해결하고자 HelpPPT를 제작했습니다⭐
+이러한 문제점을 해결하고자 **HelpPPT**를 제작했습니다!
 
-HelpPPT는 PPT 작성을 도와주는 PPT 작성 Assistant Tool로, PPT 발표자와 작성자 모두를 도와주는 솔루션입니다. 
+**HelpPPT는 PPT 작성을 도와주는 PPT 작성 Assistant Tool**로, PPT 발표자와 작성자 모두를 도와주는 솔루션입니다. 
 
-HelpPPT와 함께 가독성 넘치는 PPT를 만들어요~!
+HelpPPT와 함께 가독성 넘치는 PPT를 만들어요~!😍
 
 <br/><br/>
 
